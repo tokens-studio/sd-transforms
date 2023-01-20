@@ -12,6 +12,9 @@ to work with Design Tokens that are exported from [Tokens Studio](https://tokens
 - Transform Tokens Studio shadow objects to CSS shadow format
 - Registers these transforms, in addition to `attribute/cti`, `name/cti/camelCase` for naming purposes, as a transform group called `tokens-studio`
 
+> If you consume this library using ESM, I am afraid that you will need something like `@rollup/plugin-commonjs` to deal with the fact that I am reliant on a CJS-written library called `postcss-calc-ast-parser` and its dependency `postcss-value-parser`.
+> I will look into creating a PR to those repos to bundle as `mjs` and publish that, or publish it through a fork.
+
 ## Usage
 
 ```js
