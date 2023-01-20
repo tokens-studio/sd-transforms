@@ -1,6 +1,6 @@
 {
   "name": "@tokens-studio/sd-transforms",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A utility that transforms a style-dictionary object into something Figma Tokens plugin understands",
   "license": "MIT",
   "author": "Joren Broekema <joren.broekema@gmail.com>",
