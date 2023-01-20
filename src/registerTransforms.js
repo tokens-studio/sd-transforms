@@ -1,42 +1,60 @@
-import module from 'module';
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBa } from './transformHEXRGBa.js';
 import { transformShadow } from './transformShadow.js';
 
-const require = module.createRequire(import.meta.url);
-const StyleDictionary = require('style-dictionary');
+/**
+ * @typedef {import('style-dictionary/types/index')} StyleDictionary
+ * @typedef {import('style-dictionary/types/DesignToken').DesignToken} DesignToken
+ */
+
+const isBrowser = typeof window === 'object';
 
 /**
- *
+ * typecasting since this will need to work in browser environment, so we cannot
+ * import style-dictionary as it depends on nodejs env
  * @param {StyleDictionary} sd
+ * @returns {Promise<void>}
  */
-export function registerTransforms(sd) {
-  const _sd = sd ?? StyleDictionary;
+export async function registerTransforms(sd) {
+  let _sd = sd;
+
+  // NodeJS env and no passed SD? let's register on our installed SD
+  // We're in ESM, but style-dictionary is CJS only, so we need module.createRequire
+  if (!isBrowser && _sd === undefined) {
+    const module = await import('module');
+    const mod = module.default;
+    const require = mod.createRequire(import.meta.url);
+    _sd = require('style-dictionary');
+  }
 
   _sd.registerTransform({
     name: 'ts/size/px',
     type: 'value',
     transitive: true,
-    matcher: token => ['fontSizes', 'dimension', 'borderRadius', 'spacing'].includes(token.type),
-    transformer: token => transformDimension(token.value),
+    matcher: /** @param {DesignToken} token */ token =>
+      ['fontSizes', 'dimension', 'borderRadius', 'spacing'].includes(token.type),
+    transformer: /** @param {DesignToken} token */ token => transformDimension(token.value),
   });
 
   _sd.registerTransform({
     name: 'ts/color/hexrgba',
     type: 'value',
     transitive: true,
-    matcher: token => typeof token.value === 'string' && token.value.startsWith('rgba(#'),
-    transformer: token => transformHEXRGBa(token.value),
+    matcher: /** @param {DesignToken} token */ token =>
+      typeof token.value === 'string' && token.value.startsWith('rgba(#'),
+    transformer: /** @param {DesignToken} token */ token => transformHEXRGBa(token.value),
   });
 
   _sd.registerTransform({
     name: 'ts/shadow/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => ['boxShadow'].includes(token.type),
-    transformer: token =>
+    matcher: /** @param {DesignToken} token */ token => ['boxShadow'].includes(token.type),
+    transformer: /** @param {DesignToken} token */ token =>
       Array.isArray(token.original.value)
-        ? token.original.value.map(single => transformShadow(single)).join(', ')
+        ? token.original.value
+            .map(/** @param {Record<string,string>} single */ single => transformShadow(single))
+            .join(', ')
         : transformShadow(token.original.value),
   });
 

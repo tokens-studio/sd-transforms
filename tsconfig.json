@@ -3,7 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["es2017", "dom"],
+    "lib": ["ESNext", "dom"],
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "checkJs": true,
