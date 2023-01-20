@@ -1,6 +1,10 @@
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBa } from './transformHEXRGBa.js';
 import { transformShadow } from './transformShadow.js';
+import { transformFontWeights } from './transformFontWeights.js';
+import { transformLetterSpacing } from './transformLetterSpacing.js';
+import { transformTypography } from './transformTypography.js';
+import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 
 /**
  * @typedef {import('style-dictionary/types/index')} StyleDictionary
@@ -58,11 +62,48 @@ export async function registerTransforms(sd) {
         : transformShadow(token.original.value),
   });
 
+  _sd.registerTransform({
+    name: 'ts/type/fontWeight',
+    type: 'value',
+    transitive: true,
+    matcher: token => token.type === 'fontWeights',
+    transformer: token => transformFontWeights(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/size/letterspacing',
+    type: 'value',
+    transitive: true,
+    matcher: token => token.type === 'letterSpacing',
+    transformer: token => transformLetterSpacing(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/typography/shorthand',
+    type: 'value',
+    transitive: true,
+    matcher: token => token.type === 'typography',
+    transformer: token => transformTypography(token.original.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/resolveMath',
+    type: 'value',
+    transitive: true,
+    matcher: () => true,
+    // Putting this in strings seems to be required
+    transformer: token => `${checkAndEvaluateMath(token.value)}`,
+  });
+
   _sd.registerTransformGroup({
     name: 'tokens-studio',
     transforms: [
+      'ts/resolveMath',
       'ts/size/px',
+      'ts/size/letterspacing',
+      'ts/type/fontWeight',
       'ts/color/hexrgba',
+      'ts/typography/shorthand',
       'ts/shadow/shorthand',
       'attribute/cti',
       // by default we go with camel, as having no default will likely give the user

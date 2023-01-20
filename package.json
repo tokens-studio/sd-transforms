@@ -1,7 +1,7 @@
 {
   "name": "@tokens-studio/sd-transforms",
   "version": "0.2.0",
-  "description": "A utility that transforms a style-dictionary object into something Figma Tokens plugin understands",
+  "description": "Custom transforms for Style-Dictionary, to work with Design Tokens that are exported from Tokens Studio",
   "license": "MIT",
   "author": "Joren Broekema <joren.broekema@gmail.com>",
   "repository": {
@@ -31,6 +31,8 @@
   },
   "dependencies": {
     "color2k": "^2.0.1",
+    "expr-eval": "^2.0.2",
+    "postcss-calc-ast-parser": "^0.1.4",
     "style-dictionary": "^3.7.2"
   },
   "devDependencies": {
@@ -40,14 +42,14 @@
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
+    "husky": "^8.0.0",
     "lint-staged": "^13.1.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.3",
     "prettier-package-json": "^2.8.0",
     "rollup": "^3.10.0",
     "rollup-plugin-cleanup": "^3.2.1",
-    "typescript": "^4.9.4",
-    "husky": "^8.0.0"
+    "typescript": "^4.9.4"
   },
   "keywords": [
     "design tokens",
