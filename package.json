@@ -17,6 +17,7 @@
     "src/**/*"
   ],
   "scripts": {
+    "esm-postcss-calc": "rollup node_modules/postcss-calc-ast-parser/dist/index.js --file src/postcss-calc-ast-parser.js --format esm --plugin @rollup/plugin-commonjs --plugin @rollup/plugin-node-resolve",
     "build:cjs": "rollup index.js --file index.cjs --format cjs --plugin @rollup/plugin-commonjs --plugin rollup-plugin-cleanup --plugin @rollup/plugin-node-resolve",
     "build:types": "tsc -p tsconfig.build.types.json",
     "format": "npm run format:eslint && npm run format:prettier",
@@ -26,7 +27,7 @@
     "lint:eslint": "eslint --ext .js,.html .",
     "lint:prettier": "prettier \"**/*.js\" --list-different || (echo '↑↑ these files are not prettier formatted ↑↑' && exit 1)",
     "lint:types": "tsc",
-    "release": "run-p build:* && changeset publish",
+    "release": "npm run esm-postcss-calc && run-p build:* && changeset publish",
     "prepare": "husky install"
   },
   "dependencies": {
