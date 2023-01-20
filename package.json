@@ -17,7 +17,7 @@
     "src/**/*"
   ],
   "scripts": {
-    "build:cjs": "rollup index.js --file index.cjs --format cjs --plugin rollup-plugin-cleanup --plugin @rollup/plugin-node-resolve",
+    "build:cjs": "rollup index.js --file index.cjs --format cjs --plugin @rollup/plugin-commonjs --plugin rollup-plugin-cleanup --plugin @rollup/plugin-node-resolve",
     "build:types": "tsc -p tsconfig.build.types.json",
     "format": "npm run format:eslint && npm run format:prettier",
     "format:eslint": "eslint --ext .js,.html . --fix",
@@ -39,6 +39,7 @@
     "@changesets/cli": "^2.26.0",
     "@open-wc/eslint-config": "^9.2.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-commonjs": "^24.0.0",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
