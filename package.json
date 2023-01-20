@@ -1,0 +1,67 @@
+{
+  "name": "@tokens-studio/sd-transforms",
+  "version": "0.0.0",
+  "description": "A utility that transforms a style-dictionary object into something Figma Tokens plugin understands",
+  "license": "MIT",
+  "author": "Joren Broekema <joren.broekema@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokens-studio/sd-transforms.git"
+  },
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "index.cjs",
+    "index.js",
+    "index.d.ts",
+    "src/**/*"
+  ],
+  "scripts": {
+    "build:cjs": "rollup index.js --file index.cjs --format cjs --plugin rollup-plugin-cleanup --plugin @rollup/plugin-node-resolve",
+    "build:types": "tsc -p tsconfig.build.types.json",
+    "format": "npm run format:eslint && npm run format:prettier",
+    "format:eslint": "eslint --ext .js,.html . --fix",
+    "format:prettier": "prettier \"**/*.{js,md}\" \"package.json\" --write",
+    "lint": "run-p lint:*",
+    "lint:eslint": "eslint --ext .js,.html .",
+    "lint:prettier": "prettier \"**/*.js\" --list-different || (echo '↑↑ these files are not prettier formatted ↑↑' && exit 1)",
+    "lint:types": "tsc",
+    "release": "run-p build:* && changeset publish",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "color2k": "^2.0.1",
+    "style-dictionary": "^3.7.2"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.26.0",
+    "@open-wc/eslint-config": "^9.2.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "lint-staged": "^13.1.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.3",
+    "prettier-package-json": "^2.8.0",
+    "rollup": "^3.10.0",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "typescript": "^4.9.4",
+    "husky": "^8.0.0"
+  },
+  "keywords": [
+    "design tokens",
+    "figma",
+    "style-dictionary"
+  ],
+  "exports": {
+    "import": "./index.js",
+    "require": "./index.cjs"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "all"
+  }
+}

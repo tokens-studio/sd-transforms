@@ -1,0 +1,17 @@
+## editors
+/.idea
+/.vscode
+/*.code-workspace
+/.history
+
+## system files
+.DS_Store
+
+## npm/yarn
+node_modules/
+npm-debug.log
+
+## temp folders
+/coverage/
+
+index.cjs
