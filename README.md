@@ -1,12 +1,16 @@
 # Style Dictionary Transforms for Tokens Studio
 
-This package contains 3 custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
+This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
 to work with Design Tokens that are exported from [Tokens Studio](https://tokens.studio/):
 
-- Transform dimensions tokens to have `px` as a unit when missing
-- Transform Tokens Studio colors to `rgba()` format
+- Check and evaluate Math expressions (transitive)
+- Transform dimensions tokens to have `px` as a unit when missing (transitive)
+- Transform letterspacing from `%` to `em`
+- Transform fontweight from keynames to fontweight numbers (100, 200, 300 ... 900)
+- Transform colors to `rgba()` format
+- Transform typography objects to CSS typography parts
 - Transform Tokens Studio shadow objects to CSS shadow format
-- Registers these transforms, in addition to `name/cti/camelCase` as a transform group called `tokens-studio`
+- Registers these transforms, in addition to `attribute/cti`, `name/cti/camelCase` for naming purposes, as a transform group called `tokens-studio`
 
 ## Usage
 
@@ -40,8 +44,17 @@ In your Style-Dictionary config:
       ]
     },
     "css": {
-      "transformGroup": "tokens-studio",
-      "transforms": ["name/cti/kebab"],
+      "transforms": [
+        "ts/resolveMath",
+        "ts/size/px",
+        "ts/size/letterspacing",
+        "ts/type/fontWeight",
+        "ts/color/hexrgba",
+        "ts/typography/shorthand",
+        "ts/shadow/shorthand",
+        "attribute/cti",
+        "name/cti/kebab"
+      ],
       "buildPath": "build/css/",
       "files": [
         {
