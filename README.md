@@ -1,5 +1,9 @@
 # Style Dictionary Transforms for Tokens Studio
 
+![NPM version badge](https://img.shields.io/npm/v/@tokens-studio/sd-transforms) ![License badge](https://img.shields.io/github/license/tokens-studio/sd-transforms)
+
+> This library is currently in beta.
+
 This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
 to work with Design Tokens that are exported from [Tokens Studio](https://tokens.studio/):
 
@@ -11,6 +15,14 @@ to work with Design Tokens that are exported from [Tokens Studio](https://tokens
 - Transform typography objects to CSS typography parts
 - Transform Tokens Studio shadow objects to CSS shadow format
 - Registers these transforms, in addition to `attribute/cti`, `name/cti/camelCase` for naming purposes, as a transform group called `tokens-studio`
+
+## Installation
+
+With [NPM](https://www.npmjs.com/):
+
+```sh
+npm install @tokens-studio/sd-transforms
+```
 
 ## Usage
 
@@ -87,7 +99,8 @@ StyleDictionary.registerTransform({
 
 ### CommonJS
 
-If you use CommonJS, no problem, you can use this package as CommonJS just fine!
+If you use CommonJS, no problem, you can use this package as CommonJS,
+if your tooling supports [package entry points](https://nodejs.org/api/packages.html#package-entry-points) (a.k.a. exports map)!
 
 ```js
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
