@@ -8,7 +8,7 @@
  * @returns {DesignTokenWithDescription}
  */
 export function mapDescriptionToComment(token) {
-  // purposeful mutation of the original object
+  // intentional mutation of the original object
   const _t = token;
   _t.comment = _t.description;
   return _t;
