@@ -5,7 +5,7 @@
  * Helper: Maps the token description to a style dictionary comment attribute - this will be picked up by some Style Dictionary
  * formats and automatically output as code comments
  * @param {DesignTokenWithDescription} token
- * @returns {DesignTokenWithDescription} token
+ * @returns {DesignTokenWithDescription}
  */
 export function mapDescriptionToComment(token) {
   // purposeful mutation of the original object
