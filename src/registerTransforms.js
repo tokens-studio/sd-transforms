@@ -6,6 +6,7 @@ import { transformLetterSpacing } from './transformLetterSpacing.js';
 import { transformLineHeight } from './transformLineHeight.js';
 import { transformTypography } from './transformTypography.js';
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
+import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 
 /**
  * @typedef {import('style-dictionary/types/index')} StyleDictionary
@@ -104,9 +105,17 @@ export async function registerTransforms(sd) {
     transformer: token => `${checkAndEvaluateMath(token.value)}`,
   });
 
+  _sd.registerTransform({
+    name: 'ts/descriptionToComment',
+    type: 'attribute',
+    matcher: token => token.description,
+    transformer: token => mapDescriptionToComment(token),
+  });
+
   _sd.registerTransformGroup({
     name: 'tokens-studio',
     transforms: [
+      'ts/descriptionToComment',
       'ts/resolveMath',
       'ts/size/px',
       'ts/size/letterspacing',

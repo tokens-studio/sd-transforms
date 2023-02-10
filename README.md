@@ -7,6 +7,7 @@
 This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
 to work with Design Tokens that are exported from [Tokens Studio](https://tokens.studio/):
 
+- Maps token descriptions to comments
 - Check and evaluate Math expressions (transitive)
 - Transform dimensions tokens to have `px` as a unit when missing (transitive)
 - Transform letterspacing from `%` to `em`
@@ -58,6 +59,7 @@ In your Style-Dictionary config:
     },
     "css": {
       "transforms": [
+        "ts/descriptionToComment",
         "ts/resolveMath",
         "ts/size/px",
         "ts/size/letterspacing",
