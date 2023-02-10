@@ -26,7 +26,7 @@ const fontWeightMap = {
 };
 
 /**
- * Helper: Transforms letter spacing % to em
+ * Helper: Transforms fontweight keynames to fontweight numbers (100, 200, 300 ... 900)
  * @param {string} value
  */
 export function transformFontWeights(value) {

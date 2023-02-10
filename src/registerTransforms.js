@@ -3,6 +3,7 @@ import { transformHEXRGBa } from './transformHEXRGBa.js';
 import { transformShadow } from './transformShadow.js';
 import { transformFontWeights } from './transformFontWeights.js';
 import { transformLetterSpacing } from './transformLetterSpacing.js';
+import { transformLineHeight } from './transformLineHeight.js';
 import { transformTypography } from './transformTypography.js';
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 
@@ -79,6 +80,14 @@ export async function registerTransforms(sd) {
   });
 
   _sd.registerTransform({
+    name: 'ts/size/lineheight',
+    type: 'value',
+    transitive: true,
+    matcher: token => token.type === 'lineHeights',
+    transformer: token => transformLineHeight(token.value),
+  });
+
+  _sd.registerTransform({
     name: 'ts/typography/shorthand',
     type: 'value',
     transitive: true,
@@ -101,6 +110,7 @@ export async function registerTransforms(sd) {
       'ts/resolveMath',
       'ts/size/px',
       'ts/size/letterspacing',
+      'ts/size/lineheight',
       'ts/type/fontWeight',
       'ts/color/hexrgba',
       'ts/typography/shorthand',
