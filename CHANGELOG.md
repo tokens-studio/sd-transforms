@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.3.2
+
+### Patch Changes
+
+- 5826117: Add lineheight tranform for aligning Figma and CSS behaviour. Add transform to assign Tokens Studio description to Style Dictionary comment.
+
 ## 0.3.1
 
 ### Patch Changes
