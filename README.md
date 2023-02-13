@@ -7,9 +7,11 @@
 This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
 to work with Design Tokens that are exported from [Tokens Studio](https://tokens.studio/):
 
+- Maps token descriptions to comments
 - Check and evaluate Math expressions (transitive)
 - Transform dimensions tokens to have `px` as a unit when missing (transitive)
 - Transform letterspacing from `%` to `em`
+- Transform lineheight from `%` to unitless (150% -> 1.5)
 - Transform fontweight from keynames to fontweight numbers (100, 200, 300 ... 900)
 - Transform colors to `rgba()` format
 - Transform typography objects to CSS typography parts
@@ -57,9 +59,11 @@ In your Style-Dictionary config:
     },
     "css": {
       "transforms": [
+        "ts/descriptionToComment",
         "ts/resolveMath",
         "ts/size/px",
         "ts/size/letterspacing",
+        "ts/size/lineheight",
         "ts/type/fontWeight",
         "ts/color/hexrgba",
         "ts/typography/shorthand",
