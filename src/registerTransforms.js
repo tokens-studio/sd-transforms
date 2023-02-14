@@ -38,7 +38,9 @@ export async function registerTransforms(sd) {
     type: 'value',
     transitive: true,
     matcher: /** @param {DesignToken} token */ token =>
-      ['fontSizes', 'dimension', 'borderRadius', 'spacing'].includes(token.type),
+      ['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension'].includes(
+        token.type,
+      ),
     transformer: /** @param {DesignToken} token */ token => transformDimension(token.value),
   });
 
