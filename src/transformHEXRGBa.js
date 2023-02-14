@@ -9,7 +9,7 @@ import { parseToRgba } from 'color2k';
  * @returns {string}
  */
 export function transformHEXRGBa(value) {
-  const match = /rgba\((?<hex>.+),\s*?(?<alpha>.+)\)/g.exec(value);
+  const match = /rgba\((?<hex>.+),\s*(?<alpha>.+)\)/g.exec(value);
   if (match && match.groups) {
     const { hex, alpha } = match.groups;
     const [r, g, b] = parseToRgba(hex);

@@ -17,11 +17,14 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: esmify postcss-calc-value-parser
+        run: npm run build:postcss-calc
+
       - name: Lint
         run: npm run lint
 
-      # - name: Install chromium
-      #   run: npx playwright install-deps chromium
+      - name: Install chromium
+        run: npx playwright install-deps chromium
 
-      # - name: Test
-      #   run: npm run test
+      - name: Test
+        run: npm run test

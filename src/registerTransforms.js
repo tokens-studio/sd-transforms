@@ -137,8 +137,8 @@ export async function registerTransforms(sd) {
       'ts/shadow/shorthand',
       'attribute/cti',
       // by default we go with camel, as having no default will likely give the user
-      // errors straight away. They can override this default easily, an additional name/cti
-      // transform will just override earlier transforms in this transformGroup array
+      // errors straight away. This can be overridden by manually passing an array of transforms
+      // instead of this transformGroup, or by doing a name conversion in your custom format
       'name/cti/camel',
     ],
   });
