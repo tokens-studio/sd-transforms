@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.3.3
+
+### Patch Changes
+
+- 0288c1f: Include missing token types (sizing, borderWidth) in ts/size/px transform matcher.
+
 ## 0.3.2
 
 ### Patch Changes
