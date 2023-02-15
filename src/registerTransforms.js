@@ -133,7 +133,7 @@ export async function registerTransforms(sd) {
       'ts/size/lineheight',
       'ts/type/fontWeight',
       'ts/color/hexrgba',
-      'ts/typography/shorthand',
+      'ts/typography/css/shorthand',
       'ts/shadow/shorthand',
       'attribute/cti',
       // by default we go with camel, as having no default will likely give the user
