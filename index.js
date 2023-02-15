@@ -6,5 +6,6 @@ export { transformLetterSpacing } from './src/transformLetterSpacing.js';
 export { transformLineHeight } from './src/transformLineHeight.js';
 export { transformShadow } from './src/transformShadow.js';
 export { transformTypographyForCSS } from './src/css/transformTypography.js';
+export { transformTypographyForCompose } from './src/compose/transformTypography.js';
 export { registerTransforms } from './src/registerTransforms.js';
 export { mapDescriptionToComment } from './src/mapDescriptionToComment.js';
