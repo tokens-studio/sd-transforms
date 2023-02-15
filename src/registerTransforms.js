@@ -4,7 +4,7 @@ import { transformShadow } from './transformShadow.js';
 import { transformFontWeights } from './transformFontWeights.js';
 import { transformLetterSpacing } from './transformLetterSpacing.js';
 import { transformLineHeight } from './transformLineHeight.js';
-import { transformTypography } from './transformTypography.js';
+import { transformTypographyForCSS } from './css/transformTypography.js';
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 
@@ -91,11 +91,11 @@ export async function registerTransforms(sd) {
   });
 
   _sd.registerTransform({
-    name: 'ts/typography/shorthand',
+    name: 'ts/typography/css/shorthand',
     type: 'value',
     transitive: true,
     matcher: token => token.type === 'typography',
-    transformer: token => transformTypography(token.original.value),
+    transformer: token => transformTypographyForCSS(token.original.value),
   });
 
   _sd.registerTransform({

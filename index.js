@@ -5,6 +5,6 @@ export { transformHEXRGBa } from './src/transformHEXRGBa.js';
 export { transformLetterSpacing } from './src/transformLetterSpacing.js';
 export { transformLineHeight } from './src/transformLineHeight.js';
 export { transformShadow } from './src/transformShadow.js';
-export { transformTypography } from './src/transformTypography.js';
+export { transformTypographyForCSS } from './src/css/transformTypography.js';
 export { registerTransforms } from './src/registerTransforms.js';
 export { mapDescriptionToComment } from './src/mapDescriptionToComment.js';
