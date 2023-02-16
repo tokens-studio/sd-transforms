@@ -11,12 +11,12 @@ export function transformTypographyForCompose(token) {
    *  - paragraphSpacing
    */
   const textStylePropertiesMapping = {
-    fontFamily: "fontFamily",
-    fontWeight: "fontWeight",
-    lineHeight: "lineHeight",
-    fontSize: "fontSize",
-    letterSpacing: "letterSpacing",
-    paragraphIndent: "textIndent",
+    fontFamily: 'fontFamily',
+    fontWeight: 'fontWeight',
+    lineHeight: 'lineHeight',
+    fontSize: 'fontSize',
+    letterSpacing: 'letterSpacing',
+    paragraphIndent: 'textIndent',
   };
 
   /**
@@ -25,7 +25,8 @@ export function transformTypographyForCompose(token) {
    *  fontSize = 16.dp
    * )
    */
-  return `${Object.entries(token.value).reduce((acc, [propName, val]) => 
-    `${acc}${textStylePropertiesMapping[propName] ? `${val}\n` : ''}`
-  , "TextStyle(\n")})`
+  return `${Object.entries(token.value).reduce(
+    (acc, [propName, val]) => `${acc}${textStylePropertiesMapping[propName] ? `${val}\n` : ''}`,
+    'TextStyle(\n',
+  )})`;
 }
