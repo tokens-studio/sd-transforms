@@ -25,11 +25,7 @@ export function transformTypographyForCompose(token) {
    *  fontSize = 16.dp
    * )
    */
-  return `${Object.entries(token.value).reduce((props, [propName, val]) => {
-    let output = props;
-    if (textStylePropertiesMapping[propName]) {
-      output += `${textStylePropertiesMapping[propName]} = ${val}\n`;
-    }
-    return output;
-  }, "TextStyle(\n")})`
+  return `${Object.entries(token.value).reduce((acc, [propName, val]) => 
+    `${acc}${textStylePropertiesMapping[propName] ? `${val}\n` : ''}`
+  , "TextStyle(\n")})`
 }
