@@ -121,7 +121,7 @@ export async function registerTransforms(sd) {
     name: 'ts/resolveMath',
     type: 'value',
     transitive: true,
-    matcher: () => true,
+    matcher: token => typeof token.value === 'string',
     // Putting this in strings seems to be required
     transformer: token => `${checkAndEvaluateMath(token.value)}`,
   });

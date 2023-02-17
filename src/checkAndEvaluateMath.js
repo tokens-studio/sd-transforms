@@ -33,6 +33,7 @@ function splitMultiIntoSingleValues(expr) {
       mathChars.includes(right) && mathChars.includes(left), // left/right are both math chars
       left === '' && mathChars.includes(right), // tail of expr, right is math char
       right === '' && mathChars.includes(left), // head of expr, left is math char
+      tokens.length <= 1, // expr is valid if it's a simple 1 token expression
     ];
 
     if (conditions.every(cond => !cond)) {

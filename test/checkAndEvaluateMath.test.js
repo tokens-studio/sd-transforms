@@ -3,6 +3,7 @@ import { checkAndEvaluateMath } from '../src/checkAndEvaluateMath.js';
 
 describe('check and evaluate math', () => {
   it('checks and evaluates math expressions', () => {
+    expect(checkAndEvaluateMath('4px')).to.equal('4px');
     expect(checkAndEvaluateMath('4 * 7')).to.equal('28');
     expect(checkAndEvaluateMath('4 * 7px')).to.equal('28px');
     expect(checkAndEvaluateMath('(15 + 20 - 17 * 8 / 3) * 7px')).to.equal('-72.333px');
