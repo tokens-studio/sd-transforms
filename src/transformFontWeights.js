@@ -1,4 +1,4 @@
-const fontWeightMap = {
+export const fontWeightMap = {
   thin: 100,
   extralight: 200,
   ultralight: 200,

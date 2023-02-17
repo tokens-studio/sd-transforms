@@ -1,9 +1,9 @@
 /**
  * Helper: Transforms typography object to typography shorthand for Jetpack Compose
  *
- * @param {Record<string, string>} token
+ * @param {Record<string, string>} value
  */
-export function transformTypographyForCompose(token) {
+export function transformTypographyForCompose(value) {
   /**
    * Mapping between https://docs.tokens.studio/available-tokens/typography-tokens
    * and https://developer.android.com/reference/kotlin/androidx/compose/ui/text/TextStyle
@@ -25,7 +25,7 @@ export function transformTypographyForCompose(token) {
    *  fontSize = 16.dp
    * )
    */
-  return `${Object.entries(token.value).reduce(
+  return `${Object.entries(value).reduce(
     (acc, [propName, val]) => `${acc}${textStylePropertiesMapping[propName] ? `${val}\n` : ''}`,
     'TextStyle(\n',
   )})`;
