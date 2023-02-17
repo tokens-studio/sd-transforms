@@ -1,5 +1,14 @@
 # @tokens-studio/sd-transforms
 
+## 0.4.1
+
+### Patch Changes
+
+- 5718a7b: Fix small bug in transform typography for compose, passes token value instead of full token.
+- 2d4ce90: Change regex for HEXRGBa detection space character from lazy to greedy, to more tightly match the "alpha" number without leading spaces.
+- 22f9859: Add color modifiers transform, [see more info](https://github.com/tokens-studio/figma-plugin/issues/1166).
+- 2d4ce90: Add multi-value support for evaluating math expressions in token values.
+
 ## 0.4.0
 
 ### Minor Changes
