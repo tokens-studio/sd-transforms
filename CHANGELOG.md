@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.4.2
+
+### Patch Changes
+
+- 2cff78f: Fix check and evaluate math, don't run it on non-string token values, no longer fails on simple expressions.
+
 ## 0.4.1
 
 ### Patch Changes
