@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.4.3
+
+### Patch Changes
+
+- 31c81b4: Fix property name modifier -> modify.
+
 ## 0.4.2
 
 ### Patch Changes
