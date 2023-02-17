@@ -11,7 +11,7 @@ describe('transform color modifiers', () => {
         type: 'color',
         $extensions: {
           'studio.tokens': {
-            modifier: {
+            modify: {
               type: 'lighten',
               value: '0.2',
               space,
@@ -37,7 +37,7 @@ describe('transform color modifiers', () => {
         type: 'color',
         $extensions: {
           'studio.tokens': {
-            modifier: {
+            modify: {
               type: 'darken',
               value: '0.2',
               space,
@@ -63,7 +63,7 @@ describe('transform color modifiers', () => {
         type: 'color',
         $extensions: {
           'studio.tokens': {
-            modifier: {
+            modify: {
               type: 'mix',
               value: '0.5',
               color: '#FFFFFF',
@@ -90,7 +90,7 @@ describe('transform color modifiers', () => {
         type: 'color',
         $extensions: {
           'studio.tokens': {
-            modifier: {
+            modify: {
               type: 'alpha',
               value: '0.2',
               space,
@@ -114,7 +114,7 @@ describe('transform color modifiers', () => {
       type: 'color',
       $extensions: {
         'studio.tokens': {
-          modifier: {
+          modify: {
             type: '',
             value: '0.2',
             space,
