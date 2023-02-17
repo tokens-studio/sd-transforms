@@ -66,7 +66,7 @@ In your Style-Dictionary config:
         "ts/size/lineheight",
         "ts/type/fontWeight",
         "ts/color/hexrgba",
-        "ts/typography/shorthand",
+        "ts/typography/css/shorthand",
         "ts/shadow/shorthand",
         "attribute/cti",
         "name/cti/kebab"

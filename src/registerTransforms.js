@@ -4,7 +4,8 @@ import { transformShadow } from './transformShadow.js';
 import { transformFontWeights } from './transformFontWeights.js';
 import { transformLetterSpacing } from './transformLetterSpacing.js';
 import { transformLineHeight } from './transformLineHeight.js';
-import { transformTypography } from './transformTypography.js';
+import { transformTypographyForCSS } from './css/transformTypography.js';
+import { transformTypographyForCompose } from './compose/transformTypography.js';
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 
@@ -91,11 +92,19 @@ export async function registerTransforms(sd) {
   });
 
   _sd.registerTransform({
-    name: 'ts/typography/shorthand',
+    name: 'ts/typography/css/shorthand',
     type: 'value',
     transitive: true,
     matcher: token => token.type === 'typography',
-    transformer: token => transformTypography(token.original.value),
+    transformer: token => transformTypographyForCSS(token.original.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/typography/compose/shorthand',
+    type: 'value',
+    transitive: true,
+    matcher: token => token.type === 'typography',
+    transformer: token => transformTypographyForCompose(token.original.value),
   });
 
   _sd.registerTransform({
@@ -124,7 +133,7 @@ export async function registerTransforms(sd) {
       'ts/size/lineheight',
       'ts/type/fontWeight',
       'ts/color/hexrgba',
-      'ts/typography/shorthand',
+      'ts/typography/css/shorthand',
       'ts/shadow/shorthand',
       'attribute/cti',
       // by default we go with camel, as having no default will likely give the user
