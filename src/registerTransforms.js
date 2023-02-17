@@ -8,6 +8,7 @@ import { transformTypographyForCSS } from './css/transformTypography.js';
 import { transformTypographyForCompose } from './compose/transformTypography.js';
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 import { mapDescriptionToComment } from './mapDescriptionToComment.js';
+import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 
 /**
  * @typedef {import('style-dictionary/types/index')} StyleDictionary
@@ -52,6 +53,15 @@ export async function registerTransforms(sd) {
     matcher: /** @param {DesignToken} token */ token =>
       typeof token.value === 'string' && token.value.startsWith('rgba(#'),
     transformer: /** @param {DesignToken} token */ token => transformHEXRGBa(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/color/modifiers',
+    type: 'value',
+    transitive: true,
+    matcher: token =>
+      token.type === 'color' && token.$extensions && token.$extensions['studio.tokens']?.modify,
+    transformer: /** @param {DesignToken} token */ token => transformColorModifiers(token),
   });
 
   _sd.registerTransform({
@@ -133,6 +143,7 @@ export async function registerTransforms(sd) {
       'ts/size/lineheight',
       'ts/type/fontWeight',
       'ts/color/hexrgba',
+      'ts/color/modifiers',
       'ts/typography/css/shorthand',
       'ts/shadow/shorthand',
       'attribute/cti',
