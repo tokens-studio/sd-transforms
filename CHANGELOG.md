@@ -1,5 +1,16 @@
 # @tokens-studio/sd-transforms
 
+## 0.4.0
+
+### Minor Changes
+
+- d4d2bc2: **BREAKING**: Renames typography transform to clarify it's transformed to CSS-based format.
+  Previously `transformTypography`, now `transformTypographyForCSS`.
+
+### Patch Changes
+
+- d4d2bc2: Adds a transformer for typography tokens on Jetpack Compose
+
 ## 0.3.3
 
 ### Patch Changes
