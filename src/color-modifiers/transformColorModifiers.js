@@ -13,6 +13,6 @@ import { modifyColor } from './modifyColor.js';
  */
 export function transformColorModifiers(token) {
   /** @type {ColorModifier} */
-  const modifier = token.$extensions['studio.tokens']?.modifier;
+  const modifier = token.$extensions['studio.tokens']?.modify;
   return modifyColor(token.value, modifier);
 }
