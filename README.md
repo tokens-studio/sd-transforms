@@ -16,6 +16,7 @@ to work with Design Tokens that are exported from [Tokens Studio](https://tokens
 - Transform colors to `rgba()` format
 - Transform typography objects to CSS typography parts
 - Transform Tokens Studio shadow objects to CSS shadow format
+- Transform color modifiers from Tokens Studio to color values
 - Registers these transforms, in addition to `attribute/cti`, `name/cti/camelCase` for naming purposes, as a transform group called `tokens-studio`
 
 ## Installation
@@ -28,20 +29,32 @@ npm install @tokens-studio/sd-transforms
 
 ## Usage
 
-```js
-import { registerTransforms } from '@tokens-studio/sd-transforms';
+### Registering the transforms
+
+When using Style Dictionary, you're probably required to use CommonJS format, as this is what Style Dictionary is written in:
+
+```cjs
+const { registerTransforms } = require('@tokens-studio/sd-transforms');
 
 // will register them on StyleDictionary object
-// that is installed as a dependency of this package,
-// in most case this will be npm install deduped with your installation,
-// thus being the same object as you use
+// that is installed as a dependency of sd-transforms,
+// in most cases this will be npm install deduped with
+// your own installation of StyleDictionary,
+// thus being the same object
+// Alternatively, pass your own SD object into this function as an argument
 registerTransforms();
 
-// or pass your own StyleDictionary object to it in case the former doesn't work
-registerTransforms(sdObject);
+module.exports = {
+  source: ['**/*.tokens.json/'],
+  // your SD configuration
+};
 ```
 
-In your Style-Dictionary config:
+Can also import in ESM if needed.
+
+### Using the transforms
+
+In your Style-Dictionary config, you can **either** use the `tokens-studio` transformGroup **or** the separate transforms (all of the names of those are listed):
 
 ```json
 {
@@ -66,6 +79,7 @@ In your Style-Dictionary config:
         "ts/size/lineheight",
         "ts/type/fontWeight",
         "ts/color/hexrgba",
+        "ts/color/modifiers",
         "ts/typography/css/shorthand",
         "ts/shadow/shorthand",
         "attribute/cti",
@@ -106,6 +120,6 @@ StyleDictionary.registerTransform({
 If you use CommonJS, no problem, you can use this package as CommonJS,
 if your tooling supports [package entry points](https://nodejs.org/api/packages.html#package-entry-points) (a.k.a. exports map)!
 
-```js
+```cjs
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
 ```

@@ -9,3 +9,4 @@ export { transformTypographyForCSS } from './src/css/transformTypography.js';
 export { transformTypographyForCompose } from './src/compose/transformTypography.js';
 export { registerTransforms } from './src/registerTransforms.js';
 export { mapDescriptionToComment } from './src/mapDescriptionToComment.js';
+export { transformColorModifiers } from './src/color-modifiers/transformColorModifiers.js';
