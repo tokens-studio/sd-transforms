@@ -127,4 +127,28 @@ describe('transform color modifiers', () => {
     // original, but in hsl space
     expect(transformColorModifiers(token('hsl'))).to.equal('hsl(0 50.6% 50.8%)');
   });
+
+  it('allows passing an output format', () => {
+    const token = /** @param {string} [format] */ format => ({
+      value: '#C14242',
+      type: 'color',
+      $extensions: {
+        'studio.tokens': {
+          modify: {
+            type: 'darken',
+            value: '0.2',
+            space: 'srgb',
+            format,
+          },
+        },
+      },
+    });
+
+    // uses the color space as output format
+    expect(transformColorModifiers(token())).to.equal('rgb(60.5% 20.7% 20.7%)');
+    // output to hsl
+    expect(transformColorModifiers(token('hsl'))).to.equal('hsl(0 49% 40.6%)');
+    // output to hex
+    expect(transformColorModifiers(token('hex'))).to.equal('#9a3535');
+  });
 });

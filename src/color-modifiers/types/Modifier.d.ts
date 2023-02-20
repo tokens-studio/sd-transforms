@@ -7,6 +7,7 @@ interface Modifier<T extends string, V> {
 }
 interface ColorGenericModifier<T extends ColorModifierTypes, V> extends Modifier<T, V> {
   space: ColorSpaceTypes;
+  format?: ColorSpaceTypes;
 }
 
 export interface LightenModifier extends ColorGenericModifier<'lighten', string> {}
