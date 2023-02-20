@@ -41,8 +41,17 @@ export function modifyColor(baseColor, modifier) {
         returnedColor = color;
         break;
     }
+
     returnedColor = returnedColor.to(modifier.space);
-    return returnedColor.toString({ inGamut: true, precision: 3 });
+    if (modifier.format && ['lch', 'srgb', 'p3', 'hsl'].includes(modifier.format)) {
+      returnedColor = returnedColor.to(modifier.format);
+    }
+
+    return returnedColor.toString({
+      inGamut: true,
+      precision: 3,
+      format: modifier.format,
+    });
   } catch (e) {
     return baseColor;
   }
