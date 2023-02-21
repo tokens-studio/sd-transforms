@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 0.4.4
+
+### Patch Changes
+
+- e366ac0: Export transformColorModifiers function inside the main entrypoint.
+- b9f179a: Allow passing an output format to the color modify props of Tokens Studio.
+
 ## 0.4.3
 
 ### Patch Changes
