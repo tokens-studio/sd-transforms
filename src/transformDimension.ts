@@ -1,9 +1,7 @@
 /**
  * Helper: Transforms dimensions to px
- * @param {string} value
- * @returns {string}
  */
-export function transformDimension(value) {
+export function transformDimension(value: string): string {
   if (value.endsWith('px')) {
     return value;
   }

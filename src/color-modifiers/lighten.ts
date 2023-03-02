@@ -1,16 +1,7 @@
-/**
- * @typedef {import('colorjs.io').default} Color
- * @typedef {import('./types/ColorSpaceTypes').ColorSpaceTypes} ColorSpaceTypes
- */
+import { ColorSpaceTypes } from './types/ColorSpaceTypes';
+import Color from 'colorjs.io';
 
-/**
- *
- * @param {Color} color
- * @param {ColorSpaceTypes} colorSpace
- * @param {number} amount
- * @returns {Color}
- */
-export function lighten(color, colorSpace, amount) {
+export function lighten(color: Color, colorSpace: ColorSpaceTypes, amount: number): Color {
   switch (colorSpace) {
     case 'lch': {
       const lightness = color.lch.l;

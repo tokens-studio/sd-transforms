@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { checkAndEvaluateMath } from '../src/checkAndEvaluateMath.js';
+import { checkAndEvaluateMath } from '../src/checkAndEvaluateMath';
 
 describe('check and evaluate math', () => {
   it('checks and evaluates math expressions', () => {

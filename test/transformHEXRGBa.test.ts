@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { transformHEXRGBa } from '../src/transformHEXRGBa.js';
+import { transformHEXRGBa } from '../src/transformHEXRGBa';
 
 describe('transform HEXRGBa', () => {
   it("transforms Figma's hex code RGBA to actual RGBA format", () => {

@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { transformLineHeight } from '../src/transformLineHeight.js';
+import { transformLineHeight } from '../src/transformLineHeight';
 
 describe('transform line height', () => {
   it('transforms line-height % to unit-less decimal value', () => {

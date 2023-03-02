@@ -9,21 +9,15 @@ import { transformTypographyForCompose } from './compose/transformTypography.js'
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
-
-/**
- * @typedef {import('style-dictionary/types/index')} StyleDictionary
- * @typedef {import('style-dictionary/types/DesignToken').DesignToken} DesignToken
- */
+import { Core } from 'style-dictionary';
 
 const isBrowser = typeof window === 'object';
 
 /**
  * typecasting since this will need to work in browser environment, so we cannot
  * import style-dictionary as it depends on nodejs env
- * @param {StyleDictionary} sd
- * @returns {Promise<void>}
  */
-export async function registerTransforms(sd) {
+export async function registerTransforms(sd: Core) {
   let _sd = sd;
 
   // NodeJS env and no passed SD? let's register on our installed SD
@@ -39,20 +33,19 @@ export async function registerTransforms(sd) {
     name: 'ts/size/px',
     type: 'value',
     transitive: true,
-    matcher: /** @param {DesignToken} token */ token =>
+    matcher: token =>
       ['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension'].includes(
         token.type,
       ),
-    transformer: /** @param {DesignToken} token */ token => transformDimension(token.value),
+    transformer: token => transformDimension(token.value),
   });
 
   _sd.registerTransform({
     name: 'ts/color/hexrgba',
     type: 'value',
     transitive: true,
-    matcher: /** @param {DesignToken} token */ token =>
-      typeof token.value === 'string' && token.value.startsWith('rgba(#'),
-    transformer: /** @param {DesignToken} token */ token => transformHEXRGBa(token.value),
+    matcher: token => typeof token.value === 'string' && token.value.startsWith('rgba(#'),
+    transformer: token => transformHEXRGBa(token.value),
   });
 
   _sd.registerTransform({
@@ -61,19 +54,17 @@ export async function registerTransforms(sd) {
     transitive: true,
     matcher: token =>
       token.type === 'color' && token.$extensions && token.$extensions['studio.tokens']?.modify,
-    transformer: /** @param {DesignToken} token */ token => transformColorModifiers(token),
+    transformer: token => transformColorModifiers(token),
   });
 
   _sd.registerTransform({
     name: 'ts/shadow/shorthand',
     type: 'value',
     transitive: true,
-    matcher: /** @param {DesignToken} token */ token => ['boxShadow'].includes(token.type),
-    transformer: /** @param {DesignToken} token */ token =>
+    matcher: token => ['boxShadow'].includes(token.type),
+    transformer: token =>
       Array.isArray(token.original.value)
-        ? token.original.value
-            .map(/** @param {Record<string,string>} single */ single => transformShadow(single))
-            .join(', ')
+        ? token.original.value.map(single => transformShadow(single)).join(', ')
         : transformShadow(token.original.value),
   });
 

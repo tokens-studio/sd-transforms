@@ -5,9 +5,6 @@
     "moduleResolution": "node",
     "lib": ["ESNext", "dom"],
     "allowSyntheticDefaultImports": true,
-    "allowJs": true,
-    "checkJs": true,
-    "noEmit": true,
     "strict": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
@@ -15,6 +12,6 @@
     "esModuleInterop": true,
     "suppressImplicitAnyIndexErrors": true
   },
-  "include": ["**/*.js"],
+  "include": ["**/*.ts"],
   "exclude": ["node_modules", "**/coverage/*", "src/postcss-calc-ast-parser.js"]
 }

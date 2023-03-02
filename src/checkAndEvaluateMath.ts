@@ -1,8 +1,7 @@
+// We have to manually ESMify this library.
+// @rollup/plugin-commonjs inside @web/test-runner doesn't work / creates errors
+// @ts-ignore
 import { parse, reduceExpression } from './postcss-calc-ast-parser.js';
-
-/**
- * @typedef {import('postcss-calc-ast-parser/dist/types/ast').Root} Root
- */
 
 const mathChars = ['+', '-', '*', '/'];
 
@@ -14,14 +13,10 @@ const mathChars = ['+', '-', '*', '/'];
  * It splits everything by " " spaces, then checks in which places
  * there is a space but with no math operater left or right of it,
  * then determines this must mean it's a multi-value separator
- *
- * @param {string} expr
- * @returns {string[]}
  */
-function splitMultiIntoSingleValues(expr) {
+function splitMultiIntoSingleValues(expr: string): string[] {
   const tokens = expr.split(' ');
-  /** @type {number[]} */
-  const indexes = [];
+  const indexes = [] as number[];
   let skipNextIteration = false;
   tokens.forEach((tok, i) => {
     const left = i > 0 ? tokens[i - 1] : '';
@@ -47,8 +42,7 @@ function splitMultiIntoSingleValues(expr) {
   });
   if (indexes.length > 0) {
     indexes.push(tokens.length);
-    /** @type {string[]} */
-    const exprArr = [];
+    const exprArr = [] as string[];
     let currIndex = 0;
     indexes.forEach(i => {
       const singleValue = tokens.slice(currIndex, i + 1).join(' ');
@@ -60,27 +54,19 @@ function splitMultiIntoSingleValues(expr) {
   return [expr];
 }
 
-/**
- * @param {string} expr
- * @returns {string}
- */
-function parseAndReduce(expr) {
-  /** @type {Root} */
-  const calcParsed = /** @type {Root} */ (parse(expr));
+function parseAndReduce(expr: string): string {
+  const calcParsed = parse(expr);
 
   const reduced = reduceExpression(calcParsed);
   if (reduced === null) {
     return expr;
   }
-  return `${Number.parseFloat(reduced.value.toFixed(3))}${reduced.unit ?? ''}`;
+
+  const unit = reduced['unit'];
+  return `${Number.parseFloat(reduced.value.toFixed(3))}${unit ?? ''}`;
 }
 
-/**
- *
- * @param {string} expr
- * @returns {number|string}
- */
-export function checkAndEvaluateMath(expr) {
+export function checkAndEvaluateMath(expr: string): number | string {
   const exprs = splitMultiIntoSingleValues(expr);
   const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
   return reducedExprs.join(' ');

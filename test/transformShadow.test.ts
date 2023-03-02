@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { transformShadow } from '../src/transformShadow.js';
+import { transformShadow } from '../src/transformShadow';
 
 describe('transform shadow', () => {
   it('transforms boxShadow object to shadow shorthand', () => {

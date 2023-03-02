@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { transformDimension } from '../src/transformDimension.js';
+import { transformDimension } from '../src/transformDimension';
 
 describe('transform dimension', () => {
   it('transforms unitless dimensions, by suffixing with "px"', () => {

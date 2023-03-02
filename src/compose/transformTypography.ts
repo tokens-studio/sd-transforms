@@ -1,9 +1,7 @@
 /**
  * Helper: Transforms typography object to typography shorthand for Jetpack Compose
- *
- * @param {Record<string, string>} value
  */
-export function transformTypographyForCompose(value) {
+export function transformTypographyForCompose(value: Record<string, string>): string {
   /**
    * Mapping between https://docs.tokens.studio/available-tokens/typography-tokens
    * and https://developer.android.com/reference/kotlin/androidx/compose/ui/text/TextStyle

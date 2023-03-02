@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { transformFontWeights, fontWeightMap } from '../src/transformFontWeights.js';
+import { transformFontWeights, fontWeightMap } from '../src/transformFontWeights';
 
 describe('transform dimension', () => {
   it('transforms fontweight keynames to fontweight numbers', () => {
