@@ -10,8 +10,10 @@
     "alwaysStrict": true,
     "types": ["node", "mocha"],
     "esModuleInterop": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "outDir": "dist",
+    "declaration": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "**/coverage/*", "src/postcss-calc-ast-parser.js"]
+  "exclude": ["node_modules", "**/coverage/*"]
 }

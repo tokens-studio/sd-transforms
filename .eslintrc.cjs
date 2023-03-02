@@ -4,12 +4,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: [
-          'test/**/*',
-          'scripts/**/*',
-          'web-test-runner.config.mjs',
-          'rollup-postcss-calc.config.mjs',
-        ],
+        devDependencies: ['test/**/*', 'web-test-runner.config.mjs', 'rollup/**/*'],
       },
     ],
   },

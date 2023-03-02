@@ -15,4 +15,5 @@ npm-debug.log
 /coverage/
 
 index.cjs
-src/postcss-calc-ast-parser.js
+src/postcss-calc-ast-parser.ts
+dist/

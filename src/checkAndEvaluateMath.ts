@@ -1,7 +1,7 @@
 // We have to manually ESMify this library.
 // @rollup/plugin-commonjs inside @web/test-runner doesn't work / creates errors
 // @ts-ignore
-import { parse, reduceExpression } from './postcss-calc-ast-parser.js';
+import { parse, reduceExpression } from './postcss-calc-ast-parser';
 
 const mathChars = ['+', '-', '*', '/'];
 
@@ -55,7 +55,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
 }
 
 function parseAndReduce(expr: string): string {
-  const calcParsed = parse(expr);
+  const calcParsed = parse(expr, {});
 
   const reduced = reduceExpression(calcParsed);
   if (reduced === null) {

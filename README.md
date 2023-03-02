@@ -29,25 +29,14 @@ npm install @tokens-studio/sd-transforms
 
 ## Usage
 
-### Registering the transforms
+> Note: this library is available both in CJS and ESM
 
-When using Style Dictionary, you're probably required to use CommonJS format, as this is what Style Dictionary is written in:
-
-```cjs
+```js
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
 
 // will register them on StyleDictionary object
-// that is installed as a dependency of sd-transforms,
-// in most cases this will be npm install deduped with
-// your own installation of StyleDictionary,
-// thus being the same object
-// Alternatively, pass your own SD object into this function as an argument
+// that is installed as a dependency of this package.
 registerTransforms();
-
-module.exports = {
-  source: ['**/*.tokens.json/'],
-  // your SD configuration
-};
 ```
 
 Can also import in ESM if needed.
@@ -60,31 +49,8 @@ In your Style-Dictionary config, you can **either** use the `tokens-studio` tran
 {
   "source": ["**/*.tokens.json"],
   "platforms": {
-    "js": {
-      "transformGroup": "tokens-studio",
-      "buildPath": "build/js/",
-      "files": [
-        {
-          "destination": "variables.js",
-          "format": "javascript/es6"
-        }
-      ]
-    },
     "css": {
-      "transforms": [
-        "ts/descriptionToComment",
-        "ts/resolveMath",
-        "ts/size/px",
-        "ts/size/letterspacing",
-        "ts/size/lineheight",
-        "ts/type/fontWeight",
-        "ts/color/hexrgba",
-        "ts/color/modifiers",
-        "ts/typography/css/shorthand",
-        "ts/shadow/shorthand",
-        "attribute/cti",
-        "name/cti/kebab"
-      ],
+      "transformGroup": "tokens-studio",
       "buildPath": "build/css/",
       "files": [
         {
@@ -97,13 +63,11 @@ In your Style-Dictionary config, you can **either** use the `tokens-studio` tran
 }
 ```
 
-More fine-grained control:
+More fine-grained control is possible, every transformation is available as a raw JavaScript function
+for you to create your own Style-Dictionary transformer out of.
 
 ```js
-import module from 'module';
-import { transformDimension } from '@tokens-studio/sd-transforms';
-
-const require = module.createRequire(import.meta.url);
+const { transformDimension } = require('@tokens-studio/sd-transforms');
 const StyleDictionary = require('style-dictionary');
 
 StyleDictionary.registerTransform({
@@ -115,11 +79,62 @@ StyleDictionary.registerTransform({
 });
 ```
 
-### CommonJS
+### Full example
 
-If you use CommonJS, no problem, you can use this package as CommonJS,
-if your tooling supports [package entry points](https://nodejs.org/api/packages.html#package-entry-points) (a.k.a. exports map)!
+```sh
+node build-tokens.js
+```
+
+`build-tokens.js`:
 
 ```cjs
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
+const StyleDictionary = require('style-dictionary');
+
+registerTransforms(StyleDictionary);
+
+const sd = StyleDictionary.extend({
+  source: ['**/*.tokens.json'],
+  platforms: {
+    js: {
+      transformGroup: 'tokens-studio',
+      buildPath: 'build/js/',
+      files: [
+        {
+          destination: 'variables.js',
+          format: 'javascript/es6',
+        },
+      ],
+    },
+    css: {
+      transforms: [
+        'ts/descriptionToComment',
+        'ts/resolveMath',
+        'ts/size/px',
+        'ts/size/letterspacing',
+        'ts/size/lineheight',
+        'ts/type/fontWeight',
+        'ts/color/hexrgba',
+        "ts/color/modifiers"
+        'ts/typography/css/shorthand',
+        'ts/shadow/shorthand',
+        'attribute/cti',
+        'name/cti/kebab',
+      ],
+      buildPath: 'build/css/',
+      files: [
+        {
+          destination: 'variables.css',
+          format: 'css/variables',
+        },
+      ],
+    },
+  },
+});
+
+sd.cleanAllPlatforms();
+sd.buildAllPlatforms();
 ```
+
+> Note: make sure to choose either the full transformGroup, **OR** its separate transforms, so you can adjust or add your own.
+> [Combining a transformGroup with a transforms array can give unexpected results](https://github.com/amzn/style-dictionary/issues/813).

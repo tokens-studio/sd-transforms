@@ -11,7 +11,7 @@ This is only a problem of the format, so it's easily fixed by using a bundler to
 Run:
 
 ```sh
-npm run build:postcss-calc
+npm run esm-postcss-calc
 ```
 
 before doing things like linting, testing etc., or you will get errors.
@@ -39,8 +39,6 @@ npm run format
 ```
 
 after doing your work, to fix most issues automatically.
-
-As for Type safety, we use JSDocs in combination with TypeScript compiler for linting and building type definition files, for more info, [read this blog](https://dev.to/open-wc/generating-typescript-definition-files-from-javascript-5bp2).
 
 ## Versioning
 
