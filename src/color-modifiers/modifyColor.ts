@@ -1,9 +1,9 @@
 import Color from 'colorjs.io';
-import { transparentize } from './transparentize.js';
-import { mix } from './mix.js';
-import { darken } from './darken.js';
-import { lighten } from './lighten.js';
-import { ColorModifier } from './types/Modifier.js';
+import { transparentize } from './transparentize';
+import { mix } from './mix';
+import { darken } from './darken';
+import { lighten } from './lighten';
+import { ColorModifier } from './types/Modifier';
 
 export function modifyColor(baseColor: string, modifier: ColorModifier): string {
   const color = new Color(baseColor);

@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { transformTypographyForCSS } from '../src/css/transformTypography.js';
+import { transformTypographyForCSS } from '../src/css/transformTypography';
 
 describe('transform typography', () => {
   it('transforms typography object to typography shorthand', () => {

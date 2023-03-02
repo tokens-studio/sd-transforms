@@ -1,5 +1,5 @@
-import { ColorSpaceTypes } from './types/ColorSpaceTypes';
 import Color from 'colorjs.io';
+import { ColorSpaceTypes } from './types/ColorSpaceTypes';
 
 export function lighten(color: Color, colorSpace: ColorSpaceTypes, amount: number): Color {
   switch (colorSpace) {

@@ -146,7 +146,7 @@ describe('transform color modifiers', () => {
   });
 
   it('allows passing an output format', () => {
-    const token = /** @param {string} [format] */ format => ({
+    const token = (format?: string) => ({
       value: '#C14242',
       type: 'color',
       $extensions: {

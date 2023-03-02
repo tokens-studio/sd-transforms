@@ -1,4 +1,4 @@
-import { DesignToken } from 'style-dictionary/types/DesignToken';
+import { DesignToken } from 'style-dictionary';
 
 /**
  * Helper: Maps the token description to a style dictionary comment attribute - this will be picked up by some Style Dictionary

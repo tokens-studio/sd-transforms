@@ -1,6 +1,3 @@
-// We have to manually ESMify this library.
-// @rollup/plugin-commonjs inside @web/test-runner doesn't work / creates errors
-// @ts-ignore
 import { parse, reduceExpression } from './postcss-calc-ast-parser';
 
 const mathChars = ['+', '-', '*', '/'];
@@ -62,8 +59,7 @@ function parseAndReduce(expr: string): string {
     return expr;
   }
 
-  const unit = reduced['unit'];
-  return `${Number.parseFloat(reduced.value.toFixed(3))}${unit ?? ''}`;
+  return `${Number.parseFloat(reduced.value.toFixed(3))}${reduced.unit ?? ''}`;
 }
 
 export function checkAndEvaluateMath(expr: string): number | string {
