@@ -1,7 +1,13 @@
 /**
  * Helper: Transforms typography object to typography shorthand for Jetpack Compose
  */
-export function transformTypographyForCompose(value: Record<string, string>): string {
+export function transformTypographyForCompose(
+  value: Record<string, string> | undefined,
+): string | undefined {
+  if (value === undefined) {
+    return value;
+  }
+
   /**
    * Mapping between https://docs.tokens.studio/available-tokens/typography-tokens
    * and https://developer.android.com/reference/kotlin/androidx/compose/ui/text/TextStyle

@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
 import { transformLetterSpacing } from '../src/transformLetterSpacing';
+import { runTransformSuite } from './suites/transform-suite.test';
+
+runTransformSuite(transformLetterSpacing as (value: unknown) => unknown);
 
 describe('transform letter spacing', () => {
   it('transforms letter spacing % to em', () => {

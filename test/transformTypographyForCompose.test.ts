@@ -1,5 +1,8 @@
 import { transformTypographyForCompose } from '../src/compose/transformTypography';
 import { expect } from '@esm-bundle/chai';
+import { runTransformSuite } from './suites/transform-suite.test';
+
+runTransformSuite(transformTypographyForCompose as (value: unknown) => unknown);
 
 describe('transform typography', () => {
   it('transforms typography object to typography shorthand', () => {

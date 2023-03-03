@@ -62,7 +62,10 @@ function parseAndReduce(expr: string): string {
   return `${Number.parseFloat(reduced.value.toFixed(3))}${reduced.unit ?? ''}`;
 }
 
-export function checkAndEvaluateMath(expr: string): number | string {
+export function checkAndEvaluateMath(expr: string | undefined): number | string | undefined {
+  if (expr === undefined) {
+    return expr;
+  }
   const exprs = splitMultiIntoSingleValues(expr);
   const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
   return reducedExprs.join(' ');
