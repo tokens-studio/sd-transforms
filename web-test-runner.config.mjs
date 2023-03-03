@@ -1,8 +1,9 @@
 import { playwrightLauncher } from '@web/test-runner-playwright';
+import { esbuildPlugin } from '@web/dev-server-esbuild';
 
 export default {
   nodeResolve: true,
-  files: ['test/**/*.test.js'],
+  files: ['test/**/*.test.ts'],
   coverageConfig: {
     report: true,
     reportDir: 'coverage',
@@ -12,7 +13,8 @@ export default {
       functions: 100,
       lines: 100,
     },
-    exclude: ['src/postcss-calc-ast-parser.js', 'node_modules/**'],
+    exclude: ['src/postcss-calc-ast-parser.ts', 'node_modules/**'],
   },
   browsers: [playwrightLauncher({ product: 'chromium' })],
+  plugins: [esbuildPlugin({ ts: true, target: 'auto' })],
 };

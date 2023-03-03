@@ -1,16 +1,9 @@
 module.exports = {
-  extends: ['@open-wc/eslint-config', 'eslint-config-prettier'],
-  rules: {
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: [
-          'test/**/*',
-          'scripts/**/*',
-          'web-test-runner.config.mjs',
-          'rollup-postcss-calc.config.mjs',
-        ],
-      },
-    ],
-  },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'eslint-config-prettier',
+  ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
 };

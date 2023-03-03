@@ -5,16 +5,15 @@
     "moduleResolution": "node",
     "lib": ["ESNext", "dom"],
     "allowSyntheticDefaultImports": true,
-    "allowJs": true,
-    "checkJs": true,
-    "noEmit": true,
     "strict": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "types": ["node", "mocha"],
     "esModuleInterop": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "outDir": "dist",
+    "declaration": true
   },
-  "include": ["**/*.js"],
-  "exclude": ["node_modules", "**/coverage/*", "src/postcss-calc-ast-parser.js"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "**/coverage/*"]
 }
