@@ -115,7 +115,7 @@ const sd = StyleDictionary.extend({
         'ts/size/lineheight',
         'ts/type/fontWeight',
         'ts/color/hexrgba',
-        "ts/color/modifiers"
+        'ts/color/modifiers',
         'ts/typography/css/shorthand',
         'ts/shadow/shorthand',
         'attribute/cti',
