@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
 import { transformShadow } from '../src/transformShadow';
+import { runTransformSuite } from './suites/transform-suite.test';
+
+runTransformSuite(transformShadow as (value: unknown) => unknown);
 
 describe('transform shadow', () => {
   it('transforms boxShadow object to shadow shorthand', () => {

@@ -28,7 +28,10 @@ export const fontWeightMap = {
 /**
  * Helper: Transforms fontweight keynames to fontweight numbers (100, 200, 300 ... 900)
  */
-export function transformFontWeights(value: string) {
+export function transformFontWeights(value: string | undefined): string | undefined {
+  if (value === undefined) {
+    return value;
+  }
   const mapped = fontWeightMap[value.toLowerCase()];
   return `${mapped}`;
 }

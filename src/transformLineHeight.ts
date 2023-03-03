@@ -3,7 +3,10 @@
  * @example
  * 150% -> 1.5
  */
-export function transformLineHeight(value: string): string | number {
+export function transformLineHeight(value: string | undefined): string | number | undefined {
+  if (value === undefined) {
+    return value;
+  }
   if (value.endsWith('%')) {
     const percentValue = value.slice(0, -1);
     return parseFloat(percentValue) / 100;

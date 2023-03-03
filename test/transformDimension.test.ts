@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
 import { transformDimension } from '../src/transformDimension';
+import { runTransformSuite } from './suites/transform-suite.test';
+
+runTransformSuite(transformDimension as (value: unknown) => unknown);
 
 describe('transform dimension', () => {
   it('transforms unitless dimensions, by suffixing with "px"', () => {

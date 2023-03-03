@@ -5,7 +5,13 @@ import { darken } from './darken';
 import { lighten } from './lighten';
 import { ColorModifier } from './types/Modifier';
 
-export function modifyColor(baseColor: string, modifier: ColorModifier): string {
+export function modifyColor(
+  baseColor: string | undefined,
+  modifier: ColorModifier,
+): string | undefined {
+  if (baseColor === undefined) {
+    return baseColor;
+  }
   const color = new Color(baseColor);
   let returnedColor = color;
   try {

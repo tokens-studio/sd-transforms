@@ -1,6 +1,21 @@
 import { expect } from '@esm-bundle/chai';
 import { transformColorModifiers } from '../src/color-modifiers/transformColorModifiers';
 import { ColorSpaceTypes } from '../src/color-modifiers/types/ColorSpaceTypes';
+import { runTransformSuite } from './suites/transform-suite.test';
+
+runTransformSuite(transformColorModifiers as (value: unknown) => unknown, {
+  value: '#C14242',
+  type: 'color',
+  $extensions: {
+    'studio.tokens': {
+      modify: {
+        type: 'lighten',
+        value: '0.2',
+        space: ColorSpaceTypes.HSL,
+      },
+    },
+  },
+});
 
 describe('transform color modifiers', () => {
   describe('lighten', () => {

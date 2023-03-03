@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
 import { transformLineHeight } from '../src/transformLineHeight';
+import { runTransformSuite } from './suites/transform-suite.test';
+
+runTransformSuite(transformLineHeight as (value: unknown) => unknown);
 
 describe('transform line height', () => {
   it('transforms line-height % to unit-less decimal value', () => {
