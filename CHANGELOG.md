@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.4.6
+
+### Patch Changes
+
+- 71d12d2: Improve checkAndEvaluateMath for expressions with more than one unit.
+
 ## 0.4.5
 
 ### Patch Changes
