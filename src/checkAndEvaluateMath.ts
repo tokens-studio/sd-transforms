@@ -52,14 +52,18 @@ function splitMultiIntoSingleValues(expr: string): string[] {
 }
 
 function parseAndReduce(expr: string): string {
-  const calcParsed = parse(expr, {});
+  // We check for px unit
+  const hasPx = expr.match('px');
+  // Remove it here so we can evaluate expressions like 16px + 24px
+  const calcParsed = parse(expr.replace(/px/g, ''), {});
 
   const reduced = reduceExpression(calcParsed);
   if (reduced === null) {
     return expr;
   }
 
-  return `${Number.parseFloat(reduced.value.toFixed(3))}${reduced.unit ?? ''}`;
+  // Put back the px unit if needed and if reduced doesn't come with one
+  return `${Number.parseFloat(reduced.value.toFixed(3))}${reduced.unit ?? (hasPx ? 'px' : '')}`;
 }
 
 export function checkAndEvaluateMath(expr: string | undefined): number | string | undefined {
