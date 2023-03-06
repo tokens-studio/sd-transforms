@@ -137,7 +137,6 @@ export async function registerTransforms(sd: Core) {
       'ts/color/modifiers',
       'ts/typography/css/shorthand',
       'ts/shadow/shorthand',
-      'attribute/cti',
       // by default we go with camel, as having no default will likely give the user
       // errors straight away. This can be overridden by manually passing an array of transforms
       // instead of this transformGroup, or by doing a name conversion in your custom format

@@ -17,7 +17,7 @@ to work with Design Tokens that are exported from [Tokens Studio](https://tokens
 - Transform typography objects to CSS typography parts
 - Transform Tokens Studio shadow objects to CSS shadow format
 - Transform color modifiers from Tokens Studio to color values
-- Registers these transforms, in addition to `attribute/cti`, `name/cti/camelCase` for naming purposes, as a transform group called `tokens-studio`
+- Registers these transforms, in addition to `name/cti/camelCase` for naming purposes, as a transform group called `tokens-studio`
 
 ## Installation
 
@@ -118,7 +118,6 @@ const sd = StyleDictionary.extend({
         'ts/color/modifiers',
         'ts/typography/css/shorthand',
         'ts/shadow/shorthand',
-        'attribute/cti',
         'name/cti/kebab',
       ],
       buildPath: 'build/css/',
