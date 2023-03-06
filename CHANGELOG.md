@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.5.0
+
+### Minor Changes
+
+- 2ad1630: BREAKING: remove attribute/cti transform from tokens-studio transform group, this is redundant. However, users might rely on it, therefore it is a breaking change.
+
 ## 0.4.6
 
 ### Patch Changes
