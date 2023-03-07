@@ -39,5 +39,9 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath('5px + 4px + 10px 3 * 2px')).to.equal('19px 6px');
     expect(checkAndEvaluateMath('5px 3 * 2px')).to.equal('5px 6px');
     expect(checkAndEvaluateMath('3 * 2px 5px')).to.equal('6px 5px');
+    // smoke test: this value has spaces as well but should be handled normally
+    expect(checkAndEvaluateMath('linear-gradient(90deg, #354752 0%, #0b0d0e 100%)')).to.equal(
+      'linear-gradient(90deg, #354752 0%, #0b0d0e 100%)',
+    );
   });
 });

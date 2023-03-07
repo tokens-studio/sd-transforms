@@ -43,7 +43,9 @@ function splitMultiIntoSingleValues(expr: string): string[] {
     let currIndex = 0;
     indexes.forEach(i => {
       const singleValue = tokens.slice(currIndex, i + 1).join(' ');
-      exprArr.push(singleValue);
+      if (singleValue) {
+        exprArr.push(singleValue);
+      }
       currIndex = i + 1;
     });
     return exprArr;
