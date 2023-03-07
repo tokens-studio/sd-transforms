@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 0.5.1
+
+### Patch Changes
+
+- 48846b3: Fix checkAndEvaluateMath to deal with regular values with spaces in them like linear-gradient(a, b1 b2, c1 c2).
+- 4f6da6c: Return original value if mapped fontweight is undefined.
+
 ## 0.5.0
 
 ### Minor Changes
