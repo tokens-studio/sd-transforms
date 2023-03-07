@@ -10,4 +10,9 @@ describe('transform dimension', () => {
       expect(transformFontWeights(keyname)).to.equal(`${number}`);
     });
   });
+
+  it('keeps fontweights that are not part of the fontweightmap, as is', () => {
+    expect(transformFontWeights('300')).to.equal('300');
+    expect(transformFontWeights('foo')).to.equal('foo');
+  });
 });
