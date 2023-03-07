@@ -33,5 +33,8 @@ export function transformFontWeights(value: string | undefined): string | undefi
     return value;
   }
   const mapped = fontWeightMap[value.toLowerCase()];
-  return `${mapped}`;
+  if (mapped) {
+    return `${mapped}`;
+  }
+  return value;
 }
