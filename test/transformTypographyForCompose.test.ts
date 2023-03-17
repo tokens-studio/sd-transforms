@@ -20,4 +20,35 @@ describe('transform typography', () => {
 Arial
 )`);
   });
+
+  it('transforms typography object to typography shorthand', () => {
+    expect(
+      transformTypographyForCompose({
+        fontWeight: 'light',
+        fontSize: '20px',
+        lineHeight: '1.5',
+        fontFamily: 'Arial',
+      }),
+    ).to.equal(`TextStyle(
+300
+20px
+1.5
+Arial
+)`);
+  });
+
+  it('transforms ignores unknown properties in typography object and transforms to empty string', () => {
+    expect(
+      transformTypographyForCompose({
+        fontWeight: 'light',
+        foo: '20px',
+        lineHeight: '1.5',
+        fontFamily: 'Arial',
+      }),
+    ).to.equal(`TextStyle(
+300
+1.5
+Arial
+)`);
+  });
 });

@@ -1,3 +1,5 @@
+import { transformFontWeights } from '../transformFontWeights';
+
 /**
  * Helper: Transforms typography object to typography shorthand for CSS
  * This currently works fine if every value uses an alias, but if any one of these use a raw value, it will not be transformed.
@@ -10,5 +12,5 @@ export function transformTypographyForCSS(
     return value;
   }
   const { fontWeight, fontSize, lineHeight, fontFamily } = value;
-  return `${fontWeight} ${fontSize}/${lineHeight} ${fontFamily}`;
+  return `${transformFontWeights(fontWeight)} ${fontSize}/${lineHeight} ${fontFamily}`;
 }

@@ -1,3 +1,5 @@
+import { transformFontWeights } from '../transformFontWeights';
+
 /**
  * Helper: Transforms typography object to typography shorthand for Jetpack Compose
  */
@@ -30,7 +32,12 @@ export function transformTypographyForCompose(
    * )
    */
   return `${Object.entries(value).reduce(
-    (acc, [propName, val]) => `${acc}${textStylePropertiesMapping[propName] ? `${val}\n` : ''}`,
+    (acc, [propName, val]) =>
+      `${acc}${
+        textStylePropertiesMapping[propName]
+          ? `${propName === 'fontWeight' ? transformFontWeights(val) : val}\n`
+          : ''
+      }`,
     'TextStyle(\n',
   )})`;
 }
