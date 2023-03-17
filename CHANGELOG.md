@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 0.5.2
+
+### Patch Changes
+
+- a94d137: Transform typography to make use of transform fontweights map for the fontWeight property.
+- 81362be: Account for token values being of type number in certain transformers.
+
 ## 0.5.1
 
 ### Patch Changes
