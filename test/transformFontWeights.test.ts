@@ -15,4 +15,8 @@ describe('transform dimension', () => {
     expect(transformFontWeights('300')).to.equal('300');
     expect(transformFontWeights('foo')).to.equal('foo');
   });
+
+  it('supports case-insensitive input', () => {
+    expect(transformFontWeights('Light')).to.equal('300');
+  });
 });
