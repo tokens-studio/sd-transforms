@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.5.3
+
+### Patch Changes
+
+- a75c420: Add engines property to pkg.json, NodeJS 15.14.0 and higher supported.
+
 ## 0.5.2
 
 ### Patch Changes
