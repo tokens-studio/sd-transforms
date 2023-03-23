@@ -5,6 +5,11 @@ const mathChars = ['+', '-', '*', '/'];
 
 const parser = new Parser();
 
+function checkIfInsideGroup(expr: string, fullExpr: string): boolean {
+  const reg = new RegExp(`\\(.*?${expr.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1')}.*?\\)`, 'g');
+  return !!fullExpr.match(reg) || !!expr.match(/\(/g); // <-- latter is needed because an expr piece might be including the opening '(' character
+}
+
 /**
  * Checks expressions like: 8 / 4 * 7px 8 * 5px 2 * 4px
  * and divides them into 3 single values:
@@ -15,10 +20,6 @@ const parser = new Parser();
  * then determines this must mean it's a multi-value separator
  */
 function splitMultiIntoSingleValues(expr: string): string[] {
-  // if the full expression is a function value e.g. calc(8px + 12px) or roundTo(4 / 7, 2)
-  if (expr.match(/.+?\(.+?\)$/g)) {
-    return [expr];
-  }
   const tokens = expr.split(' ');
   const indexes = [] as number[];
   let skipNextIteration = false;
@@ -33,6 +34,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
       left === '' && mathChars.includes(right), // tail of expr, right is math char
       right === '' && mathChars.includes(left), // head of expr, left is math char
       tokens.length <= 1, // expr is valid if it's a simple 1 token expression
+      checkIfInsideGroup(tok, expr), // exprs that aren't math expressions are okay within ( ) groups
     ];
 
     if (conditions.every(cond => !cond)) {
