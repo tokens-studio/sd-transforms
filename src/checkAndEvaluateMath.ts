@@ -1,6 +1,17 @@
+import { Parser } from 'expr-eval';
 import { parse, reduceExpression } from './postcss-calc-ast-parser';
 
 const mathChars = ['+', '-', '*', '/'];
+
+const parser = new Parser();
+
+function checkIfInsideGroup(expr: string, fullExpr: string): boolean {
+  // make sure all regex-specific characters are escaped by backslashes
+  const exprEscaped = expr.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
+  // Reg which checks whether the sub expression is fitted inside of a group ( ) in the full expression
+  const reg = new RegExp(`\\(.*?${exprEscaped}.*?\\)`, 'g');
+  return !!fullExpr.match(reg) || !!expr.match(/\(/g); // <-- latter is needed because an expr piece might be including the opening '(' character
+}
 
 /**
  * Checks expressions like: 8 / 4 * 7px 8 * 5px 2 * 4px
@@ -26,6 +37,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
       left === '' && mathChars.includes(right), // tail of expr, right is math char
       right === '' && mathChars.includes(left), // head of expr, left is math char
       tokens.length <= 1, // expr is valid if it's a simple 1 token expression
+      checkIfInsideGroup(tok, expr), // exprs that aren't math expressions are okay within ( ) groups
     ];
 
     if (conditions.every(cond => !cond)) {
@@ -54,18 +66,33 @@ function splitMultiIntoSingleValues(expr: string): string[] {
 }
 
 function parseAndReduce(expr: string): string {
-  // We check for px unit
+  // We check for px unit, then remove it
   const hasPx = expr.match('px');
+  expr = expr.replace(/px/g, '');
   // Remove it here so we can evaluate expressions like 16px + 24px
   const calcParsed = parse(expr.replace(/px/g, ''), {});
 
+  // Attempt to reduce the math expression
   const reduced = reduceExpression(calcParsed);
-  if (reduced === null) {
+  let unitlessExpr = expr;
+  let unit;
+
+  // E.g. if type is Length, like 4 * 7rem would be 28rem
+  if (reduced && reduced.type !== 'Number') {
+    unitlessExpr = `${reduced.value}`.replace(new RegExp(reduced.unit, 'ig'), '');
+    unit = reduced.unit;
+  }
+
+  // Try to evaluate expression (minus unit) with expr-eval
+  let evaluated;
+  try {
+    evaluated = parser.evaluate(unitlessExpr);
+  } catch (ex) {
     return expr;
   }
 
   // Put back the px unit if needed and if reduced doesn't come with one
-  return `${Number.parseFloat(reduced.value.toFixed(3))}${reduced.unit ?? (hasPx ? 'px' : '')}`;
+  return `${Number.parseFloat(evaluated.toFixed(3))}${unit ?? (hasPx ? 'px' : '')}`;
 }
 
 export function checkAndEvaluateMath(expr: string | undefined): number | string | undefined {
