@@ -50,5 +50,6 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath('8 * 14px roundTo(4 / 7, 1)')).to.equal('112px 0.6');
     expect(checkAndEvaluateMath('roundTo(4 / 7, 1) 8 * 14px')).to.equal('0.6 112px');
     expect(checkAndEvaluateMath('min(10, 24, 5, 12, 6) 8 * 14px')).to.equal('5 112px');
+    expect(checkAndEvaluateMath('ceil(roundTo(16/1.2,0)/2)*2')).to.equal('14');
   });
 });
