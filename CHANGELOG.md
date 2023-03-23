@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.5.4
+
+### Patch Changes
+
+- 2869382: Use expr-eval to evaluate math functions like roundTo().
+
 ## 0.5.3
 
 ### Patch Changes
