@@ -1,6 +1,9 @@
+import { Parser } from 'expr-eval';
 import { parse, reduceExpression } from './postcss-calc-ast-parser';
 
 const mathChars = ['+', '-', '*', '/'];
+
+const parser = new Parser();
 
 /**
  * Checks expressions like: 8 / 4 * 7px 8 * 5px 2 * 4px
@@ -12,6 +15,10 @@ const mathChars = ['+', '-', '*', '/'];
  * then determines this must mean it's a multi-value separator
  */
 function splitMultiIntoSingleValues(expr: string): string[] {
+  // if the full expression is a function value e.g. calc(8px + 12px) or roundTo(4 / 7, 2)
+  if (expr.match(/.+?\(.+?\)$/g)) {
+    return [expr];
+  }
   const tokens = expr.split(' ');
   const indexes = [] as number[];
   let skipNextIteration = false;
@@ -54,18 +61,33 @@ function splitMultiIntoSingleValues(expr: string): string[] {
 }
 
 function parseAndReduce(expr: string): string {
-  // We check for px unit
+  // We check for px unit, then remove it
   const hasPx = expr.match('px');
+  expr = expr.replace(/px/g, '');
   // Remove it here so we can evaluate expressions like 16px + 24px
   const calcParsed = parse(expr.replace(/px/g, ''), {});
 
+  // Attempt to reduce the math expression
   const reduced = reduceExpression(calcParsed);
-  if (reduced === null) {
+  let unitlessExpr = expr;
+  let unit;
+
+  // E.g. if type is Length, like 4 * 7rem would be 28rem
+  if (reduced && reduced.type !== 'Number') {
+    unitlessExpr = expr.replace(new RegExp(reduced.unit, 'ig'), '');
+    unit = reduced.unit;
+  }
+
+  // Try to evaluate expression (minus unit) with expr-eval
+  let evaluated;
+  try {
+    evaluated = parser.evaluate(unitlessExpr);
+  } catch (ex) {
     return expr;
   }
 
   // Put back the px unit if needed and if reduced doesn't come with one
-  return `${Number.parseFloat(reduced.value.toFixed(3))}${reduced.unit ?? (hasPx ? 'px' : '')}`;
+  return `${Number.parseFloat(evaluated.toFixed(3))}${unit ?? (hasPx ? 'px' : '')}`;
 }
 
 export function checkAndEvaluateMath(expr: string | undefined): number | string | undefined {

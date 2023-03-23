@@ -44,4 +44,8 @@ describe('check and evaluate math', () => {
       'linear-gradient(90deg, #354752 0%, #0b0d0e 100%)',
     );
   });
+
+  it('supports expr-eval expressions', () => {
+    expect(checkAndEvaluateMath('roundTo(4 / 7, 1)')).to.equal('0.6');
+  });
 });
