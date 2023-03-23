@@ -79,7 +79,7 @@ function parseAndReduce(expr: string): string {
 
   // E.g. if type is Length, like 4 * 7rem would be 28rem
   if (reduced && reduced.type !== 'Number') {
-    unitlessExpr = expr.replace(new RegExp(reduced.unit, 'ig'), '');
+    unitlessExpr = `${reduced.value}`.replace(new RegExp(reduced.unit, 'ig'), '');
     unit = reduced.unit;
   }
 
