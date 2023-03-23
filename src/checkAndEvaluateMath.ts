@@ -6,7 +6,10 @@ const mathChars = ['+', '-', '*', '/'];
 const parser = new Parser();
 
 function checkIfInsideGroup(expr: string, fullExpr: string): boolean {
-  const reg = new RegExp(`\\(.*?${expr.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1')}.*?\\)`, 'g');
+  // make sure all regex-specific characters are escaped by backslashes
+  const exprEscaped = expr.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
+  // Reg which checks whether the sub expression is fitted inside of a group ( ) in the full expression
+  const reg = new RegExp(`\\(.*?${exprEscaped}.*?\\)`, 'g');
   return !!fullExpr.match(reg) || !!expr.match(/\(/g); // <-- latter is needed because an expr piece might be including the opening '(' character
 }
 
