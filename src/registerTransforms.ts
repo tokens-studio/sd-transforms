@@ -1,15 +1,15 @@
 import { Core } from 'style-dictionary';
-import { transformDimension } from './transformDimension';
-import { transformHEXRGBa } from './transformHEXRGBa';
-import { transformShadow } from './transformShadow';
-import { transformFontWeights } from './transformFontWeights';
-import { transformLetterSpacing } from './transformLetterSpacing';
-import { transformLineHeight } from './transformLineHeight';
-import { transformTypographyForCSS } from './css/transformTypography';
-import { transformTypographyForCompose } from './compose/transformTypography';
-import { checkAndEvaluateMath } from './checkAndEvaluateMath';
-import { mapDescriptionToComment } from './mapDescriptionToComment';
-import { transformColorModifiers } from './color-modifiers/transformColorModifiers';
+import { transformDimension } from './transformDimension.js';
+import { transformHEXRGBa } from './transformHEXRGBa.js';
+import { transformShadow } from './transformShadow.js';
+import { transformFontWeights } from './transformFontWeights.js';
+import { transformLetterSpacing } from './transformLetterSpacing.js';
+import { transformLineHeight } from './transformLineHeight.js';
+import { transformTypographyForCSS } from './css/transformTypography.js';
+import { transformTypographyForCompose } from './compose/transformTypography.js';
+import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
+import { mapDescriptionToComment } from './mapDescriptionToComment.js';
+import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 
 const isBrowser = typeof window === 'object';
 

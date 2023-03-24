@@ -5,7 +5,7 @@ export function transformLetterSpacing(value: string | undefined): string | unde
   if (value === undefined) {
     return value;
   }
-  if (value.endsWith('%')) {
+  if (`${value}`.endsWith('%')) {
     const percentValue = value.slice(0, -1);
     return `${parseFloat(percentValue) / 100}em`;
   }

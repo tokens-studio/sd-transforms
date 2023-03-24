@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
-import { transformFontWeights, fontWeightMap } from '../src/transformFontWeights';
-import { runTransformSuite } from './suites/transform-suite.test';
+import { transformFontWeights, fontWeightMap } from '../../src/transformFontWeights.js';
+import { runTransformSuite } from '../suites/transform-suite.spec.js';
 
 runTransformSuite(transformFontWeights as (value: unknown) => unknown);
 

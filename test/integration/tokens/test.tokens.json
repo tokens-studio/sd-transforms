@@ -1,0 +1,146 @@
+{
+  "dimension": {
+    "scale": {
+      "value": "2",
+      "type": "math"
+    },
+    "xs": {
+      "value": "4px",
+      "type": "dimension"
+    },
+    "sm": {
+      "value": "{dimension.xs} * {dimension.scale}",
+      "type": "dimension"
+    },
+    "md": {
+      "value": "{dimension.sm} * {dimension.scale}",
+      "type": "dimension"
+    },
+    "lg": {
+      "value": "{dimension.md} * {dimension.scale}",
+      "type": "dimension"
+    },
+    "xl": {
+      "value": "{dimension.lg} * {dimension.scale}",
+      "type": "dimension"
+    }
+  },
+  "spacing": {
+    "sm": {
+      "value": "{dimension.sm}",
+      "type": "spacing"
+    },
+    "xl": {
+      "value": "{dimension.xl}",
+      "type": "spacing"
+    },
+    "multi-value": {
+      "value": "{dimension.sm} {dimension.xl}",
+      "type": "spacing",
+      "description": "You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens"
+    }
+  },
+  "colors": {
+    "black": {
+      "value": "#000000",
+      "type": "color"
+    },
+    "white": {
+      "value": "#ffffff",
+      "type": "color"
+    },
+    "red": {
+      "400": {
+        "value": "{colors.red.500}",
+        "type": "color",
+        "$extensions": {
+          "studio.tokens": {
+            "modify": {
+              "type": "lighten",
+              "value": "0.1",
+              "space": "srgb",
+              "format": "hex"
+            }
+          }
+        }
+      },
+      "500": {
+        "value": "#f56565",
+        "type": "color"
+      },
+      "600": {
+        "value": "{colors.red.500}",
+        "type": "color",
+        "$extensions": {
+          "studio.tokens": {
+            "modify": {
+              "type": "darken",
+              "value": "0.1",
+              "space": "srgb",
+              "format": "hex"
+            }
+          }
+        }
+      }
+    }
+  },
+  "lineHeights": {
+    "heading": {
+      "value": "110%",
+      "type": "lineHeights"
+    },
+    "body": {
+      "value": 1.4,
+      "type": "lineHeights"
+    }
+  },
+  "letterSpacing": {
+    "default": {
+      "value": 0,
+      "type": "letterSpacing"
+    },
+    "increased": {
+      "value": "150%",
+      "type": "letterSpacing"
+    },
+    "decreased": {
+      "value": "-5%",
+      "type": "letterSpacing"
+    }
+  },
+  "fontWeights": {
+    "headingRegular": {
+      "value": "600",
+      "type": "fontWeights"
+    },
+    "headingBold": {
+      "value": 700,
+      "type": "fontWeights"
+    },
+    "bodyRegular": {
+      "value": "Regular",
+      "type": "fontWeights"
+    }
+  },
+  "fontSizes": {
+    "h6": {
+      "value": "{fontSizes.body} * 1",
+      "type": "fontSizes"
+    },
+    "body": {
+      "value": "16",
+      "type": "fontSizes"
+    }
+  },
+  "shadow": {
+    "value": {
+      "x": "0",
+      "y": "4",
+      "blur": "10",
+      "spread": "0",
+      "color": "rgba(0,0,0,0.4)",
+      "type": "innerShadow"
+    },
+    "type": "boxShadow"
+  }
+}

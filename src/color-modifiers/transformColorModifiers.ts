@@ -1,5 +1,5 @@
 import { DesignToken } from 'style-dictionary';
-import { modifyColor } from './modifyColor';
+import { modifyColor } from './modifyColor.js';
 /**
  * Helper: Transforms color tokens with tokens studio color modifiers
  */
