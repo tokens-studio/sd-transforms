@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { mapDescriptionToComment } from '../src/mapDescriptionToComment';
+import { mapDescriptionToComment } from '../../src/mapDescriptionToComment.js';
 
 describe('map description to comment', () => {
   it('maps the token description to a style dictionary comment attribute', () => {

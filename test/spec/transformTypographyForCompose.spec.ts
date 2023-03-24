@@ -1,6 +1,6 @@
-import { transformTypographyForCompose } from '../src/compose/transformTypography';
 import { expect } from '@esm-bundle/chai';
-import { runTransformSuite } from './suites/transform-suite.test';
+import { transformTypographyForCompose } from '../../src/compose/transformTypography.js';
+import { runTransformSuite } from '../suites/transform-suite.spec.js';
 
 runTransformSuite(transformTypographyForCompose as (value: unknown) => unknown);
 

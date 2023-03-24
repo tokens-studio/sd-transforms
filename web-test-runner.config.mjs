@@ -3,7 +3,7 @@ import { esbuildPlugin } from '@web/dev-server-esbuild';
 
 export default {
   nodeResolve: true,
-  files: ['test/**/*.test.ts'],
+  files: ['test/**/*.spec.ts'],
   coverageConfig: {
     report: true,
     reportDir: 'coverage',

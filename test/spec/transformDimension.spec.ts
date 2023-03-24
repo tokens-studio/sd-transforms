@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
-import { transformDimension } from '../src/transformDimension';
-import { runTransformSuite } from './suites/transform-suite.test';
+import { transformDimension } from '../../src/transformDimension.js';
+import { runTransformSuite } from '../suites/transform-suite.spec.js';
 
 runTransformSuite(transformDimension as (value: unknown) => unknown);
 

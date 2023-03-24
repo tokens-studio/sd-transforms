@@ -1,7 +1,7 @@
 import { expect } from '@esm-bundle/chai';
-import { transformColorModifiers } from '../src/color-modifiers/transformColorModifiers';
-import { ColorSpaceTypes } from '../src/color-modifiers/types/ColorSpaceTypes';
-import { runTransformSuite } from './suites/transform-suite.test';
+import { transformColorModifiers } from '../../src/color-modifiers/transformColorModifiers.js';
+import { ColorSpaceTypes } from '../../src/color-modifiers/types/ColorSpaceTypes.js';
+import { runTransformSuite } from '../suites/transform-suite.spec.js';
 
 runTransformSuite(transformColorModifiers as (value: unknown) => unknown, {
   value: '#C14242',

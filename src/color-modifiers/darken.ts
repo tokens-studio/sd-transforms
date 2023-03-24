@@ -1,5 +1,5 @@
 import Color from 'colorjs.io';
-import { ColorSpaceTypes } from './types/ColorSpaceTypes';
+import { ColorSpaceTypes } from './types/ColorSpaceTypes.js';
 
 export function darken(color: Color, colorSpace: ColorSpaceTypes, amount: number): Color {
   switch (colorSpace) {

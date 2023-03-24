@@ -1,5 +1,5 @@
 import { Parser } from 'expr-eval';
-import { parse, reduceExpression } from './postcss-calc-ast-parser';
+import { parse, reduceExpression } from './postcss-calc-ast-parser.js';
 
 const mathChars = ['+', '-', '*', '/'];
 

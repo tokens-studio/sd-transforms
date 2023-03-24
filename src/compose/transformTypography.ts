@@ -1,4 +1,4 @@
-import { transformFontWeights } from '../transformFontWeights';
+import { transformFontWeights } from '../transformFontWeights.js';
 
 /**
  * Helper: Transforms typography object to typography shorthand for Jetpack Compose

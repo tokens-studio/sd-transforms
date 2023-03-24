@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
-import { transformShadow } from '../src/transformShadow';
-import { runTransformSuite } from './suites/transform-suite.test';
+import { transformShadow } from '../../src/transformShadow.js';
+import { runTransformSuite } from '../suites/transform-suite.spec.js';
 
 runTransformSuite(transformShadow as (value: unknown) => unknown);
 

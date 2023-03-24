@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
-import { checkAndEvaluateMath } from '../src/checkAndEvaluateMath';
-import { runTransformSuite } from './suites/transform-suite.test';
+import { checkAndEvaluateMath } from '../../src/checkAndEvaluateMath.js';
+import { runTransformSuite } from '../suites/transform-suite.spec.js';
 
 runTransformSuite(checkAndEvaluateMath as (value: unknown) => unknown);
 

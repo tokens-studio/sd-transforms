@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
-import { transformLineHeight } from '../src/transformLineHeight';
-import { runTransformSuite } from './suites/transform-suite.test';
+import { transformLineHeight } from '../../src/transformLineHeight.js';
+import { runTransformSuite } from '../suites/transform-suite.spec.js';
 
 runTransformSuite(transformLineHeight as (value: unknown) => unknown);
 
