@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.5.5
+
+### Patch Changes
+
+- df20034: Allow letter spacing to be a number value, since 0 is a legitimate value for letter spacing.
+
 ## 0.5.4
 
 ### Patch Changes
