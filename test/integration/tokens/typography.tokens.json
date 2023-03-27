@@ -1,0 +1,28 @@
+{
+  "before": {
+    "value": "{font.heading.xxl}",
+    "type": "typography"
+  },
+  "font": {
+    "heading": {
+      "xxl": {
+        "value": {
+          "fontFamily": "Aria Sans",
+          "fontWeight": "700",
+          "lineHeight": "1",
+          "fontSize": "36px",
+          "letterSpacing": "1",
+          "paragraphSpacing": "1",
+          "paragraphIndent": "1",
+          "textCase": "none",
+          "textDecoration": "none"
+        },
+        "type": "typography"
+      }
+    }
+  },
+  "after": {
+    "value": "{font.heading.xxl}",
+    "type": "typography"
+  }
+}
