@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.5.6
+
+### Patch Changes
+
+- a824884: Do not use original value for transforms, use transformed value instead.
+
 ## 0.5.5
 
 ### Patch Changes
