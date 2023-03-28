@@ -63,9 +63,9 @@ export async function registerTransforms(sd: Core) {
     transitive: true,
     matcher: token => ['boxShadow'].includes(token.type),
     transformer: token =>
-      Array.isArray(token.original.value)
-        ? token.original.value.map(single => transformShadow(single)).join(', ')
-        : transformShadow(token.original.value),
+      Array.isArray(token.value)
+        ? token.value.map(single => transformShadow(single)).join(', ')
+        : transformShadow(token.value),
   });
 
   _sd.registerTransform({
@@ -97,7 +97,7 @@ export async function registerTransforms(sd: Core) {
     type: 'value',
     transitive: true,
     matcher: token => token.type === 'typography',
-    transformer: token => transformTypographyForCSS(token.original.value),
+    transformer: token => transformTypographyForCSS(token.value),
   });
 
   _sd.registerTransform({
@@ -105,7 +105,7 @@ export async function registerTransforms(sd: Core) {
     type: 'value',
     transitive: true,
     matcher: token => token.type === 'typography',
-    transformer: token => transformTypographyForCompose(token.original.value),
+    transformer: token => transformTypographyForCompose(token.value),
   });
 
   _sd.registerTransform({
