@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.5.7
+
+### Patch Changes
+
+- 3d73476: Add `inset` to shadow CSS shorthand if the type is innerShadow.
+
 ## 0.5.6
 
 ### Patch Changes
