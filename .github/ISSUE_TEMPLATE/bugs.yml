@@ -22,7 +22,7 @@ body:
       label: Reproduction
       description: Please tell us how we can reproduce this problem, preferably using https://configurator.tokens.studio/
   - type: textarea
-    id: repro
+    id: expected
     attributes:
       label: Expected output
       description: What was the output you were expecting?
