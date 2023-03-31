@@ -1,5 +1,6 @@
 import { Core } from 'style-dictionary';
-import { transformDimension } from './transformDimension.js';
+import { transformPx } from './transformPx.js';
+import { transformRem } from './transformRem.js';
 import { transformHEXRGBa } from './transformHEXRGBa.js';
 import { transformShadow } from './transformShadow.js';
 import { transformFontWeights } from './transformFontWeights.js';
@@ -33,11 +34,19 @@ export async function registerTransforms(sd: Core) {
     name: 'ts/size/px',
     type: 'value',
     transitive: true,
+    matcher: token => token.type === 'borderWidth',
+    transformer: token => transformPx(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/size/rem',
+    type: 'value',
+    transitive: true,
     matcher: token =>
-      ['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension'].includes(
+      ['sizing', 'spacing', 'borderRadius', 'fontSizes', 'dimension'].includes(
         token.type,
       ),
-    transformer: token => transformDimension(token.value),
+    transformer: token => transformRem(token.value),
   });
 
   _sd.registerTransform({
