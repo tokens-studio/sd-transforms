@@ -10,7 +10,7 @@ body:
       description: A description of the feature you would like
     validations:
       required: true
-  - type: checkbox
+  - type: checkboxes
     id: contribute
     attributes:
       label: Would you be available to contribute this feature?
