@@ -13,6 +13,7 @@ import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 import { TransformOptions } from './TransformOptions.js';
 import { expandComposites } from './parsers/expand-composites.js';
+import { transformOpacity } from './transformOpacity.js';
 
 const isBrowser = typeof window === 'object';
 
@@ -64,7 +65,18 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
   });
 
   _sd.registerTransform({
+<<<<<<< HEAD
     name: 'ts/size/css/letterspacing',
+=======
+    name: 'ts/opacity',
+    type: 'value',
+    matcher: token => token.type === 'opacity',
+    transformer: token => transformOpacity(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/color/hexrgba',
+>>>>>>> fix: add opacity percentage handling
     type: 'value',
     matcher: token => token.type === 'letterSpacing',
     transformer: token => transformLetterSpacingForCSS(token.value),
@@ -161,7 +173,12 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     transforms: [
       'ts/descriptionToComment',
       'ts/size/px',
+<<<<<<< HEAD
       'ts/size/css/letterspacing',
+=======
+      'ts/opacity',
+      'ts/size/letterspacing',
+>>>>>>> fix: add opacity percentage handling
       'ts/size/lineheight',
       'ts/type/fontWeight',
       'ts/resolveMath',

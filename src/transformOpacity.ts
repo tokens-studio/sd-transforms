@@ -1,11 +1,11 @@
 import { percentageToDecimal } from './utils/percentageToDecimal.js';
 
 /**
- * Helper: Transforms line-height % to unit-less decimal value
+ * Helper: Transforms opacity % to a decimal point number
  * @example
- * 150% -> 1.5
+ * 50% -> 0.5
  */
-export function transformLineHeight(value: string | number | undefined): string | undefined {
+export function transformOpacity(value: string | number | undefined): string | number | undefined {
   if (value === undefined) {
     return value;
   }

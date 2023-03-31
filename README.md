@@ -13,6 +13,7 @@ Generic:
 - Maps token descriptions to comments -> `ts/descriptionToComment`
 - Check and evaluate Math expressions (transitive) -> `ts/resolveMath`
 - Transform dimensions tokens to have `px` as a unit when missing (transitive) -> `ts/size/px`
+- Transform opacity from `%` to number between `0` and `1` -> `ts/opacity`
 - Transform lineheight from `%` to unitless (150% -> 1.5) -> `ts/size/lineheight`
 - Transform fontweight from keynames to fontweight numbers (100, 200, 300 ... 900) -> `ts/type/fontWeight`
 - Transform color modifiers from Tokens Studio to color values -> `ts/color/modifiers`
@@ -28,8 +29,6 @@ CSS:
 Android:
 
 - Transform typography objects to Android Compose shorthand -> `ts/typography/compose/shorthand`
-
-Registers the **generic** and **CSS** transforms, in addition to `name/cti/camel` for naming purposes, as a transform group called `tokens-studio`.
 
 ## Installation
 
@@ -151,7 +150,12 @@ const sd = StyleDictionary.extend({
       transforms: [
         'ts/descriptionToComment',
         'ts/size/px',
+<<<<<<< HEAD
         'ts/size/css/letterspacing',
+=======
+        'ts/opacity',
+        'ts/size/letterspacing',
+>>>>>>> fix: add opacity percentage handling
         'ts/size/lineheight',
         'ts/type/fontWeight',
         'ts/resolveMath',
