@@ -7,6 +7,6 @@ export function transformShadow(shadow: Record<string, string> | undefined): str
   if (shadow === undefined) {
     return shadow;
   }
-  const { x, y, blur, spread, color } = shadow;
-  return `${x} ${y} ${blur} ${spread} ${color}`;
+  const { x, y, blur, spread, color, type } = shadow;
+  return `${type === 'innerShadow' ? 'inset ' : ''}${x} ${y} ${blur} ${spread} ${color}`;
 }
