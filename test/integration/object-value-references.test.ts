@@ -9,7 +9,7 @@ const outputFileName = 'vars.css';
 const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
-  source: ['test/integration/tokens/typography.tokens.json'],
+  source: ['test/integration/tokens/object-value-references.tokens.json'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
@@ -54,11 +54,35 @@ describe('typography references', () => {
     dict.buildAllPlatforms();
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
-      `:root {
+      `
   --sdBefore: 700 36/1 Aria Sans;
   --sdFontHeadingXxl: 700 36px/1 Aria Sans;
-  --sdAfter: 700 36/1 Aria Sans;
-}`,
+  --sdAfter: 700 36/1 Aria Sans;`,
+    );
+  });
+
+  it('supports boxShadow objects when referenced by another token', async () => {
+    registerTransforms(StyleDictionary);
+    dict = StyleDictionary.extend(cfg);
+    dict.buildAllPlatforms();
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    expect(file).to.include(
+      `
+  --sdShadow: inset 0 4 10 0 rgba(0,0,0,0.4);
+  --sdShadowRef: inset 0 4 10 0 rgba(0,0,0,0.4);`,
+    );
+  });
+
+  // TODO: unskip, once we introduce ts/border/css/shorthand
+  it.skip('supports border objects when referenced by another token', async () => {
+    registerTransforms(StyleDictionary);
+    dict = StyleDictionary.extend(cfg);
+    dict.buildAllPlatforms();
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    expect(file).to.include(
+      `
+  --sdBorder: 4px solid #FFFF00;
+  --sdBorderRef: 4px solid #FFFF00;`,
     );
   });
 });

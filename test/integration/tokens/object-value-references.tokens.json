@@ -24,5 +24,30 @@
   "after": {
     "value": "{font.heading.xxl}",
     "type": "typography"
+  },
+  "shadow": {
+    "value": {
+      "x": "0",
+      "y": "4",
+      "blur": "10",
+      "spread": "0",
+      "color": "rgba(0,0,0,0.4)",
+      "type": "innerShadow"
+    },
+    "type": "boxShadow"
+  },
+  "shadowRef": {
+    "value": "{shadow}"
+  },
+  "border": {
+    "value": {
+      "color": "#FFFF00",
+      "width": "4",
+      "style": "solid"
+    },
+    "type": "border"
+  },
+  "borderRef": {
+    "value": "{border}"
   }
 }

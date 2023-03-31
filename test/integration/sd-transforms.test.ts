@@ -53,6 +53,7 @@ describe('sd-transforms smoke tests', () => {
     dict = StyleDictionary.extend(cfg);
     dict.buildAllPlatforms();
     const file = await promises.readFile(outputFilePath, 'utf-8');
+    console.log(file);
     expect(file).to.include(`:root {
   --sdDimensionScale: 2;
   --sdDimensionXs: 4px;
@@ -78,7 +79,7 @@ describe('sd-transforms smoke tests', () => {
   --sdFontWeightsBodyRegular: 400;
   --sdFontSizesH6: 16px;
   --sdFontSizesBody: 16px;
-  --sdShadow: 0 4 10 0 rgba(0,0,0,0.4);
+  --sdShadow: inset 0 4 10 0 rgba(0,0,0,0.4);
 }`);
   });
 });
