@@ -1,0 +1,19 @@
+name: Feature Request
+description: Request a feature
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What feature would you like?
+      description: A description of the feature you would like
+    validations:
+      required: true
+  - type: checkbox
+    id: contribute
+    attributes:
+      label: Would you be available to contribute this feature?
+      options:
+        - label: Yes, I would like to contribute this
+
