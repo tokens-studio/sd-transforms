@@ -1,5 +1,28 @@
 # @tokens-studio/sd-transforms
 
+## 0.6.0
+
+### Minor Changes
+
+- cc7d86b: BREAKING: move the following transforms to CSS namespace, since they are CSS-specific transforms:
+
+  - `ts/size/letterspacing` -> `ts/size/css/letterspacing`
+  - `ts/color/hexrgba` -> `ts/color/css/hexrgba`
+  - `ts/shadow/shorthand` -> `ts/shadow/css/shorthand`
+
+- cc7d86b: New transform: `ts/border/css/shorthand` -> transform border objects to CSS shorthand.
+- cc7d86b: BREAKING: turn a few of our transforms from transitive to default transforms, if transitive was not necessary:
+
+  - `ts/descriptionToComment`
+  - `ts/size/px`
+  - `ts/size/css/letterspacing`
+  - `ts/size/lineheight`
+  - `ts/type/fontWeight`
+
+### Patch Changes
+
+- f320d4a: Keep shadow shorthands as is instead of attempting to transform them again.
+
 ## 0.5.7
 
 ### Patch Changes
