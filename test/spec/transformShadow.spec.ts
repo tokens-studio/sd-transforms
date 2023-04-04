@@ -29,4 +29,8 @@ describe('transform shadow', () => {
       }),
     ).to.equal('inset 5px 3px 6px 2px #000000');
   });
+
+  it('keeps string value shadows as is, e.g. if already transformed', () => {
+    expect(transformShadow('5px 3px 6px 2px #000000')).to.equal('5px 3px 6px 2px #000000');
+  });
 });

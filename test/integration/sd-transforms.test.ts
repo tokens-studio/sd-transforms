@@ -53,7 +53,6 @@ describe('sd-transforms smoke tests', () => {
     dict = StyleDictionary.extend(cfg);
     dict.buildAllPlatforms();
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    console.log(file);
     expect(file).to.include(`:root {
   --sdDimensionScale: 2;
   --sdDimensionXs: 4px;

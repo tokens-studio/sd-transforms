@@ -8,7 +8,7 @@ import { transformFontWeights } from '../transformFontWeights.js';
 export function transformTypographyForCSS(
   value: Record<string, string> | undefined | string,
 ): string | undefined {
-  if (value === undefined || typeof value !== 'object') {
+  if (typeof value !== 'object') {
     return value;
   }
   const { fontWeight, fontSize, lineHeight, fontFamily } = value;
