@@ -1,7 +1,7 @@
 /**
  * Helper: Transforms dimensions to px
  */
-export function transformDimension(value: string | undefined | number): string | undefined {
+export function transformPx(value: string | undefined | number): string | undefined {
   if (value === undefined) {
     return value;
   }
