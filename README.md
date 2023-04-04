@@ -7,17 +7,28 @@
 This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
 to work with Design Tokens that are exported from [Tokens Studio](https://tokens.studio/):
 
-- Maps token descriptions to comments
-- Check and evaluate Math expressions (transitive)
-- Transform dimensions tokens to have `px` as a unit when missing (transitive)
-- Transform letterspacing from `%` to `em`
-- Transform lineheight from `%` to unitless (150% -> 1.5)
-- Transform fontweight from keynames to fontweight numbers (100, 200, 300 ... 900)
-- Transform colors to `rgba()` format
-- Transform typography objects to CSS typography parts
-- Transform Tokens Studio shadow objects to CSS shadow format
-- Transform color modifiers from Tokens Studio to color values
-- Registers these transforms, in addition to `name/cti/camelCase` for naming purposes, as a transform group called `tokens-studio`
+Generic:
+
+- Maps token descriptions to comments -> `ts/descriptionToComment`
+- Check and evaluate Math expressions (transitive) -> `ts/resolveMath`
+- Transform dimensions tokens to have `px` as a unit when missing (transitive) -> `ts/size/px`
+- Transform lineheight from `%` to unitless (150% -> 1.5) -> `ts/size/lineheight`
+- Transform fontweight from keynames to fontweight numbers (100, 200, 300 ... 900) -> `ts/type/fontWeight`
+- Transform color modifiers from Tokens Studio to color values -> `ts/color/modifiers`
+
+CSS:
+
+- Transform letterspacing from `%` to `em` -> `ts/size/css/letterspacing`
+- Transform colors to `rgba()` format -> `ts/color/css/hexrgba`
+- Transform typography objects to CSS shorthand -> `ts/typography/css/shorthand`
+- Transform Tokens Studio shadow objects to CSS shadow shorthand -> `ts/shadow/css/shorthand`
+- Transform border objects to CSS border shorthand -> `ts/border/css/shorthand`
+
+Android:
+
+- Transform typography objects to Android Compose shorthand -> `ts/typography/compose/shorthand`
+
+Registers the **generic** and **CSS** transforms, in addition to `name/cti/camel` for naming purposes, as a transform group called `tokens-studio`.
 
 ## Installation
 
@@ -109,15 +120,16 @@ const sd = StyleDictionary.extend({
     css: {
       transforms: [
         'ts/descriptionToComment',
-        'ts/resolveMath',
         'ts/size/px',
-        'ts/size/letterspacing',
+        'ts/size/css/letterspacing',
         'ts/size/lineheight',
         'ts/type/fontWeight',
-        'ts/color/hexrgba',
-        'ts/color/modifiers',
+        'ts/resolveMath',
         'ts/typography/css/shorthand',
-        'ts/shadow/shorthand',
+        'ts/border/css/shorthand',
+        'ts/shadow/css/shorthand',
+        'ts/color/css/hexrgba',
+        'ts/color/modifiers',
         'name/cti/kebab',
       ],
       buildPath: 'build/css/',

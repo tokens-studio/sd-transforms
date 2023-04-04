@@ -1,12 +1,13 @@
 import { Core } from 'style-dictionary';
 import { transformDimension } from './transformDimension.js';
-import { transformHEXRGBa } from './transformHEXRGBa.js';
-import { transformShadow } from './transformShadow.js';
+import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
+import { transformShadowForCSS } from './css/transformShadow.js';
 import { transformFontWeights } from './transformFontWeights.js';
-import { transformLetterSpacing } from './transformLetterSpacing.js';
+import { transformLetterSpacingForCSS } from './css/transformLetterSpacing.js';
 import { transformLineHeight } from './transformLineHeight.js';
 import { transformTypographyForCSS } from './css/transformTypography.js';
 import { transformTypographyForCompose } from './compose/transformTypography.js';
+import { transformBorderForCSS } from './css/transformBorder.js';
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
@@ -30,9 +31,15 @@ export async function registerTransforms(sd: Core) {
   }
 
   _sd.registerTransform({
+    name: 'ts/descriptionToComment',
+    type: 'attribute',
+    matcher: token => token.description,
+    transformer: token => mapDescriptionToComment(token),
+  });
+
+  _sd.registerTransform({
     name: 'ts/size/px',
     type: 'value',
-    transitive: true,
     matcher: token =>
       ['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension'].includes(
         token.type,
@@ -41,55 +48,44 @@ export async function registerTransforms(sd: Core) {
   });
 
   _sd.registerTransform({
-    name: 'ts/color/hexrgba',
+    name: 'ts/size/css/letterspacing',
     type: 'value',
-    transitive: true,
-    matcher: token => typeof token.value === 'string' && token.value.startsWith('rgba(#'),
-    transformer: token => transformHEXRGBa(token.value),
-  });
-
-  _sd.registerTransform({
-    name: 'ts/color/modifiers',
-    type: 'value',
-    transitive: true,
-    matcher: token =>
-      token.type === 'color' && token.$extensions && token.$extensions['studio.tokens']?.modify,
-    transformer: token => transformColorModifiers(token),
-  });
-
-  _sd.registerTransform({
-    name: 'ts/shadow/shorthand',
-    type: 'value',
-    transitive: true,
-    matcher: token => ['boxShadow'].includes(token.type),
-    transformer: token =>
-      Array.isArray(token.value)
-        ? token.value.map(single => transformShadow(single)).join(', ')
-        : transformShadow(token.value),
-  });
-
-  _sd.registerTransform({
-    name: 'ts/type/fontWeight',
-    type: 'value',
-    transitive: true,
-    matcher: token => token.type === 'fontWeights',
-    transformer: token => transformFontWeights(token.value),
-  });
-
-  _sd.registerTransform({
-    name: 'ts/size/letterspacing',
-    type: 'value',
-    transitive: true,
     matcher: token => token.type === 'letterSpacing',
-    transformer: token => transformLetterSpacing(token.value),
+    transformer: token => transformLetterSpacingForCSS(token.value),
   });
 
   _sd.registerTransform({
     name: 'ts/size/lineheight',
     type: 'value',
-    transitive: true,
     matcher: token => token.type === 'lineHeights',
     transformer: token => transformLineHeight(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/type/fontWeight',
+    type: 'value',
+    matcher: token => token.type === 'fontWeights',
+    transformer: token => transformFontWeights(token.value),
+  });
+
+  /**
+   * The transforms below are transitive transforms, because their values
+   * can contain references, e.g.:
+   * - rgba({color.r}, {color.g}, 0, 0)
+   * - {dimension.scale} * {spacing.sm}
+   * - { fontSize: "{foo}" }
+   * - { width: "{bar}" }
+   * - { blur: "{qux}" }
+   * or because the modifications have to be done on this specific token,
+   * after resolution, e.g. color modify
+   */
+  _sd.registerTransform({
+    name: 'ts/resolveMath',
+    type: 'value',
+    transitive: true,
+    matcher: token => typeof token.value === 'string',
+    // Putting this in strings seems to be required
+    transformer: token => `${checkAndEvaluateMath(token.value)}`,
   });
 
   _sd.registerTransform({
@@ -109,34 +105,55 @@ export async function registerTransforms(sd: Core) {
   });
 
   _sd.registerTransform({
-    name: 'ts/resolveMath',
+    name: 'ts/border/css/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => typeof token.value === 'string',
-    // Putting this in strings seems to be required
-    transformer: token => `${checkAndEvaluateMath(token.value)}`,
+    matcher: token => token.type === 'border',
+    transformer: token => transformBorderForCSS(token.value),
   });
 
   _sd.registerTransform({
-    name: 'ts/descriptionToComment',
-    type: 'attribute',
-    matcher: token => token.description,
-    transformer: token => mapDescriptionToComment(token),
+    name: 'ts/shadow/css/shorthand',
+    type: 'value',
+    transitive: true,
+    matcher: token => ['boxShadow'].includes(token.type),
+    transformer: token =>
+      Array.isArray(token.value)
+        ? token.value.map(single => transformShadowForCSS(single)).join(', ')
+        : transformShadowForCSS(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/color/css/hexrgba',
+    type: 'value',
+    transitive: true,
+    matcher: token => typeof token.value === 'string' && token.value.startsWith('rgba(#'),
+    transformer: token => transformHEXRGBaForCSS(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/color/modifiers',
+    type: 'value',
+    transitive: true,
+    matcher: token =>
+      token.type === 'color' && token.$extensions && token.$extensions['studio.tokens']?.modify,
+    transformer: token => transformColorModifiers(token),
   });
 
   _sd.registerTransformGroup({
     name: 'tokens-studio',
     transforms: [
       'ts/descriptionToComment',
-      'ts/resolveMath',
       'ts/size/px',
-      'ts/size/letterspacing',
+      'ts/size/css/letterspacing',
       'ts/size/lineheight',
       'ts/type/fontWeight',
-      'ts/color/hexrgba',
-      'ts/color/modifiers',
+      'ts/resolveMath',
       'ts/typography/css/shorthand',
-      'ts/shadow/shorthand',
+      'ts/border/css/shorthand',
+      'ts/shadow/css/shorthand',
+      'ts/color/css/hexrgba',
+      'ts/color/modifiers',
       // by default we go with camel, as having no default will likely give the user
       // errors straight away. This can be overridden by manually passing an array of transforms
       // instead of this transformGroup, or by doing a name conversion in your custom format

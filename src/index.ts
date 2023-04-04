@@ -1,11 +1,12 @@
 export { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 export { transformDimension } from './transformDimension.js';
 export { transformFontWeights } from './transformFontWeights.js';
-export { transformHEXRGBa } from './transformHEXRGBa.js';
+export { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
 export { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
-export { transformLetterSpacing } from './transformLetterSpacing.js';
+export { transformLetterSpacingForCSS } from './css/transformLetterSpacing.js';
 export { transformLineHeight } from './transformLineHeight.js';
-export { transformShadow } from './transformShadow.js';
+export { transformShadowForCSS } from './css/transformShadow.js';
+export { transformBorderForCSS } from './css/transformBorder.js';
 export { transformTypographyForCSS } from './css/transformTypography.js';
 export { transformTypographyForCompose } from './compose/transformTypography.js';
 export { registerTransforms } from './registerTransforms.js';

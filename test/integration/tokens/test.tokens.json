@@ -49,6 +49,14 @@
       "value": "#ffffff",
       "type": "color"
     },
+    "blue": {
+      "value": "#0000FF",
+      "type": "color"
+    },
+    "blue-alpha": {
+      "value": "rgba({colors.blue}, 0.5)",
+      "type": "color"
+    },
     "red": {
       "400": {
         "value": "{colors.red.500}",
@@ -132,15 +140,40 @@
       "type": "fontSizes"
     }
   },
+  "heading-6": {
+    "value": {
+      "fontSize": "{fontSizes.h6}",
+      "fontWeight": "700",
+      "fontFamily": "Arial",
+      "lineHeight": "1"
+    },
+    "type": "typography"
+  },
+  "shadow-blur": {
+    "value": "10",
+    "type": "sizing"
+  },
   "shadow": {
     "value": {
       "x": "0",
       "y": "4",
-      "blur": "10",
+      "blur": "{shadow-blur}",
       "spread": "0",
       "color": "rgba(0,0,0,0.4)",
       "type": "innerShadow"
     },
     "type": "boxShadow"
+  },
+  "border-width": {
+    "value": "5",
+    "type": "sizing"
+  },
+  "border": {
+    "value": {
+      "style": "solid",
+      "width": "{border-width}",
+      "color": "#000000"
+    },
+    "type": "border"
   }
 }

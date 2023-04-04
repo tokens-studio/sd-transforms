@@ -1,13 +1,13 @@
 import { expect } from '@esm-bundle/chai';
-import { transformShadow } from '../../src/transformShadow.js';
+import { transformShadowForCSS } from '../../src/css/transformShadow.js';
 import { runTransformSuite } from '../suites/transform-suite.spec.js';
 
-runTransformSuite(transformShadow as (value: unknown) => unknown);
+runTransformSuite(transformShadowForCSS as (value: unknown) => unknown);
 
 describe('transform shadow', () => {
   it('transforms boxShadow object to shadow shorthand', () => {
     expect(
-      transformShadow({
+      transformShadowForCSS({
         x: '5px',
         y: '3px',
         blur: '6px',
@@ -19,7 +19,7 @@ describe('transform shadow', () => {
 
   it('transforms innerShadow boxShadow object to shadow shorthand', () => {
     expect(
-      transformShadow({
+      transformShadowForCSS({
         x: '5px',
         y: '3px',
         blur: '6px',
@@ -31,6 +31,18 @@ describe('transform shadow', () => {
   });
 
   it('keeps string value shadows as is, e.g. if already transformed', () => {
-    expect(transformShadow('5px 3px 6px 2px #000000')).to.equal('5px 3px 6px 2px #000000');
+    expect(transformShadowForCSS('5px 3px 6px 2px #000000')).to.equal('5px 3px 6px 2px #000000');
+  });
+
+  it('transforms dimensions and hexrgba colors', () => {
+    expect(
+      transformShadowForCSS({
+        x: '5',
+        y: '3',
+        blur: '6',
+        spread: '2',
+        color: 'rgba(#000000, 1)',
+      }),
+    ).to.equal('5px 3px 6px 2px rgba(0, 0, 0, 1)');
   });
 });

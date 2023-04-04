@@ -16,11 +16,11 @@ describe('transform typography', () => {
     ).to.equal('500 20px/1.5 Arial');
   });
 
-  it('transforms fontWeight prop according to fontweight map for CSS', () => {
+  it('transforms fontWeight prop according to fontweight map for CSS and px dimensions', () => {
     expect(
       transformTypographyForCSS({
         fontWeight: 'light',
-        fontSize: '20px',
+        fontSize: '20',
         lineHeight: '1.5',
         fontFamily: 'Arial',
       }),

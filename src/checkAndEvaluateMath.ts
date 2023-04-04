@@ -68,13 +68,12 @@ function splitMultiIntoSingleValues(expr: string): string[] {
 function parseAndReduce(expr: string): string {
   // We check for px unit, then remove it
   const hasPx = expr.match('px');
-  expr = expr.replace(/px/g, '');
+  let unitlessExpr = expr.replace(/px/g, '');
   // Remove it here so we can evaluate expressions like 16px + 24px
-  const calcParsed = parse(expr.replace(/px/g, ''), {});
+  const calcParsed = parse(unitlessExpr, {});
 
   // Attempt to reduce the math expression
   const reduced = reduceExpression(calcParsed);
-  let unitlessExpr = expr;
   let unit;
 
   // E.g. if type is Length, like 4 * 7rem would be 28rem
@@ -90,7 +89,6 @@ function parseAndReduce(expr: string): string {
   } catch (ex) {
     return expr;
   }
-
   // Put back the px unit if needed and if reduced doesn't come with one
   return `${Number.parseFloat(evaluated.toFixed(3))}${unit ?? (hasPx ? 'px' : '')}`;
 }
