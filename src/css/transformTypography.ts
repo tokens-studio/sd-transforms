@@ -1,3 +1,4 @@
+import { transformDimension } from '../transformDimension.js';
 import { transformFontWeights } from '../transformFontWeights.js';
 
 /**
@@ -12,5 +13,8 @@ export function transformTypographyForCSS(
     return value;
   }
   const { fontWeight, fontSize, lineHeight, fontFamily } = value;
-  return `${transformFontWeights(fontWeight)} ${fontSize}/${lineHeight} ${fontFamily}`;
+
+  return `${transformFontWeights(fontWeight)} ${transformDimension(
+    fontSize,
+  )}/${lineHeight} ${fontFamily}`;
 }

@@ -55,9 +55,9 @@ describe('typography references', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
-  --sdBefore: 700 36/1 Aria Sans;
+  --sdBefore: 700 36px/1 Aria Sans;
   --sdFontHeadingXxl: 700 36px/1 Aria Sans;
-  --sdAfter: 700 36/1 Aria Sans;`,
+  --sdAfter: 700 36px/1 Aria Sans;`,
     );
   });
 
@@ -68,13 +68,12 @@ describe('typography references', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
-  --sdShadow: inset 0 4 10 0 rgba(0,0,0,0.4);
-  --sdShadowRef: inset 0 4 10 0 rgba(0,0,0,0.4);`,
+  --sdShadow: inset 0 4px 10px 0 rgba(0,0,0,0.4);
+  --sdShadowRef: inset 0 4px 10px 0 rgba(0,0,0,0.4);`,
     );
   });
 
-  // TODO: unskip, once we introduce ts/border/css/shorthand
-  it.skip('supports border objects when referenced by another token', async () => {
+  it('supports border objects when referenced by another token', async () => {
     registerTransforms(StyleDictionary);
     dict = StyleDictionary.extend(cfg);
     dict.buildAllPlatforms();

@@ -1,7 +1,7 @@
 /**
  * Helper: Transforms letter spacing % to em
  */
-export function transformLetterSpacing(value: string | undefined): string | undefined {
+export function transformLetterSpacingForCSS(value: string | undefined): string | undefined {
   if (value === undefined) {
     return value;
   }

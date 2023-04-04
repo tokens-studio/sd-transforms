@@ -65,6 +65,8 @@ describe('sd-transforms smoke tests', () => {
   --sdSpacingMultiValue: 8px 64px; /* You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
   --sdColorsBlack: #000000;
   --sdColorsWhite: #ffffff;
+  --sdColorsBlue: #0000FF;
+  --sdColorsBlueAlpha: rgba(0, 0, 255, 0.5);
   --sdColorsRed400: #f67474;
   --sdColorsRed500: #f56565;
   --sdColorsRed600: #dd5b5b;
@@ -78,7 +80,11 @@ describe('sd-transforms smoke tests', () => {
   --sdFontWeightsBodyRegular: 400;
   --sdFontSizesH6: 16px;
   --sdFontSizesBody: 16px;
-  --sdShadow: inset 0 4 10 0 rgba(0,0,0,0.4);
+  --sdHeading6: 700 16px/1 Arial;
+  --sdShadowBlur: 10px;
+  --sdShadow: inset 0 4px 10px 0 rgba(0,0,0,0.4);
+  --sdBorderWidth: 5px;
+  --sdBorder: 5px solid #000000;
 }`);
   });
 });

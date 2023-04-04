@@ -8,9 +8,9 @@
       "xxl": {
         "value": {
           "fontFamily": "Aria Sans",
-          "fontWeight": "700",
+          "fontWeight": "bold",
           "lineHeight": "1",
-          "fontSize": "36px",
+          "fontSize": "36",
           "letterSpacing": "1",
           "paragraphSpacing": "1",
           "paragraphIndent": "1",
