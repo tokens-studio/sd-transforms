@@ -98,7 +98,7 @@ export function expandComposites(
   filePath: string,
   transformOpts?: TransformOptions,
 ): DeepKeyTokenMap<false> {
-  recurse(dictionary, filePath, transformOpts);
-
-  return dictionary;
+  const copy = { ...dictionary };
+  recurse(copy, filePath, transformOpts);
+  return copy;
 }
