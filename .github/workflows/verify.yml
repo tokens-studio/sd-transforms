@@ -26,5 +26,8 @@ jobs:
       - name: Install chromium
         run: npx playwright install-deps chromium
 
-      - name: Test
-        run: npm run test
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Integration tests
+        run: npm run test:integration
