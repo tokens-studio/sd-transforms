@@ -215,6 +215,11 @@ describe('expand', () => {
         ).to.eql(tokensOutput[type]);
       });
 
+      it(`should expand composition tokens by default`, () => {
+        const output = type === 'composition' ? tokensOutput[type] : tokensInput[type];
+        expect(expandComposites(tokensInput[type], 'foo/bar.json')).to.eql(output);
+      });
+
       it('should not expand composition tokens when options dictate it should not', () => {
         expect(
           expandComposites(tokensInput[type], 'foo/bar.json', {
