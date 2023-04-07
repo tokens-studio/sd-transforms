@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
-import { transformLetterSpacingForCSS } from '../../src/css/transformLetterSpacing.js';
-import { runTransformSuite } from '../suites/transform-suite.spec.js';
+import { transformLetterSpacingForCSS } from '../../../src/css/transformLetterSpacing.js';
+import { runTransformSuite } from '../../suites/transform-suite.spec.js';
 
 runTransformSuite(transformLetterSpacingForCSS as (value: unknown) => unknown);
 

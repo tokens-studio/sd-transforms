@@ -11,6 +11,8 @@ import { transformBorderForCSS } from './css/transformBorder.js';
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
+import { TransformOptions } from './TransformOptions.js';
+import { expandComposites } from './parsers/expand-composites.js';
 
 const isBrowser = typeof window === 'object';
 
@@ -18,7 +20,7 @@ const isBrowser = typeof window === 'object';
  * typecasting since this will need to work in browser environment, so we cannot
  * import style-dictionary as it depends on nodejs env
  */
-export async function registerTransforms(sd: Core) {
+export async function registerTransforms(sd: Core, transformOpts?: TransformOptions) {
   let _sd = sd;
 
   // NodeJS env and no passed SD? let's register on our installed SD
@@ -28,6 +30,20 @@ export async function registerTransforms(sd: Core) {
     const mod = module.default;
     const require = mod.createRequire(import.meta.url);
     _sd = require('style-dictionary');
+  }
+
+  // Allow completely disabling the registering of this parser
+  // in case people want to combine the expandComposites() utility with their own parser and prevent conflicts
+  if (transformOpts?.expand !== false) {
+    // expand composition tokens, typography, border, shadow (latter 3 conditionally, as opt-in)
+    _sd.registerParser({
+      pattern: /\.json$/,
+      parse: ({ filePath, contents }) => {
+        const obj = JSON.parse(contents);
+        const expanded = expandComposites(obj, filePath, transformOpts);
+        return expanded;
+      },
+    });
   }
 
   _sd.registerTransform({

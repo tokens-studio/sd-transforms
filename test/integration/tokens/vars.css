@@ -1,0 +1,17 @@
+/**
+ * Do not edit directly
+ * Generated on Fri, 07 Apr 2023 08:32:23 GMT
+ */
+
+:root {
+  --sdCompositionSize: 24px;
+  --sdCompositionOpacity: 50%;
+  --sdCompositionFontSize: 96px;
+  --sdCompositionFontFamily: Roboto;
+  --sdCompositionFontWeight: 700;
+  --sdCompositionHeader: [object Object];
+  --sdTypography: 500 26px/1.25 Arial;
+  --sdBorder: 4px solid #FFFF00;
+  --sdShadowSingleSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
+  --sdShadowSingleDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
+}

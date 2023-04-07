@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
-import { transformHEXRGBaForCSS } from '../../src/css/transformHEXRGBa.js';
-import { runTransformSuite } from '../suites/transform-suite.spec.js';
+import { transformHEXRGBaForCSS } from '../../../src/css/transformHEXRGBa.js';
+import { runTransformSuite } from '../../suites/transform-suite.spec.js';
 
 runTransformSuite(transformHEXRGBaForCSS as (value: unknown) => unknown);
 
