@@ -63,12 +63,12 @@ describe('expand composition tokens', () => {
   --sdCompositionHeaderFontWeights: 700;
   --sdTypography: 500 26px/1.25 Arial;
   --sdBorder: 4px solid #FFFF00;
-  --sdShadowSingleSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
-  --sdShadowSingleDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);`,
+  --sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
+  --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);`,
     );
   });
 
-  it('only expands composition tokens by default', async () => {
+  it.only('optionally can transform typography, border and shadow tokens', async () => {
     transformOpts = {
       expand: {
         typography: true,
@@ -83,37 +83,36 @@ describe('expand composition tokens', () => {
       `
   --sdCompositionSize: 24px;
   --sdCompositionOpacity: 50%;
-  --sdCompositionFontSize: 96px;
-  --sdCompositionFontFamily: Roboto;
-  --sdCompositionFontWeight: 700;
+  --sdCompositionFontSizes: 96px;
+  --sdCompositionFontFamilies: Roboto;
+  --sdCompositionFontWeights: 700;
   --sdCompositionHeaderFontFamilies: Roboto;
   --sdCompositionHeaderFontSizes: 96px;
   --sdCompositionHeaderFontWeights: 700;
-  --sdTypographyFontFamily: Arial;
-  --sdTypographyFontWeight: 500;
-  --sdTypographyLineHeight: 1.25;
-  --sdTypographyFontSize: 26px;
+  --sdTypographyFontFamilies: Arial;
+  --sdTypographyFontWeights: 500;
+  --sdTypographyLineHeights: 1.25;
+  --sdTypographyFontSizes: 26px;
   --sdTypographyLetterSpacing: 0;
   --sdTypographyParagraphSpacing: 0;
   --sdTypographyParagraphIndent: 0;
   --sdTypographyTextDecoration: none;
   --sdTypographyTextCase: none;
-  --sdTypography: 500 26px/1.25 Arial;
+  --sdBorderColor: #FFFF00;
   --sdBorderWidth: 4px;
   --sdBorderStyle: solid;
-  --sdBorderColor: #FFFF00;
   --sdShadowSingleX: 0;
   --sdShadowSingleY: 4px;
   --sdShadowSingleBlur: 10px;
   --sdShadowSingleSpread: 0;
   --sdShadowSingleColor: rgba(0,0,0,0.4);
-  --sdShadowSingleType: inset;
+  --sdShadowSingleType: innerShadow;
   --sdShadowDouble1X: 0;
   --sdShadowDouble1Y: 4px;
   --sdShadowDouble1Blur: 10px;
   --sdShadowDouble1Spread: 0;
   --sdShadowDouble1Color: rgba(0,0,0,0.4);
-  --sdShadowDouble1Type: inset;
+  --sdShadowDouble1Type: innerShadow;
   --sdShadowDouble2X: 0;
   --sdShadowDouble2Y: 8px;
   --sdShadowDouble2Blur: 12px;

@@ -5,19 +5,28 @@ import {
   Expandables,
   ExpandablesAsStrings,
   expandablesAsStringsArr,
-} from '../TransformOptions';
+} from '../TransformOptions.js';
 
-const shadowTypeMap = {
-  x: 'dimension',
-  y: 'dimension',
-  blur: 'dimension',
-  spread: 'dimension',
-  color: 'color',
-  type: 'other',
+const typeMaps = {
+  boxShadow: {
+    x: 'dimension',
+    y: 'dimension',
+    blur: 'dimension',
+    spread: 'dimension',
+    type: 'other',
+  },
+  border: {
+    width: 'borderWidth',
+    style: 'other',
+  },
+  composition: {},
+  typography: {},
 };
 
 export function expandToken(compToken: SingleToken<false>, isShadow = false): SingleToken<false> {
   const expandedObj = {} as SingleToken<false>;
+
+  const getType = (key: string) => typeMaps[compToken.type][key] ?? key;
 
   // multi-shadow
   if (isShadow && Array.isArray(compToken.value)) {
@@ -26,7 +35,7 @@ export function expandToken(compToken: SingleToken<false>, isShadow = false): Si
       Object.entries(shadow).forEach(([key, value]) => {
         expandedObj[index + 1][key] = {
           value: `${value}`,
-          type: shadowTypeMap[key],
+          type: getType(key),
         };
       });
     });
@@ -34,7 +43,7 @@ export function expandToken(compToken: SingleToken<false>, isShadow = false): Si
     Object.entries(compToken.value).forEach(([key, value]) => {
       expandedObj[key] = {
         value: `${value}`,
-        type: isShadow ? shadowTypeMap[key] : key,
+        type: getType(key),
       };
     });
   }
