@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.8.1
+
+### Patch Changes
+
+- 4d3b98b: Fix package exports paths.
+
 ## 0.8.0
 
 ### Minor Changes
