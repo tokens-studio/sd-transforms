@@ -13,6 +13,7 @@ import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 import { TransformOptions } from './TransformOptions.js';
 import { expandComposites } from './parsers/expand-composites.js';
+import { transformOpacity } from './transformOpacity.js';
 
 const isBrowser = typeof window === 'object';
 
@@ -61,6 +62,13 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
         token.type,
       ),
     transformer: token => transformDimension(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/opacity',
+    type: 'value',
+    matcher: token => token.type === 'opacity',
+    transformer: token => transformOpacity(token.value),
   });
 
   _sd.registerTransform({
@@ -161,10 +169,11 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     transforms: [
       'ts/descriptionToComment',
       'ts/size/px',
-      'ts/size/css/letterspacing',
+      'ts/opacity',
       'ts/size/lineheight',
       'ts/type/fontWeight',
       'ts/resolveMath',
+      'ts/size/css/letterspacing',
       'ts/typography/css/shorthand',
       'ts/border/css/shorthand',
       'ts/shadow/css/shorthand',

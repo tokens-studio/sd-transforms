@@ -1,13 +1,14 @@
+import { percentageToDecimal } from '../utils/percentageToDecimal.js';
+
 /**
  * Helper: Transforms letter spacing % to em
  */
-export function transformLetterSpacingForCSS(value: string | undefined): string | undefined {
+export function transformLetterSpacingForCSS(
+  value: string | number | undefined,
+): string | undefined {
   if (value === undefined) {
     return value;
   }
-  if (`${value}`.endsWith('%')) {
-    const percentValue = value.slice(0, -1);
-    return `${parseFloat(percentValue) / 100}em`;
-  }
-  return value;
+  const decimal = percentageToDecimal(value);
+  return typeof decimal === 'string' || isNaN(decimal) ? `${value}` : `${decimal}em`;
 }

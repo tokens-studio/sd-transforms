@@ -50,6 +50,7 @@ describe('sd-transforms smoke tests', () => {
   --sdDimensionMd: 16px;
   --sdDimensionLg: 32px;
   --sdDimensionXl: 64px;
+  --sdOpacity: 0.25;
   --sdSpacingSm: 8px;
   --sdSpacingXl: 64px;
   --sdSpacingMultiValue: 8px 64px; /* You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */

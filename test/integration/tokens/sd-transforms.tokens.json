@@ -25,6 +25,10 @@
       "type": "dimension"
     }
   },
+  "opacity": {
+    "value": "25%",
+    "type": "opacity"
+  },
   "spacing": {
     "sm": {
       "value": "{dimension.sm}",

@@ -61,7 +61,6 @@ function shouldExpand<T extends SingleToken>(
   condition: boolean | ExpandFilter<T>,
   filePath: string,
 ): boolean {
-  console.log(filePath);
   if (typeof condition === 'function') {
     return condition(token, filePath);
   }
