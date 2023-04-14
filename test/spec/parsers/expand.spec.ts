@@ -17,10 +17,10 @@ const tokensInput = {
   typography: {
     foo: {
       value: {
-        fontFamilies: 'Arial',
-        fontWeights: '500',
-        lineHeights: '1.25',
-        fontSizes: '26',
+        fontFamily: 'Arial',
+        fontWeight: '500',
+        lineHeight: '1.25',
+        fontSize: '26',
       },
       type: 'typography',
     },
@@ -89,19 +89,19 @@ const tokensOutput = {
   },
   typography: {
     foo: {
-      fontFamilies: {
+      fontFamily: {
         value: 'Arial',
         type: 'fontFamilies',
       },
-      fontWeights: {
+      fontWeight: {
         value: '500',
         type: 'fontWeights',
       },
-      lineHeights: {
+      lineHeight: {
         value: '1.25',
         type: 'lineHeights',
       },
-      fontSizes: {
+      fontSize: {
         value: '26',
         type: 'fontSizes',
       },
