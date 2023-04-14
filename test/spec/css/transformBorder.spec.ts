@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
-import { transformBorderForCSS } from '../../src/css/transformBorder.js';
-import { runTransformSuite } from '../suites/transform-suite.spec.js';
+import { transformBorderForCSS } from '../../../src/css/transformBorder.js';
+import { runTransformSuite } from '../../suites/transform-suite.spec.js';
 
 runTransformSuite(transformBorderForCSS as (value: unknown) => unknown);
 
