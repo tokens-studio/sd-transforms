@@ -1,5 +1,5 @@
 import Color from 'colorjs.io';
-import { ColorSpaceTypes } from './types/ColorSpaceTypes.js';
+import { ColorSpaceTypes } from '@tokens-studio/types';
 
 export function darken(color: Color, colorSpace: ColorSpaceTypes, amount: number): Color {
   switch (colorSpace) {
