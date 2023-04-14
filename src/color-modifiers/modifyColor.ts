@@ -3,7 +3,7 @@ import { transparentize } from './transparentize.js';
 import { mix } from './mix.js';
 import { darken } from './darken.js';
 import { lighten } from './lighten.js';
-import { ColorModifier } from './types/Modifier.js';
+import { ColorModifier } from '@tokens-studio/types';
 
 export function modifyColor(
   baseColor: string | undefined,

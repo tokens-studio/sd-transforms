@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
+import { ColorSpaceTypes } from '@tokens-studio/types';
 import { transformColorModifiers } from '../../../src/color-modifiers/transformColorModifiers.js';
-import { ColorSpaceTypes } from '../../../src/color-modifiers/types/ColorSpaceTypes.js';
 import { runTransformSuite } from '../../suites/transform-suite.spec.js';
 
 runTransformSuite(transformColorModifiers as (value: unknown) => unknown, {
