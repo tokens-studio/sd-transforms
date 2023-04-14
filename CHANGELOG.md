@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 0.7.0
+
+### Minor Changes
+
+- 2f2cd8c: BREAKING: Register parser that expands composition tokens by default, and optionally typography, border and shadow tokens as well.
+- e23ec38: BREAKING: Register ts/opacity transform, to transform opacity to number between 0 and 1, which is more multi-platform than percentages%. Breaking because people might not expect to have their opacity tokens suddenly as decimal numbers.
+
 ## 0.6.0
 
 ### Minor Changes
