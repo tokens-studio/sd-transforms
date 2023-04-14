@@ -8,33 +8,33 @@
       "value": "50%",
       "type": "opacity"
     },
-    "fontSizes": {
+    "fontSize": {
       "value": "96",
       "type": "fontSizes"
     },
-    "fontFamilies": {
+    "fontFamily": {
       "value": "Roboto",
       "type": "fontFamilies"
     },
-    "fontWeights": {
+    "fontWeight": {
       "value": "Bold",
       "type": "fontWeights"
     },
     "header": {
       "value": {
-        "fontFamilies": "{composition.fontFamilies}",
+        "fontFamilies": "{composition.fontFamily}",
         "fontSizes": "96",
-        "fontWeights": "{composition.fontWeights}"
+        "fontWeights": "{composition.fontWeight}"
       },
       "type": "composition"
     }
   },
   "typography": {
     "value": {
-      "fontFamilies": "Arial",
-      "fontWeights": "500",
-      "lineHeights": "1.25",
-      "fontSizes": "26",
+      "fontFamily": "Arial",
+      "fontWeight": "500",
+      "lineHeight": "1.25",
+      "fontSize": "26",
       "letterSpacing": "0",
       "paragraphSpacing": "0",
       "paragraphIndent": "0",

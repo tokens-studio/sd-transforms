@@ -9,6 +9,7 @@ to work with Design Tokens that are exported from [Tokens Studio](https://tokens
 
 Generic:
 
+- Expands composition tokens into multiple, optionally also does so for typography, border and shadow tokens -> parser
 - Maps token descriptions to comments -> `ts/descriptionToComment`
 - Check and evaluate Math expressions (transitive) -> `ts/resolveMath`
 - Transform dimensions tokens to have `px` as a unit when missing (transitive) -> `ts/size/px`
@@ -89,6 +90,35 @@ StyleDictionary.registerTransform({
   transformer: token => transformDimension(token.value),
 });
 ```
+
+### Options
+
+You can pass options to the `registerTransforms` function.
+
+```js
+registerTransforms({
+  expand: {
+    composition: false,
+    typography: true,
+    border: (token, filePath) =>
+      token.value.width !== 0 && filePath.startsWith(path.resolve('tokens/core')),
+    shadow: false,
+  },
+});
+```
+
+Options:
+
+| name               | type                     | required | default         | description                                                                                                                           |
+| ------------------ | ------------------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| expand             | boolean \| ExpandOptions | ❌       | See props below | `false` to not register the parser at all. By default, expands composition tokens. Optionally, border, shadow and typography as well. |
+| expand.composition | boolean \| ExpandFilter  | ❌       | `true`          | Whether or not to expand compositions. Also allows a filter callback function to conditionally expand per token/filePath              |
+| expand.typography  | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand typography. Also allows a filter callback function to conditionally expand per token/filePath                |
+| expand.shadow      | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand shadows. Also allows a filter callback function to conditionally expand per token/filePath                   |
+| expand.border      | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand borders. Also allows a filter callback function to conditionally expand per token/filePath                   |
+
+> Note: you can also import and use the `expandComposites` function to run the expansion on your token object manually.
+> Handy if you have your own parsers set up (e.g. for JS files), and you want the expansions to work there too.
 
 ### Full example
 

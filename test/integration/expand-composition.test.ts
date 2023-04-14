@@ -68,7 +68,7 @@ describe('expand composition tokens', () => {
     );
   });
 
-  it.only('optionally can transform typography, border and shadow tokens', async () => {
+  it('optionally can transform typography, border and shadow tokens', async () => {
     transformOpts = {
       expand: {
         typography: true,
@@ -83,16 +83,16 @@ describe('expand composition tokens', () => {
       `
   --sdCompositionSize: 24px;
   --sdCompositionOpacity: 50%;
-  --sdCompositionFontSizes: 96px;
-  --sdCompositionFontFamilies: Roboto;
-  --sdCompositionFontWeights: 700;
+  --sdCompositionFontSize: 96px;
+  --sdCompositionFontFamily: Roboto;
+  --sdCompositionFontWeight: 700;
   --sdCompositionHeaderFontFamilies: Roboto;
   --sdCompositionHeaderFontSizes: 96px;
   --sdCompositionHeaderFontWeights: 700;
-  --sdTypographyFontFamilies: Arial;
-  --sdTypographyFontWeights: 500;
-  --sdTypographyLineHeights: 1.25;
-  --sdTypographyFontSizes: 26px;
+  --sdTypographyFontFamily: Arial;
+  --sdTypographyFontWeight: 500;
+  --sdTypographyLineHeight: 1.25;
+  --sdTypographyFontSize: 26px;
   --sdTypographyLetterSpacing: 0;
   --sdTypographyParagraphSpacing: 0;
   --sdTypographyParagraphIndent: 0;

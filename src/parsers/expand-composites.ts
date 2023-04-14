@@ -20,7 +20,12 @@ const typeMaps = {
     style: 'other',
   },
   composition: {},
-  typography: {},
+  typography: {
+    fontFamily: 'fontFamilies',
+    fontWeight: 'fontWeights',
+    lineHeight: 'lineHeights',
+    fontSize: 'fontSizes',
+  },
 };
 
 export function expandToken(compToken: SingleToken<false>, isShadow = false): SingleToken<false> {
@@ -56,6 +61,7 @@ function shouldExpand<T extends SingleToken>(
   condition: boolean | ExpandFilter<T>,
   filePath: string,
 ): boolean {
+  console.log(filePath);
   if (typeof condition === 'function') {
     return condition(token, filePath);
   }
@@ -93,7 +99,7 @@ function recurse(
           slice[key] = expandToken(token as SingleToken, expandType === 'shadow');
         }
       }
-    } else {
+    } else if (typeof token === 'object') {
       // TODO: figure out why we have to hack this typecast, if a value doesn't have a value & type,
       // it is definitely a nested DeepKeyTokenMap and not a SingleToken, but TS seems to think it must be
       // a SingleToken after this if statement
