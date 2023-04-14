@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.8.0
+
+### Minor Changes
+
+- 3728d90: BREAKING: remove modifier type files, use @tokens-studio/types instead for it.
+
 ## 0.7.0
 
 ### Minor Changes
