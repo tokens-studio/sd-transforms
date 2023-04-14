@@ -54,7 +54,7 @@ describe('expand composition tokens', () => {
     expect(file).to.include(
       `
   --sdCompositionSize: 24px;
-  --sdCompositionOpacity: 50%;
+  --sdCompositionOpacity: 0.5;
   --sdCompositionFontSize: 96px;
   --sdCompositionFontFamily: Roboto;
   --sdCompositionFontWeight: 700;
@@ -82,7 +82,7 @@ describe('expand composition tokens', () => {
     expect(file).to.include(
       `
   --sdCompositionSize: 24px;
-  --sdCompositionOpacity: 50%;
+  --sdCompositionOpacity: 0.5;
   --sdCompositionFontSize: 96px;
   --sdCompositionFontFamily: Roboto;
   --sdCompositionFontWeight: 700;

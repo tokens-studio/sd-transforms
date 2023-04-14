@@ -12,4 +12,8 @@ describe('transform letter spacing', () => {
   it("does not transform letter spacing if it doesn't end with %", () => {
     expect(transformLetterSpacingForCSS('100')).to.equal('100');
   });
+
+  it('does not transform letter spacing if it cannot be parsed as float', () => {
+    expect(transformLetterSpacingForCSS('not-a-float%')).to.equal('not-a-float%');
+  });
 });

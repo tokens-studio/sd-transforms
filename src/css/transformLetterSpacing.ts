@@ -1,4 +1,4 @@
-import { percentageToDecimal } from './utils/percentageToDecimal.js';
+import { percentageToDecimal } from '../utils/percentageToDecimal.js';
 
 /**
  * Helper: Transforms letter spacing % to em

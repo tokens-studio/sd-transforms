@@ -4,7 +4,7 @@ import { runTransformSuite } from '../suites/transform-suite.spec.js';
 
 runTransformSuite(transformOpacity as (value: unknown) => unknown);
 
-describe('transform line height', () => {
+describe('transform opacity', () => {
   it('transforms opacity % to unit-less decimal value', () => {
     expect(transformOpacity('50%')).to.equal('0.5');
   });

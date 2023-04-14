@@ -30,6 +30,8 @@ Android:
 
 - Transform typography objects to Android Compose shorthand -> `ts/typography/compose/shorthand`
 
+Registers the **generic** and **CSS** transforms, in addition to `name/cti/camel` for naming purposes, as a transform group called `tokens-studio`.
+
 ## Installation
 
 With [NPM](https://www.npmjs.com/):
@@ -150,12 +152,8 @@ const sd = StyleDictionary.extend({
       transforms: [
         'ts/descriptionToComment',
         'ts/size/px',
-<<<<<<< HEAD
-        'ts/size/css/letterspacing',
-=======
         'ts/opacity',
-        'ts/size/letterspacing',
->>>>>>> fix: add opacity percentage handling
+        'ts/size/css/letterspacing',
         'ts/size/lineheight',
         'ts/type/fontWeight',
         'ts/resolveMath',
