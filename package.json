@@ -11,8 +11,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "require": "./dist/src/index.cjs",
-      "import": "./dist/src/index.js"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
     }
   },
   "main": "./dist/index.cjs",
