@@ -1,0 +1,53 @@
+{
+  "typo": {
+    "value": {
+      "fontFamily": "Arial Black",
+      "fontSize": "16 * 1.5",
+      "fontWeight": "regular",
+      "lineHeight": "0.75 * 1.5"
+    },
+    "type": "typography"
+  },
+  "border": {
+    "value": {
+      "color": "rgba(#FFFF00, 0.5)",
+      "width": "16 * 1.5",
+      "style": "dashed"
+    },
+    "type": "border"
+  },
+  "shadow": {
+    "single": {
+      "value": {
+        "x": "0",
+        "y": "3 + 1",
+        "blur": "100 / 10",
+        "spread": "0",
+        "color": "rgba(#000000,0.4)",
+        "type": "innerShadow"
+      },
+      "type": "boxShadow"
+    },
+    "double": {
+      "value": [
+        {
+          "x": "0",
+          "y": "3 + 1",
+          "blur": "100 / 10",
+          "spread": "0",
+          "color": "rgba(#000000,0.4)",
+          "type": "innerShadow"
+        },
+        {
+          "x": "0",
+          "y": "5 - 1",
+          "blur": "1 * 10",
+          "spread": "0",
+          "color": "rgba(#FFFFFF,0.2)",
+          "type": "innerShadow"
+        }
+      ],
+      "type": "boxShadow"
+    }
+  }
+}

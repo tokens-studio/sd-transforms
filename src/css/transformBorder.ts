@@ -1,3 +1,4 @@
+import { checkAndEvaluateMath } from '../checkAndEvaluateMath.js';
 import { transformDimension } from '../transformDimension.js';
 import { transformHEXRGBaForCSS } from './transformHEXRGBa.js';
 
@@ -13,5 +14,7 @@ export function transformBorderForCSS(
     return border;
   }
   const { color, width, style } = border;
-  return `${transformDimension(width)} ${style} ${transformHEXRGBaForCSS(color)}`;
+  return `${transformDimension(checkAndEvaluateMath(width))} ${style} ${transformHEXRGBaForCSS(
+    color,
+  )}`;
 }

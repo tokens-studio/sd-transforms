@@ -1,5 +1,6 @@
 import { transformDimension } from '../transformDimension.js';
 import { transformFontWeights } from '../transformFontWeights.js';
+import { checkAndEvaluateMath } from '../checkAndEvaluateMath.js';
 
 /**
  * Helper: Transforms typography object to typography shorthand for CSS
@@ -12,9 +13,11 @@ export function transformTypographyForCSS(
   if (typeof value !== 'object') {
     return value;
   }
-  const { fontWeight, fontSize, lineHeight, fontFamily } = value;
+  const { fontFamily } = value;
+  let { fontWeight, fontSize, lineHeight } = value;
+  fontWeight = transformFontWeights(fontWeight) as string;
+  fontSize = transformDimension(checkAndEvaluateMath(fontSize)) as string;
+  lineHeight = checkAndEvaluateMath(lineHeight) as string;
 
-  return `${transformFontWeights(fontWeight)} ${transformDimension(
-    fontSize,
-  )}/${lineHeight} ${fontFamily}`;
+  return `${fontWeight} ${fontSize}/${lineHeight} ${fontFamily}`;
 }
