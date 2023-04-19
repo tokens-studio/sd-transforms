@@ -1,0 +1,24 @@
+{
+  "foo": {
+    "core": {
+      "color": {
+        "value": "#FFFFFF",
+        "type": "color"
+      }
+    },
+    "semantic": {
+      "color": {
+        "value": "{core.color}",
+        "type": "color"
+      }
+    }
+  },
+  "bar": {
+    "button": {
+      "color": {
+        "value": "{semantic.color}",
+        "type": "color"
+      }
+    }
+  }
+}

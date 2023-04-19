@@ -26,4 +26,5 @@ export interface ExpandOptions {
 
 export interface TransformOptions {
   expand?: ExpandOptions | false;
+  excludeParentKeys?: boolean;
 }
