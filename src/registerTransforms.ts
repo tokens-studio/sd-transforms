@@ -13,6 +13,7 @@ import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 import { TransformOptions } from './TransformOptions.js';
 import { expandComposites } from './parsers/expand-composites.js';
+import { excludeParentKeys } from './parsers/exclude-parent-keys.js';
 import { transformOpacity } from './transformOpacity.js';
 
 const isBrowser = typeof window === 'object';
@@ -41,7 +42,8 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
       pattern: /\.json$/,
       parse: ({ filePath, contents }) => {
         const obj = JSON.parse(contents);
-        const expanded = expandComposites(obj, filePath, transformOpts);
+        const excluded = excludeParentKeys(obj, transformOpts);
+        const expanded = expandComposites(excluded, filePath, transformOpts);
         return expanded;
       },
     });

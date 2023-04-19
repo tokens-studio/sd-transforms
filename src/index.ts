@@ -1,6 +1,7 @@
 export { registerTransforms } from './registerTransforms.js';
 
 export { expandComposites } from './parsers/expand-composites.js';
+export { excludeParentKeys } from './parsers/exclude-parent-keys.js';
 
 export { mapDescriptionToComment } from './mapDescriptionToComment.js';
 export { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
