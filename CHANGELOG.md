@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.8.3
+
+### Patch Changes
+
+- acd3ddb: Evaluate math expressions within complex value types like border, typography, shadow.
+
 ## 0.8.2
 
 ### Patch Changes
