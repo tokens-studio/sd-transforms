@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.8.2
+
+### Patch Changes
+
+- a25a1ff: Add excludeParentKeys option to the transform options, in order to exclude parent keys from your token files. This is useful if you use a single-file export from Tokens Studio Figma Plugin.
+
 ## 0.8.1
 
 ### Patch Changes
