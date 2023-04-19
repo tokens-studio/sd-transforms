@@ -93,7 +93,7 @@ function parseAndReduce(expr: string): string {
   return `${Number.parseFloat(evaluated.toFixed(3))}${unit ?? (hasPx ? 'px' : '')}`;
 }
 
-export function checkAndEvaluateMath(expr: string | undefined): number | string | undefined {
+export function checkAndEvaluateMath(expr: string | undefined): string | undefined {
   if (expr === undefined) {
     return expr;
   }

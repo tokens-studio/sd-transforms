@@ -1,3 +1,4 @@
+import { checkAndEvaluateMath } from '../checkAndEvaluateMath.js';
 import { transformDimension } from '../transformDimension.js';
 import { transformHEXRGBaForCSS } from './transformHEXRGBa.js';
 
@@ -14,10 +15,10 @@ export function transformShadowForCSS(
   }
   let { x, y, blur, spread } = shadow;
   const { color, type } = shadow;
-  x = transformDimension(x) as string;
-  y = transformDimension(y) as string;
-  blur = transformDimension(blur) as string;
-  spread = transformDimension(spread) as string;
+  x = transformDimension(checkAndEvaluateMath(x)) as string;
+  y = transformDimension(checkAndEvaluateMath(y)) as string;
+  blur = transformDimension(checkAndEvaluateMath(blur)) as string;
+  spread = transformDimension(checkAndEvaluateMath(spread)) as string;
   return `${
     type === 'innerShadow' ? 'inset ' : ''
   }${x} ${y} ${blur} ${spread} ${transformHEXRGBaForCSS(color)}`;

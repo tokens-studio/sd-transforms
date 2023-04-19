@@ -1,0 +1,61 @@
+import { expect } from '@esm-bundle/chai';
+import StyleDictionary from 'style-dictionary';
+import { promises } from 'fs';
+import path from 'path';
+import { cleanup, init } from './utils.js';
+
+const outputDir = 'test/integration/tokens/';
+const outputFileName = 'vars.css';
+const outputFilePath = path.resolve(outputDir, outputFileName);
+
+const cfg = {
+  source: ['test/integration/tokens/math-in-complex-values.tokens.json'],
+  platforms: {
+    css: {
+      transformGroup: 'tokens-studio',
+      prefix: 'sd',
+      buildPath: outputDir,
+      files: [
+        {
+          destination: outputFileName,
+          format: 'css/variables',
+        },
+      ],
+    },
+  },
+};
+
+let dict: StyleDictionary.Core | undefined;
+
+describe('sd-transforms advanced tests', () => {
+  beforeEach(() => {
+    if (dict) {
+      cleanup(dict);
+    }
+    dict = init(cfg);
+  });
+
+  afterEach(() => {
+    if (dict) {
+      cleanup(dict);
+    }
+  });
+
+  it('supports typography tokens with math or fontweight alias', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    expect(file).to.include(`--sdTypo: 400 24px/1.125 Arial Black;`);
+  });
+
+  it('supports border tokens with math width and hexrgba color', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    expect(file).to.include(`--sdBorder: 24px dashed rgba(255, 255, 0, 0.5);`);
+  });
+
+  it('supports box shadow tokens with math dimensions, hexrgba color', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    expect(file).to.include(`--sdShadowSingle: inset 0 4px 10px 0 rgba(0, 0, 0, 0.4);`);
+    expect(file).to.include(
+      `--sdShadowDouble: inset 0 4px 10px 0 rgba(0, 0, 0, 0.4), inset 0 4px 10px 0 rgba(255, 255, 255, 0.2);`,
+    );
+  });
+});

@@ -110,8 +110,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     type: 'value',
     transitive: true,
     matcher: token => typeof token.value === 'string',
-    // Putting this in strings seems to be required
-    transformer: token => `${checkAndEvaluateMath(token.value)}`,
+    transformer: token => checkAndEvaluateMath(token.value),
   });
 
   _sd.registerTransform({
