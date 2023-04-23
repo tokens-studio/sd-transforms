@@ -94,7 +94,7 @@ function parseAndReduce(expr: string): string {
 }
 
 export function checkAndEvaluateMath(expr: string | undefined): string | undefined {
-  if (expr === undefined) {
+  if (typeof expr !== 'string') {
     return expr;
   }
   const exprs = splitMultiIntoSingleValues(expr);
