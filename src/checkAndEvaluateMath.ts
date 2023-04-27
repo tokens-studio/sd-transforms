@@ -93,11 +93,11 @@ function parseAndReduce(expr: string): string {
   return `${Number.parseFloat(evaluated.toFixed(3))}${unit ?? (hasPx ? 'px' : '')}`;
 }
 
-export function checkAndEvaluateMath(expr: string | undefined): string | undefined {
+export function checkAndEvaluateMath(expr: string | number | undefined): string | undefined {
   if (expr === undefined) {
     return expr;
   }
-  const exprs = splitMultiIntoSingleValues(expr);
+  const exprs = splitMultiIntoSingleValues(`${expr}`);
   const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
   return reducedExprs.join(' ');
 }
