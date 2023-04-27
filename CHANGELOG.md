@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.8.4
+
+### Patch Changes
+
+- d37eebc: Support values of type number for checkAndEvaluateMath utility.
+
 ## 0.8.3
 
 ### Patch Changes
