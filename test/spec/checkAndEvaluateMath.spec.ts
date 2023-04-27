@@ -13,6 +13,10 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath('(15 + 20 - 17 * 8 / 3) * 7px')).to.equal('-72.333px');
   });
 
+  it('supports expression of type number', () => {
+    expect(checkAndEvaluateMath(10)).to.equal('10');
+  });
+
   it('can evaluate math expressions where more than one token has a unit, in case of px', () => {
     expect(checkAndEvaluateMath('4px * 7px')).to.equal('28px');
     expect(checkAndEvaluateMath('4 * 7px * 8px')).to.equal('224px');
