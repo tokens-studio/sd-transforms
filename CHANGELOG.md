@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.8.5
+
+### Patch Changes
+
+- d637cec: Use Rollup output.interop for CJS output, to properly handle default exports in our CJS external dependencies.
+
 ## 0.8.4
 
 ### Patch Changes
