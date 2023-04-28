@@ -23,6 +23,10 @@ export default {
     format: 'cjs',
     preserveModules: true,
     entryFileNames: '[name].cjs',
+    // Ensures that CJS default exports are imported properly (based on __esModule)
+    // If needed, can switch to 'compat' which checks for .default prop on the default export instead
+    // see https://rollupjs.org/configuration-options/#output-interop
+    interop: 'auto',
   },
   plugins: [nodeResolve(), typescript({ tsconfig: 'tsconfig.build.json', declaration: false })],
 };
