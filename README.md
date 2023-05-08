@@ -185,3 +185,49 @@ sd.buildAllPlatforms();
 
 > Note: make sure to choose either the full transformGroup, **OR** its separate transforms so you can adjust or add your own.
 > [Combining a transformGroup with a transforms array can give unexpected results](https://github.com/amzn/style-dictionary/issues/813).
+
+### Themes full example
+
+You might be using Themes in the PRO version of Tokens Studio.
+
+Here's a full example of how you can use this in conjunction with Style Dictionary and sd-transforms:
+
+Run this script:
+
+```cjs
+const { registerTransforms } = require('@tokens-studio/sd-transforms');
+const StyleDictionary = require('style-dictionary');
+const { promises } = require('fs');
+
+registerTransforms(StyleDictionary, {
+  /* options here if needed */
+});
+
+async function run() {
+  const $themes = JSON.parse(await promises.readFile('$themes.json'));
+  const configs = $themes.map(theme => ({
+    source: Object.entries(theme.selectedTokenSets)
+      .filter(([, val]) => val !== 'disabled')
+      .map(([tokenset]) => `${tokenset}.json`),
+    platforms: {
+      css: {
+        transformGroup: 'tokens-studio',
+        files: [
+          {
+            destination: `vars-${theme.name}.css`,
+            format: 'css/variables',
+          },
+        ],
+      },
+    },
+  }));
+
+  configs.forEach(cfg => {
+    const sd = StyleDictionary.extend(cfg);
+    sd.cleanAllPlatforms(); // optionally, cleanup files first..
+    sd.buildAllPlatforms();
+  });
+}
+
+run();
+```
