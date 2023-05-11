@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.8.6
+
+### Patch Changes
+
+- 345e03e: Expose transforms names, so it's easy to create a custom transformGroup and adjust, add or remove transforms in it.
+
 ## 0.8.5
 
 ### Patch Changes
