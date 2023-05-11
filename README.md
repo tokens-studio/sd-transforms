@@ -93,6 +93,24 @@ StyleDictionary.registerTransform({
 });
 ```
 
+### Custom Transform Group
+
+In Style-Dictionary, [`transformGroup` and `transforms` cannot be combined in a platform inside your config](https://github.com/amzn/style-dictionary/issues/813).
+
+Therefore, if you wish to use the transform group, but adjust, add or remove a few transforms, your best option is creating a custom transformGroup:
+
+```js
+const { transforms } = require('@tokens-studio/sd-transforms');
+const StyleDictionary = require('style-dictionary');
+
+// Register custom tokens-studio transform group
+// without 'px' being added to numbers without a unit
+StyleDictionary.registerTransformGroup({
+  name: 'custom/tokens-studio',
+  transforms: transforms.filter(transform => transform !== 'ts/size/px'),
+});
+```
+
 ### Options
 
 You can pass options to the `registerTransforms` function.

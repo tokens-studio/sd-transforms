@@ -18,6 +18,21 @@ import { transformOpacity } from './transformOpacity.js';
 
 const isBrowser = typeof window === 'object';
 
+export const transforms = [
+  'ts/descriptionToComment',
+  'ts/size/px',
+  'ts/opacity',
+  'ts/size/lineheight',
+  'ts/type/fontWeight',
+  'ts/resolveMath',
+  'ts/size/css/letterspacing',
+  'ts/typography/css/shorthand',
+  'ts/border/css/shorthand',
+  'ts/shadow/css/shorthand',
+  'ts/color/css/hexrgba',
+  'ts/color/modifiers',
+];
+
 /**
  * typecasting since this will need to work in browser environment, so we cannot
  * import style-dictionary as it depends on nodejs env
@@ -168,18 +183,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
   _sd.registerTransformGroup({
     name: 'tokens-studio',
     transforms: [
-      'ts/descriptionToComment',
-      'ts/size/px',
-      'ts/opacity',
-      'ts/size/lineheight',
-      'ts/type/fontWeight',
-      'ts/resolveMath',
-      'ts/size/css/letterspacing',
-      'ts/typography/css/shorthand',
-      'ts/border/css/shorthand',
-      'ts/shadow/css/shorthand',
-      'ts/color/css/hexrgba',
-      'ts/color/modifiers',
+      ...transforms,
       // by default we go with camel, as having no default will likely give the user
       // errors straight away. This can be overridden by manually passing an array of transforms
       // instead of this transformGroup, or by doing a name conversion in your custom format
