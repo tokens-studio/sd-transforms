@@ -105,9 +105,10 @@ const StyleDictionary = require('style-dictionary');
 
 // Register custom tokens-studio transform group
 // without 'px' being added to numbers without a unit
+// and also adding 'name/cti/camel' for the token names
 StyleDictionary.registerTransformGroup({
   name: 'custom/tokens-studio',
-  transforms: transforms.filter(transform => transform !== 'ts/size/px'),
+  transforms: [...transforms, 'name/cti/camel'].filter(transform => transform !== 'ts/size/px'),
 });
 ```
 
