@@ -1,4 +1,5 @@
 export { registerTransforms } from './registerTransforms.js';
+export { transforms } from './registerTransforms.js';
 
 export { expandComposites } from './parsers/expand-composites.js';
 export { excludeParentKeys } from './parsers/exclude-parent-keys.js';
