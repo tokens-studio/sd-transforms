@@ -16,4 +16,5 @@ npm-debug.log
 
 index.cjs
 src/postcss-calc-ast-parser.ts
+src/deepmerge.ts
 dist/

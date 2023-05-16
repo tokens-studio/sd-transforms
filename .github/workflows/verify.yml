@@ -17,8 +17,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: esmify postcss-calc-value-parser
-        run: npm run esm-postcss-calc
+      - name: Build
+        run: npm run build
 
       - name: Lint
         run: npm run lint

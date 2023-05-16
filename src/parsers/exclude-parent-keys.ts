@@ -1,4 +1,5 @@
 import { DeepKeyTokenMap } from '@tokens-studio/types';
+import deepmerge from '../deepmerge.js';
 import { TransformOptions } from '../TransformOptions.js';
 
 export function excludeParentKeys(
@@ -11,7 +12,11 @@ export function excludeParentKeys(
   const copy = {} as DeepKeyTokenMap<false>;
   Object.values(dictionary).forEach(set => {
     Object.entries(set).forEach(([key, tokenGroup]) => {
-      copy[key] = tokenGroup;
+      if (copy[key]) {
+        copy[key] = deepmerge(copy[key] as DeepKeyTokenMap<false>, tokenGroup);
+      } else {
+        copy[key] = tokenGroup;
+      }
     });
   });
   return copy;

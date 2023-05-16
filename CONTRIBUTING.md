@@ -2,16 +2,17 @@
 
 Things to know before contributing:
 
-## ESMify postcss-calc-ast-parser
+## ESMify postcss-calc-ast-parser & deepmerge
 
 We use postcss-calc-ast-parser to evaluate math expressions inside token values.
-This module is CommonJS only, so it doesn't work in browser environments.
+We use deepmerge to merge objects together.
+These modules are CommonJS only, so it doesn't work in browser environments.
 
 This is only a problem of the format, so it's easily fixed by using a bundler to format it to ESM.
 Run:
 
 ```sh
-npm run esm-postcss-calc
+npm run build
 ```
 
 before doing things like linting, testing etc., or you will get errors.

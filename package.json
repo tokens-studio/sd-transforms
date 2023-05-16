@@ -21,10 +21,11 @@
     "dist"
   ],
   "scripts": {
-    "build": "rimraf dist && npm run esm-postcss-calc && run-p build:*",
+    "build": "rimraf dist && run-p esm:* && run-p build:*",
     "build:cjs": "rollup -c rollup/cjs.config.mjs",
     "build:main": "tsc -p tsconfig.build.json",
-    "esm-postcss-calc": "rollup -c rollup/postcss-calc.config.mjs",
+    "esm:deepmerge": "rollup -c rollup/deepmerge.config.mjs",
+    "esm:postcss-calc": "rollup -c rollup/postcss-calc.config.mjs",
     "format": "npm run format:eslint && npm run format:prettier",
     "format:eslint": "eslint --ext .ts,.html . --fix",
     "format:prettier": "prettier \"**/*.{ts,md}\" \"package.json\" --write",
@@ -45,7 +46,9 @@
     "@tokens-studio/types": "^0.2.1",
     "color2k": "^2.0.1",
     "colorjs.io": "^0.4.3",
+    "deepmerge": "^4.3.1",
     "expr-eval": "^2.0.2",
+    "is-mergeable-object": "^1.1.1",
     "postcss-calc-ast-parser": "^0.1.4",
     "style-dictionary": "^3.7.2"
   },
