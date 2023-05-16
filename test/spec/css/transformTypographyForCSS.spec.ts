@@ -36,6 +36,6 @@ describe('transform typography', () => {
       }),
     ).to.equal('300 20px/1 Arial');
 
-    expect(transformTypographyForCSS({})).to.equal('400 16px/1 Arial');
+    expect(transformTypographyForCSS({})).to.equal('400 16px/1 sans-serif');
   });
 });
