@@ -55,4 +55,80 @@ describe('exclude parent keys', () => {
       },
     });
   });
+
+  it('should merge properties with the same key', () => {
+    expect(
+      excludeParentKeys(
+        {
+          global: {
+            fontWeights: {
+              bar: { value: 500, type: 'fontWeights' },
+            },
+          },
+          button: {
+            fontWeights: {
+              foo: { value: 300, type: 'fontWeights' },
+            },
+          },
+        } as DeepKeyTokenMap<false>,
+        { excludeParentKeys: true },
+      ),
+    ).to.eql({
+      fontWeights: {
+        bar: { value: 500, type: 'fontWeights' },
+        foo: { value: 300, type: 'fontWeights' },
+      },
+    });
+
+    expect(
+      excludeParentKeys(
+        {
+          global: {
+            fontWeights: {
+              foo: { value: 500, type: 'fontWeights' },
+            },
+          },
+          button: {
+            fontWeights: {
+              foo: { value: 300, type: 'fontWeights' },
+            },
+          },
+        } as DeepKeyTokenMap<false>,
+        { excludeParentKeys: true },
+      ),
+    ).to.eql({
+      fontWeights: {
+        foo: { value: 300, type: 'fontWeights' },
+      },
+    });
+
+    expect(
+      excludeParentKeys(
+        {
+          global: {
+            fontWeights: {
+              foo: {
+                bar: { value: 500, type: 'fontWeights' },
+              },
+            },
+          },
+          button: {
+            fontWeights: {
+              foo: {
+                qux: { value: 300, type: 'fontWeights' },
+              },
+            },
+          },
+        } as DeepKeyTokenMap<false>,
+        { excludeParentKeys: true },
+      ),
+    ).to.eql({
+      fontWeights: {
+        foo: {
+          bar: { value: 500, type: 'fontWeights' },
+          qux: { value: 300, type: 'fontWeights' },
+        },
+      },
+    });
+  });
 });

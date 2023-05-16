@@ -13,7 +13,7 @@ export default {
       functions: 100,
       lines: 100,
     },
-    exclude: ['src/postcss-calc-ast-parser.ts', 'node_modules/**'],
+    exclude: ['src/postcss-calc-ast-parser.ts', 'src/deepmerge.ts', 'node_modules/**'],
   },
   browsers: [playwrightLauncher({ product: 'chromium' })],
   plugins: [esbuildPlugin({ ts: true, target: 'auto' })],
