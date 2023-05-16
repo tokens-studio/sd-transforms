@@ -19,5 +19,5 @@ export function transformTypographyForCSS(
   fontSize = transformDimension(checkAndEvaluateMath(fontSize)) as string;
   lineHeight = checkAndEvaluateMath(lineHeight) as string;
 
-  return `${fontWeight} ${fontSize}/${lineHeight} ${fontFamily}`;
+  return `${fontWeight ?? 400} ${fontSize ?? '16px'}/${lineHeight ?? 1} ${fontFamily ?? 'Arial'}`;
 }

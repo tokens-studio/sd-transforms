@@ -14,7 +14,7 @@ export function transformBorderForCSS(
     return border;
   }
   const { color, width, style } = border;
-  return `${transformDimension(checkAndEvaluateMath(width))} ${style} ${transformHEXRGBaForCSS(
-    color,
-  )}`;
+  return `${transformDimension(checkAndEvaluateMath(width)) ?? ''} ${style ?? ''} ${
+    transformHEXRGBaForCSS(color) ?? ''
+  }`.trim();
 }
