@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.0
+
+### Minor Changes
+
+- 24a20df: BREAKING: when missing properties inside typography, border or shadow objects, we prefill them with empty string, 0, or some default value.
+
 ## 0.8.7
 
 ### Patch Changes
