@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.8.7
+
+### Patch Changes
+
+- 3f12797: Exclude parent keys can lead to duplicate property keys. Ensure they are deepmerged instead of overwritten.
+
 ## 0.8.6
 
 ### Patch Changes
