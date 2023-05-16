@@ -47,10 +47,11 @@ npm install @tokens-studio/sd-transforms
 
 ```js
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
+const StyleDictionary = require('style-dictionary');
 
 // will register them on StyleDictionary object
 // that is installed as a dependency of this package.
-registerTransforms();
+registerTransforms(StyleDictionary);
 ```
 
 Can also import in ESM if needed.

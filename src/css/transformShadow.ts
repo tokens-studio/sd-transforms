@@ -19,7 +19,7 @@ export function transformShadowForCSS(
   y = transformDimension(checkAndEvaluateMath(y)) as string;
   blur = transformDimension(checkAndEvaluateMath(blur)) as string;
   spread = transformDimension(checkAndEvaluateMath(spread)) as string;
-  return `${
-    type === 'innerShadow' ? 'inset ' : ''
-  }${x} ${y} ${blur} ${spread} ${transformHEXRGBaForCSS(color)}`;
+  return `${type === 'innerShadow' ? 'inset ' : ''}${x ?? 0} ${y ?? 0} ${blur ?? 0}${
+    spread == null ? ' ' : ` ${spread} `
+  }${transformHEXRGBaForCSS(color) ?? 'rgba(0, 0, 0, 1)'}`.trim();
 }

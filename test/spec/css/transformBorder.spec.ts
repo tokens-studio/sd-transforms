@@ -28,4 +28,24 @@ describe('transform border', () => {
       }),
     ).to.equal('5px dashed rgba(0, 0, 0, 1)');
   });
+
+  it('provides empty string for missing properties', () => {
+    expect(
+      transformBorderForCSS({
+        width: '5',
+      }),
+    ).to.equal('5px');
+
+    expect(
+      transformBorderForCSS({
+        color: '#FFFFFF',
+      }),
+    ).to.equal('#FFFFFF');
+
+    expect(
+      transformBorderForCSS({
+        style: 'solid',
+      }),
+    ).to.equal('solid');
+  });
 });
