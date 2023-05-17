@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.1
+
+### Patch Changes
+
+- ce69ada: Consider that properties can also be empty string, which is especially common if the typography/border/shadow tokens are coming from Tokens Studio.
+
 ## 0.9.0
 
 ### Minor Changes
