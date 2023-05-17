@@ -31,10 +31,10 @@ describe('transform typography', () => {
     expect(
       transformTypographyForCSS({
         fontWeight: 'light',
-        fontSize: '20',
+        fontSize: '',
         fontFamily: 'Arial',
       }),
-    ).to.equal('300 20px/1 Arial');
+    ).to.equal('300 16px/1 Arial');
 
     expect(transformTypographyForCSS({})).to.equal('400 16px/1 sans-serif');
   });

@@ -49,7 +49,7 @@ describe('transform shadow', () => {
   it('provides empty string or 0 for missing properties', () => {
     expect(transformShadowForCSS({})).to.equal('0 0 0 rgba(0, 0, 0, 1)');
 
-    expect(transformShadowForCSS({ x: '5' })).to.equal('5px 0 0 rgba(0, 0, 0, 1)');
+    expect(transformShadowForCSS({ x: '5', y: '' })).to.equal('5px 0 0 rgba(0, 0, 0, 1)');
 
     expect(transformShadowForCSS({ spread: '5', color: 'rgba(#000000, 0.5)' })).to.equal(
       '0 0 0 5px rgba(0, 0, 0, 0.5)',

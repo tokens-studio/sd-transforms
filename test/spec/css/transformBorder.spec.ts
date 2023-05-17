@@ -33,6 +33,7 @@ describe('transform border', () => {
     expect(
       transformBorderForCSS({
         width: '5',
+        style: '',
       }),
     ).to.equal('5px');
 
