@@ -257,3 +257,13 @@ async function run() {
 
 run();
 ```
+
+## Not sure how to fix your issue ? 
+### Create a reproduction by :-
+
+1. Open configurator tool [link](https://configurator.tokens.studio/) 
+2. Upload your tokens and add your style dictionary config and transforms
+3. Copy the Url as it will include your settings.
+4. Join our slack [link](https://tokens.studio/slack)
+5. Open style-dictionary-configurator channel.
+6. Create a thread about your issue and paste your reproduction link inside it.
