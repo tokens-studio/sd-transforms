@@ -45,13 +45,23 @@ npm install @tokens-studio/sd-transforms
 
 > Note: this library is available both in CJS and ESM
 
+## create a file to run custom transformers 
+
 ```js
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
-const StyleDictionary = require('style-dictionary');
+// import style dictionary and the config for it.
+const StyleDictionary = require('style-dictionary').extend(
+  './style-dictionary-config.json',
+);
 
 // will register them on StyleDictionary object
 // that is installed as a dependency of this package.
 registerTransforms(StyleDictionary);
+```
+
+## Now to run your transformers use 
+```
+node name-of-the-file.js
 ```
 
 Can also import in ESM if needed.
@@ -65,7 +75,8 @@ In your Style-Dictionary config, you can **either** use the `tokens-studio` tran
   "source": ["**/*.tokens.json"],
   "platforms": {
     "css": {
-      "transformGroup": "tokens-studio",
+       // Need to add `custom/tokens-studio` if you added custom transformers
+      "transformGroup": "custom/tokens-studio",
       "buildPath": "build/css/",
       "files": [
         {
@@ -146,12 +157,8 @@ Options:
 > Handy if you have your own parsers set up (e.g. for JS files), and you want the expansions to work there too.
 
 ### Full example
+Create a `.js` for eg: `build-styles.js` file with the contents 
 
-```sh
-node build-tokens.js
-```
-
-`build-tokens.js`:
 
 ```cjs
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
@@ -203,6 +210,12 @@ sd.cleanAllPlatforms();
 sd.buildAllPlatforms();
 ```
 
+### To run it use following command
+```sh
+node build-styles.js
+```
+
+
 > Note: make sure to choose either the full transformGroup, **OR** its separate transforms so you can adjust or add your own.
 > [Combining a transformGroup with a transforms array can give unexpected results](https://github.com/amzn/style-dictionary/issues/813).
 
@@ -250,4 +263,57 @@ async function run() {
 }
 
 run();
+```
+
+### Full example for building a single `_variable.scss` for general WEB usecase.
+
+Create a `.js` for eg: `build-styles.js` file with the contents 
+
+```js
+// Import StyleDictionary and the transforms library
+import StyleDictionary from 'style-dictionary'
+import { registerTransforms, transforms } from '@tokens-studio/sd-transforms'
+
+// Extend StyleDictionary with the configuration file
+const styleDictionary = StyleDictionary.extend('./style-dictionary-config.json')
+
+// Register transforms
+registerTransforms(styleDictionary)
+
+/* Register custom tokens-studio transform group without 
+descriptions being mapped to comments
+and also adding 'name/cti/kebab' for the token names */
+
+styleDictionary.registerTransformGroup({
+  name: 'custom/tokens-studio',
+  transforms: [...transforms, 'name/cti/kebab'].filter(
+    (transform) => transform !== 'ts/descriptionToComment',
+  ),
+})
+
+// Format helpers from StyleDictionary
+const { fileHeader, formattedVariables } = styleDictionary.formatHelpers
+
+// Format Css
+styleDictionary.registerFormat({
+  name: 'myCustomFormat',
+  formatter: function ({ dictionary, file, options }) {
+    const { outputReferences } = options
+    return `${fileHeader({ file })}:root {
+${formattedVariables({ format: 'scss', dictionary, outputReferences })}
+}`
+  },
+})
+
+// Clean web platform before building
+styleDictionary.cleanPlatform('web')
+
+// Build web platform
+styleDictionary.buildPlatform('web')
+```
+
+## To run it 
+
+```sh
+node build-styles.js
 ```
