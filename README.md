@@ -2,6 +2,16 @@
 
 ![NPM version badge](https://img.shields.io/npm/v/@tokens-studio/sd-transforms) ![License badge](https://img.shields.io/github/license/tokens-studio/sd-transforms)
 
+## Table of contents
+  * [Installation](#installation)
+  * [Getting Started](#usage)
+    + [Using the transforms](#using-the-transforms)
+    + [Custom Transform Group](#custom-transform-group)
+    + [Options](#options)
+  * [Full example](#full-example)
+    + [Themes full example](#themes-full-example)
+  * [Troubleshooting](#not-sure-how-to-fix-your-issue)
+
 > This library is currently in beta.
 
 This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
@@ -145,13 +155,9 @@ Options:
 > Note: you can also import and use the `expandComposites` function to run the expansion on your token object manually.
 > Handy if you have your own parsers set up (e.g. for JS files), and you want the expansions to work there too.
 
-### Full example
+## Full example
+Create a `.js` file, e.g.: `build-output.js`, with the contents:
 
-```sh
-node build-tokens.js
-```
-
-`build-tokens.js`:
 
 ```cjs
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
@@ -203,6 +209,12 @@ sd.cleanAllPlatforms();
 sd.buildAllPlatforms();
 ```
 
+#### To run it use following command
+```sh
+node build-output.js
+```
+
+
 > Note: make sure to choose either the full transformGroup, **OR** its separate transforms so you can adjust or add your own.
 > [Combining a transformGroup with a transforms array can give unexpected results](https://github.com/amzn/style-dictionary/issues/813).
 
@@ -251,3 +263,13 @@ async function run() {
 
 run();
 ```
+
+## Not sure how to fix your issue ? 
+### Create a reproduction by :-
+
+1. Open configurator tool [link](https://configurator.tokens.studio/) 
+2. Upload your tokens and add your style dictionary config and transforms
+3. Copy the Url as it will include your settings.
+4. Join our slack [link](https://tokens.studio/slack)
+5. Open style-dictionary-configurator channel.
+6. Create a thread about your issue and paste your reproduction link inside it.
