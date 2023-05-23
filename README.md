@@ -2,6 +2,16 @@
 
 ![NPM version badge](https://img.shields.io/npm/v/@tokens-studio/sd-transforms) ![License badge](https://img.shields.io/github/license/tokens-studio/sd-transforms)
 
+## Table of contents
+  * [Installation](#installation)
+  * [Getting Started](#usage)
+    + [Using the transforms](#using-the-transforms)
+    + [Custom Transform Group](#custom-transform-group)
+    + [Options](#options)
+  * [Full example](#full-example)
+    + [Themes full example](#themes-full-example)
+  * [Troubleshooting](#not-sure-how-to-fix-your-issue)
+
 > This library is currently in beta.
 
 This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
