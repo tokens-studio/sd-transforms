@@ -45,8 +45,6 @@ npm install @tokens-studio/sd-transforms
 
 > Note: this library is available both in CJS and ESM
 
-## create a file to run custom transformers 
-
 ```js
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
 const StyleDictionary = require('style-dictionary');
@@ -146,8 +144,6 @@ Options:
 
 > Note: you can also import and use the `expandComposites` function to run the expansion on your token object manually.
 > Handy if you have your own parsers set up (e.g. for JS files), and you want the expansions to work there too.
-
-<br/>
 
 ## Full example
 Create a `.js` file, e.g.: `build-output.js`, with the contents:
