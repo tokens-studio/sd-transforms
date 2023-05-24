@@ -1,5 +1,5 @@
 import { DeepKeyTokenMap } from '@tokens-studio/types';
-import deepmerge from '../deepmerge.js';
+import deepmerge from 'deepmerge';
 import { TransformOptions } from '../TransformOptions.js';
 
 export function excludeParentKeys(

@@ -1,5 +1,5 @@
 import { Parser } from 'expr-eval';
-import { parse, reduceExpression } from './postcss-calc-ast-parser.js';
+import { parse, reduceExpression } from 'postcss-calc-ast-parser';
 
 const mathChars = ['+', '-', '*', '/'];
 
@@ -70,7 +70,7 @@ function parseAndReduce(expr: string): string {
   const hasPx = expr.match('px');
   let unitlessExpr = expr.replace(/px/g, '');
   // Remove it here so we can evaluate expressions like 16px + 24px
-  const calcParsed = parse(unitlessExpr, {});
+  const calcParsed = parse(unitlessExpr, { allowInlineCommnets: false });
 
   // Attempt to reduce the math expression
   const reduced = reduceExpression(calcParsed);

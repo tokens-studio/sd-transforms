@@ -11,7 +11,7 @@
     "types": ["node", "mocha"],
     "esModuleInterop": true,
     "suppressImplicitAnyIndexErrors": true,
-    "outDir": "dist",
+    "outDir": "dist/src",
     "declaration": true
   },
   "include": ["**/*.ts"],
