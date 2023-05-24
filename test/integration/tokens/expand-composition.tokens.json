@@ -83,5 +83,13 @@
       ],
       "type": "boxShadow"
     }
+  },
+  "ref": {
+    "value": "{typography}",
+    "type": "typography"
+  },
+  "deepRef": {
+    "value": "{ref}",
+    "type": "typography"
   }
 }

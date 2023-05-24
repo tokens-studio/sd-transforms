@@ -64,7 +64,8 @@ describe('expand composition tokens', () => {
   --sdTypography: 500 26px/1.25 Arial;
   --sdBorder: 4px solid #FFFF00;
   --sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
-  --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);`,
+  --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
+  --sdRef: 500 26px/1.25 Arial;`,
     );
   });
 
@@ -118,6 +119,40 @@ describe('expand composition tokens', () => {
   --sdShadowDouble2Blur: 12px;
   --sdShadowDouble2Spread: 5px;
   --sdShadowDouble2Color: rgba(0,0,0,0.4);`,
+    );
+  });
+
+  it('handles references and deep references for expandable values', async () => {
+    transformOpts = {
+      expand: {
+        typography: true,
+        border: true,
+        shadow: true,
+      },
+    };
+    before();
+
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    expect(file).to.include(
+      `
+  --sdRefFontFamily: Arial;
+  --sdRefFontWeight: 500;
+  --sdRefLineHeight: 1.25;
+  --sdRefFontSize: 26px;
+  --sdRefLetterSpacing: 0;
+  --sdRefParagraphSpacing: 0;
+  --sdRefParagraphIndent: 0;
+  --sdRefTextDecoration: none;
+  --sdRefTextCase: none;
+  --sdDeepRefFontFamily: Arial;
+  --sdDeepRefFontWeight: 500;
+  --sdDeepRefLineHeight: 1.25;
+  --sdDeepRefFontSize: 26px;
+  --sdDeepRefLetterSpacing: 0;
+  --sdDeepRefParagraphSpacing: 0;
+  --sdDeepRefParagraphIndent: 0;
+  --sdDeepRefTextDecoration: none;
+  --sdDeepRefTextCase: none;`,
     );
   });
 });
