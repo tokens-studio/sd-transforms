@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.2
+
+### Patch Changes
+
+- 01d45fd: Fix hex rgba regex matcher to be lazier about some character matching, warn for errors from colorjs.io hex parsing.
+
 ## 0.9.1
 
 ### Patch Changes
