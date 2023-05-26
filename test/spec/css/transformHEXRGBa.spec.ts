@@ -16,4 +16,8 @@ describe('transform HEXRGBa', () => {
   it("does not transform if it's already rgba() format", () => {
     expect(transformHEXRGBaForCSS('rgba(0,0,0,1)')).to.equal('rgba(0,0,0,1)');
   });
+
+  it('does not transform if the hex value cannot be interpreted properly', () => {
+    expect(transformHEXRGBaForCSS('rgba(#000000abcd, 0.3)')).to.equal('rgba(#000000abcd, 0.3)');
+  });
 });
