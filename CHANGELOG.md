@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.3
+
+### Patch Changes
+
+- bd7fe6e: Handle references and deep references for tokens that can be expanded, like typography, border, shadow and composition.
+- b69b05b: set font family name in quotes if its name has whitespaces
+
 ## 0.9.2
 
 ### Patch Changes
