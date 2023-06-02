@@ -45,9 +45,9 @@ describe('typography references', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
-  --sdBefore: 700 36px/1 Aria Sans;
-  --sdFontHeadingXxl: 700 36px/1 Aria Sans;
-  --sdAfter: 700 36px/1 Aria Sans;`,
+  --sdBefore: 700 36px/1 'Aria Sans';
+  --sdFontHeadingXxl: 700 36px/1 'Aria Sans';
+  --sdAfter: 700 36px/1 'Aria Sans';`,
     );
   });
 

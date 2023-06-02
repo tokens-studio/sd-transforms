@@ -43,7 +43,7 @@ describe('sd-transforms advanced tests', () => {
 
   it('supports typography tokens with math or fontweight alias', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(`--sdTypo: 400 24px/1.125 Arial Black;`);
+    expect(file).to.include(`--sdTypo: 400 24px/1.125 'Arial Black';`);
   });
 
   it('supports border tokens with math width and hexrgba color', async () => {

@@ -38,4 +38,15 @@ describe('transform typography', () => {
 
     expect(transformTypographyForCSS({})).to.equal('400 16px/1 sans-serif');
   });
+
+  it('set quotes around fontFamily if it has white spaces in name', () => {
+    expect(
+      transformTypographyForCSS({
+        fontWeight: 'light',
+        fontSize: '20',
+        lineHeight: '1.5',
+        fontFamily: 'Arial Narrow',
+      }),
+    ).to.equal("300 20px/1.5 'Arial Narrow'");
+  });
 });
