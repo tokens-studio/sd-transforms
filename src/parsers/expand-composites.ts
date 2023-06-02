@@ -109,9 +109,14 @@ function recurse(
               // the object value (typography/composition/border/shadow)
               // However, when it's the final resolved value, the props are as { value, type }
               // instead of just the value, so we use a map to grab only the value...
-              ref = Object.fromEntries(
-                Object.entries(boundGetRef(ref.value)[0]).map(([k, v]) => [k, v.value]),
-              ) as SingleToken<false>;
+              try {
+                ref = Object.fromEntries(
+                  Object.entries(boundGetRef(ref.value)[0]).map(([k, v]) => [k, v.value]),
+                ) as SingleToken<false>;
+              } catch (e) {
+                console.warn(`Warning: could not resolve reference ${ref.value}`);
+                return;
+              }
             }
             token.value = ref as SingleToken<false>['value'];
           }

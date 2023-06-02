@@ -295,4 +295,28 @@ describe('expand', () => {
       ),
     ).to.eql({ typography: tokensInput.typography });
   });
+
+  it(`should handle when a token reference in a composite cannot be resolved`, () => {
+    expect(
+      expandComposites(
+        {
+          ref: {
+            value: '{typography.foo}',
+            type: 'typography',
+          },
+        } as DeepKeyTokenMap<false>,
+        'foo/bar.json',
+        {
+          expand: {
+            typography: true,
+          },
+        },
+      ),
+    ).to.eql({
+      ref: {
+        value: '{typography.foo}',
+        type: 'typography',
+      },
+    });
+  });
 });
