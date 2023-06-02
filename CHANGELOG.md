@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.4
+
+### Patch Changes
+
+- 4a3d5f9: Error handle if SD cannot resolve reference.
+
 ## 0.9.3
 
 ### Patch Changes
