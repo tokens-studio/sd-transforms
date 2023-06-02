@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rimraf dist && rollup -c rollup.config.mjs && rimraf __bundled_CJS_dependencies",
+    "build": "rimraf dist && rollup -c rollup.config.mjs",
     "format": "npm run format:eslint && npm run format:prettier",
     "format:eslint": "eslint --ext .ts,.html . --fix",
     "format:prettier": "prettier \"**/*.{ts,md}\" \"package.json\" --write",
