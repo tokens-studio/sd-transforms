@@ -1,17 +1,12 @@
 # @tokens-studio/sd-transforms
 
-## 0.9.4
-
-### Patch Changes
-
-- 4a3d5f9: Error handle if SD cannot resolve reference.
-
 ## 0.9.3
 
 ### Patch Changes
 
 - bd7fe6e: Handle references and deep references for tokens that can be expanded, like typography, border, shadow and composition.
 - b69b05b: set font family name in quotes if its name has whitespaces
+- 4a3d5f9: Error handle if SD cannot resolve reference.
 
 ## 0.9.2
 

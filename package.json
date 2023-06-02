@@ -1,6 +1,6 @@
 {
   "name": "@tokens-studio/sd-transforms",
-  "version": "0.9.4",
+  "version": "0.9.3",
   "description": "Custom transforms for Style-Dictionary, to work with Design Tokens that are exported from Tokens Studio",
   "license": "MIT",
   "author": "Joren Broekema <joren.broekema@gmail.com>",
@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rimraf dist && rollup -c rollup.config.mjs",
+    "build": "rimraf dist && rollup -c rollup.config.mjs && rimraf __bundled_CJS_dependencies && rimraf dist/src/src && rimraf dist/src/__bundled_CJS_dependencies",
     "format": "npm run format:eslint && npm run format:prettier",
     "format:eslint": "eslint --ext .ts,.html . --fix",
     "format:prettier": "prettier \"**/*.{ts,md}\" \"package.json\" --write",

@@ -1,8 +1,9 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 const CJSOnlyDeps = [
   'style-dictionary',
@@ -64,10 +65,14 @@ export default [
         name: 'move-deps-to-bundle',
         buildStart() {
           CJSOnlyDeps.forEach(dep => {
-            fs.cpSync(`node_modules/${dep}`, `__bundled_CJS_dependencies/${dep}`, {
+            const dirFrom = fileURLToPath(new URL(`./node_modules/${dep}`, import.meta.url));
+            const dirTo = fileURLToPath(
+              new URL(`./__bundled_CJS_dependencies/${dep}`, import.meta.url),
+            );
+            fs.cpSync(dirFrom, dirTo, {
               recursive: true,
             });
-            fs.rmSync(`node_modules/${dep}`, { recursive: true });
+            fs.rmSync(dirFrom, { recursive: true });
           });
         },
       },
@@ -75,7 +80,11 @@ export default [
         name: 'move-deps-back',
         closeBundle() {
           CJSOnlyDeps.forEach(dep => {
-            fs.cpSync(`__bundled_CJS_dependencies/${dep}`, `node_modules/${dep}`, {
+            const dirFrom = fileURLToPath(
+              new URL(`./__bundled_CJS_dependencies/${dep}`, import.meta.url),
+            );
+            const dirTo = fileURLToPath(new URL(`./node_modules/${dep}`, import.meta.url));
+            fs.cpSync(dirFrom, dirTo, {
               recursive: true,
             });
           });
