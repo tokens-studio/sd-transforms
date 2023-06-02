@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { SingleToken } from '@tokens-studio/types';
+import { DeepKeyTokenMap, SingleToken } from '@tokens-studio/types';
 import { expandComposites } from '../../../src/parsers/expand-composites.js';
 import { expandablesAsStringsArr } from '../../../src/TransformOptions.js';
 
@@ -22,6 +22,10 @@ const tokensInput = {
         lineHeight: '1.25',
         fontSize: '26',
       },
+      type: 'typography',
+    },
+    ref: {
+      value: '{typography.foo}',
       type: 'typography',
     },
   },
@@ -89,6 +93,24 @@ const tokensOutput = {
   },
   typography: {
     foo: {
+      fontFamily: {
+        value: 'Arial',
+        type: 'fontFamilies',
+      },
+      fontWeight: {
+        value: '500',
+        type: 'fontWeights',
+      },
+      lineHeight: {
+        value: '1.25',
+        type: 'lineHeights',
+      },
+      fontSize: {
+        value: '26',
+        type: 'fontSizes',
+      },
+    },
+    ref: {
       fontFamily: {
         value: 'Arial',
         type: 'fontFamilies',
@@ -209,31 +231,33 @@ describe('expand', () => {
     describe(`expand ${type}`, () => {
       it(`should expand ${type} tokens`, () => {
         expect(
-          expandComposites(tokensInput[type], 'foo/bar.json', {
+          expandComposites({ [type]: tokensInput[type] }, 'foo/bar.json', {
             expand: { typography: true, border: true, shadow: true },
           }),
-        ).to.eql(tokensOutput[type]);
+        ).to.eql({ [type]: tokensOutput[type] });
       });
 
       it(`should expand composition tokens by default`, () => {
         const output = type === 'composition' ? tokensOutput[type] : tokensInput[type];
-        expect(expandComposites(tokensInput[type], 'foo/bar.json')).to.eql(output);
+        expect(expandComposites({ [type]: tokensInput[type] }, 'foo/bar.json')).to.eql({
+          [type]: output,
+        });
       });
 
       it('should not expand composition tokens when options dictate it should not', () => {
         expect(
-          expandComposites(tokensInput[type], 'foo/bar.json', {
+          expandComposites({ [type]: tokensInput[type] }, 'foo/bar.json', {
             expand: { composition: false },
           }),
-        ).to.eql(tokensInput[type]);
+        ).to.eql({ [type]: tokensInput[type] });
 
         const filter = (_: SingleToken, filePath: string) => !filePath.startsWith('foo');
 
         expect(
-          expandComposites(tokensInput[type], 'foo/bar.json', {
+          expandComposites({ [type]: tokensInput[type] }, 'foo/bar.json', {
             expand: { composition: filter, typography: filter, border: filter, shadow: filter },
           }),
-        ).to.eql(tokensInput[type]);
+        ).to.eql({ [type]: tokensInput[type] });
       });
 
       it('should expand composition tokens recursing multiple levels deep', () => {
@@ -244,5 +268,31 @@ describe('expand', () => {
         ).to.eql({ foo: { bar: { qux: tokensOutput[type] } } });
       });
     });
+  });
+
+  it(`should allow a filter condition function for expanding tokens`, () => {
+    expect(
+      expandComposites(
+        { typography: tokensInput.typography } as DeepKeyTokenMap<false>,
+        'foo/bar.json',
+        {
+          expand: {
+            typography: (_, filePath) => filePath === 'foo/bar.json',
+          },
+        },
+      ),
+    ).to.eql({ typography: tokensOutput.typography });
+
+    expect(
+      expandComposites(
+        { typography: tokensInput.typography } as DeepKeyTokenMap<false>,
+        'foo/bar.json',
+        {
+          expand: {
+            typography: (_, filePath) => filePath === 'foo/qux.json',
+          },
+        },
+      ),
+    ).to.eql({ typography: tokensInput.typography });
   });
 });
