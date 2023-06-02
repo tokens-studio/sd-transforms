@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "NODE_OPTIONS=--max_old_space_size=8192 && rimraf dist && rollup -c rollup.config.mjs",
+    "build": "rimraf dist && rollup -c rollup.config.mjs && node ./handle-bundled-cjs-deps.js",
     "format": "npm run format:eslint && npm run format:prettier",
     "format:eslint": "eslint --ext .ts,.html . --fix",
     "format:prettier": "prettier \"**/*.{ts,md}\" \"package.json\" --write",
@@ -30,7 +30,7 @@
     "lint:prettier": "prettier \"**/*.ts\" --list-different || (echo '↑↑ these files are not prettier formatted ↑↑' && exit 1)",
     "lint:types": "tsc --noEmit",
     "prepare": "husky install",
-    "release": "npm run build",
+    "release": "npm run build && changeset publish",
     "test": "npm run test:unit && npm run test:integration",
     "test:integration": "ts-mocha -n loader=ts-node/esm -p tsconfig.json test/**/*.test.ts",
     "test:unit": "web-test-runner --coverage",
