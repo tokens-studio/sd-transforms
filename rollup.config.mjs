@@ -3,9 +3,8 @@ import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import path from 'node:path';
 import fs from 'node:fs';
-import { fileURLToPath } from 'node:url';
 
-const CJSOnlyDeps = [
+export const CJSOnlyDeps = [
   'style-dictionary',
   'deepmerge',
   'postcss-calc-ast-parser',
@@ -35,6 +34,10 @@ const baseCfg = {
     // see https://rollupjs.org/configuration-options/#output-interop
     interop: 'auto',
   },
+  plugins: [
+    nodeResolve({ moduleDirectories: ['node_modules'] }),
+    typescript({ tsconfig: 'tsconfig.build.json' }),
+  ],
 };
 
 // Dual CJS / ESM publish
@@ -51,46 +54,7 @@ export default [
       format: 'esm',
       entryFileNames: '[name].js',
     },
-    plugins: [
-      nodeResolve({ moduleDirectories: ['node_modules', '__bundled_CJS_dependencies'] }),
-      typescript({ tsconfig: 'tsconfig.build.json' }),
-      commonjs(),
-      // Because we bundle our CJS deps and we preserveModules, normally it would create
-      // a dist/node_modules folder for the deps. This is an issue because then the consumer's NodeJS
-      // resolution algorithm will pull bare import specifiers from this folder rather than their own root
-      // node_modules folder, even for CJS usage :(
-      // Therefore, we temporarily move the CJS deps to a different folder, include that
-      // in the nodeResolve moduleDirectories and move things back after we're done.
-      {
-        name: 'move-deps-to-bundle',
-        buildStart() {
-          CJSOnlyDeps.forEach(dep => {
-            const dirFrom = fileURLToPath(new URL(`./node_modules/${dep}`, import.meta.url));
-            const dirTo = fileURLToPath(
-              new URL(`./__bundled_CJS_dependencies/${dep}`, import.meta.url),
-            );
-            fs.cpSync(dirFrom, dirTo, {
-              recursive: true,
-            });
-            fs.rmSync(dirFrom, { recursive: true });
-          });
-        },
-      },
-      {
-        name: 'move-deps-back',
-        closeBundle() {
-          CJSOnlyDeps.forEach(dep => {
-            const dirFrom = fileURLToPath(
-              new URL(`./__bundled_CJS_dependencies/${dep}`, import.meta.url),
-            );
-            const dirTo = fileURLToPath(new URL(`./node_modules/${dep}`, import.meta.url));
-            fs.cpSync(dirFrom, dirTo, {
-              recursive: true,
-            });
-          });
-        },
-      },
-    ],
+    plugins: [...baseCfg.plugins, commonjs()],
   },
   // CJS
   {
@@ -104,12 +68,5 @@ export default [
       format: 'cjs',
       entryFileNames: '[name].cjs',
     },
-    plugins: [
-      nodeResolve({ moduleDirectories: ['node_modules'] }),
-      typescript({
-        tsconfig: 'tsconfig.build.json',
-        noForceEmit: true,
-      }),
-    ],
   },
 ];
