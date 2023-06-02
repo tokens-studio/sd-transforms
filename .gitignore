@@ -14,7 +14,4 @@ npm-debug.log
 ## temp folders
 /coverage/
 
-index.cjs
-src/postcss-calc-ast-parser.ts
-src/deepmerge.ts
 dist/
