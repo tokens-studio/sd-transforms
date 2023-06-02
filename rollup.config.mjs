@@ -100,7 +100,6 @@ export default [
       typescript({
         tsconfig: 'tsconfig.build.json',
         noForceEmit: true,
-        compilerOptions: { outDir: 'dist/src' },
       }),
     ],
   },

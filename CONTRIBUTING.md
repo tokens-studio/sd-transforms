@@ -2,20 +2,6 @@
 
 Things to know before contributing:
 
-## ESMify postcss-calc-ast-parser
-
-We use postcss-calc-ast-parser to evaluate math expressions inside token values.
-
-This is only a problem of the format, so it's easily fixed by using a bundler to format it to ESM.
-
-Run:
-
-```sh
-npm run build
-```
-
-before doing things like linting, testing etc., or you will get errors.
-
 ## Tests
 
 Unit tests should provide 100% coverage. Use:
