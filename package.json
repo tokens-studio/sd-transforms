@@ -11,17 +11,17 @@
   "type": "module",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "require": "./dist/src/index.cjs",
+      "import": "./dist/src/index.js"
     }
   },
-  "main": "./dist/index.cjs",
+  "main": "./dist/src/index.cjs",
   "module": "./dist/src/index.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rimraf dist && rollup -c rollup.config.mjs",
+    "build": "rimraf dist && rollup -c rollup.config.mjs && rimraf __bundled_CJS_dependencies",
     "format": "npm run format:eslint && npm run format:prettier",
     "format:eslint": "eslint --ext .ts,.html . --fix",
     "format:prettier": "prettier \"**/*.{ts,md}\" \"package.json\" --write",
