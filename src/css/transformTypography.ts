@@ -18,7 +18,8 @@ export function transformTypographyForCSS(
   }
 
   let { fontFamily, fontWeight, fontSize, lineHeight } = value;
-  fontWeight = transformFontWeights(fontWeight);
+
+  fontWeight = fontWeight !== undefined ? `${transformFontWeights(fontWeight)}` : undefined;
   fontSize = transformDimension(checkAndEvaluateMath(fontSize));
   lineHeight = checkAndEvaluateMath(lineHeight);
   fontFamily = hasWhiteSpace(fontFamily) ? `'${fontFamily}'` : fontFamily;

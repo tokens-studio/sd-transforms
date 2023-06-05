@@ -6,7 +6,7 @@ runTransformSuite(transformLineHeight as (value: unknown) => unknown);
 
 describe('transform line height', () => {
   it('transforms line-height % to unit-less decimal value', () => {
-    expect(transformLineHeight('50%')).to.equal('0.5');
+    expect(transformLineHeight('50%')).to.equal(0.5);
   });
 
   it("does not transform line-height if it doesn't end with %", () => {

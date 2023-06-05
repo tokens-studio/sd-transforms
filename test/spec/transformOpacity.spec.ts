@@ -6,7 +6,7 @@ runTransformSuite(transformOpacity as (value: unknown) => unknown);
 
 describe('transform opacity', () => {
   it('transforms opacity % to unit-less decimal value', () => {
-    expect(transformOpacity('50%')).to.equal('0.5');
+    expect(transformOpacity('50%')).to.equal(0.5);
   });
 
   it("does not transform opacity if it doesn't end with %", () => {

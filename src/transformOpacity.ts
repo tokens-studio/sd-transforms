@@ -10,5 +10,5 @@ export function transformOpacity(value: string | number | undefined): string | n
     return value;
   }
   const decimal = percentageToDecimal(value);
-  return typeof decimal === 'string' || isNaN(decimal) ? `${value}` : `${decimal}`;
+  return typeof decimal === 'string' || isNaN(decimal) ? value : decimal;
 }

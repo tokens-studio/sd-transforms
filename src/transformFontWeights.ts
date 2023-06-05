@@ -28,13 +28,13 @@ export const fontWeightMap = {
 /**
  * Helper: Transforms fontweight keynames to fontweight numbers (100, 200, 300 ... 900)
  */
-export function transformFontWeights(value: string | undefined | number): string | undefined {
+export function transformFontWeights(
+  value: string | undefined | number,
+): number | string | undefined {
   if (value === undefined) {
     return value;
   }
   const mapped = fontWeightMap[`${value}`.toLowerCase()];
-  if (mapped) {
-    return `${mapped}`;
-  }
-  return `${value}`;
+
+  return mapped ?? value;
 }
