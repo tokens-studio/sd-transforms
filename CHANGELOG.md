@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.4
+
+### Patch Changes
+
+- de971fe: Fixed the return types of lineHeight, opacity and fontWeight to be number instead of string
+
 ## 0.9.3
 
 ### Patch Changes
