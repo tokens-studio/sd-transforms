@@ -7,6 +7,6 @@ import { DesignToken } from 'style-dictionary';
 export function mapDescriptionToComment(token: DesignToken): DesignToken {
   // intentional mutation of the original object
   const _t = token;
-  _t.comment = _t.description;
+  _t.comment = _t.description.replace(/\r?\n|\r/g, ' '); // Strip out newline and carriage returns, replacing them with space
   return _t;
 }
