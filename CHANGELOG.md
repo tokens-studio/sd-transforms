@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.5
+
+### Patch Changes
+
+- 0e493a1: Fixes comment transformer for descriptions with line breaks
+
 ## 0.9.4
 
 ### Patch Changes
