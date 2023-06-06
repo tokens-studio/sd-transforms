@@ -8,7 +8,7 @@ Unit tests should provide 100% coverage. Use:
 
 ```sh
 npm run test
-npm run test:view:coverage
+npm run test:unit:coverage
 ```
 
 To run the tests and view the coverage report, to see which things are untested.
