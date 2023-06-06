@@ -11,17 +11,18 @@ import { hasWhiteSpace } from '../utils/has-whitespace.js';
  */
 
 export function transformTypographyForCSS(
-  value: Record<string, string | undefined> | undefined | string,
+  value: Record<string, string | undefined | number> | undefined | string,
 ): string | undefined {
   if (typeof value !== 'object') {
     return value;
   }
 
   let { fontFamily, fontWeight, fontSize, lineHeight } = value;
+
   fontWeight = transformFontWeights(fontWeight);
   fontSize = transformDimension(checkAndEvaluateMath(fontSize));
   lineHeight = checkAndEvaluateMath(lineHeight);
-  fontFamily = hasWhiteSpace(fontFamily) ? `'${fontFamily}'` : fontFamily;
+  fontFamily = hasWhiteSpace(fontFamily as string | undefined) ? `'${fontFamily}'` : fontFamily;
 
   return `${isNothing(fontWeight) ? 400 : fontWeight} ${isNothing(fontSize) ? '16px' : fontSize}/${
     isNothing(lineHeight) ? 1 : lineHeight

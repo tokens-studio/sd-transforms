@@ -5,10 +5,12 @@ import { percentageToDecimal } from './utils/percentageToDecimal.js';
  * @example
  * 150% -> 1.5
  */
-export function transformLineHeight(value: string | number | undefined): string | undefined {
+export function transformLineHeight(
+  value: string | number | undefined,
+): string | number | undefined {
   if (value === undefined) {
     return value;
   }
   const decimal = percentageToDecimal(value);
-  return typeof decimal === 'string' || isNaN(decimal) ? `${value}` : `${decimal}`;
+  return typeof decimal === 'string' || isNaN(decimal) ? `${value}` : decimal;
 }

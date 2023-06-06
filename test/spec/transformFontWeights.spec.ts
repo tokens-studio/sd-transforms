@@ -7,7 +7,7 @@ runTransformSuite(transformFontWeights as (value: unknown) => unknown);
 describe('transform dimension', () => {
   it('transforms fontweight keynames to fontweight numbers', () => {
     Object.entries(fontWeightMap).forEach(([keyname, number]) => {
-      expect(transformFontWeights(keyname)).to.equal(`${number}`);
+      expect(transformFontWeights(keyname)).to.equal(number);
     });
   });
 
@@ -17,6 +17,6 @@ describe('transform dimension', () => {
   });
 
   it('supports case-insensitive input', () => {
-    expect(transformFontWeights('Light')).to.equal('300');
+    expect(transformFontWeights('Light')).to.equal(300);
   });
 });
