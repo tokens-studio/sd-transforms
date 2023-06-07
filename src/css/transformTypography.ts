@@ -17,14 +17,28 @@ export function transformTypographyForCSS(
     return value;
   }
 
-  let { fontFamily, fontWeight, fontSize, lineHeight } = value;
-
+  let { fontWeight, fontSize, lineHeight } = value;
+  // @ts-igrore
+  const { fontFamily } = value;
   fontWeight = transformFontWeights(fontWeight);
+
+  let fontFamilyArray: string[];
+  if (fontFamily !== undefined) {
+    fontFamilyArray = fontFamily.split(', ');
+  } else {
+    fontFamilyArray = new Array('sans-serif');
+  }
+
+  const fontFamilySet = fontFamilyArray
+    .map(e => {
+      return hasWhiteSpace(e as string | undefined) ? `'${e}'` : e;
+    })
+    .join(', ');
+
   fontSize = transformDimension(checkAndEvaluateMath(fontSize));
   lineHeight = checkAndEvaluateMath(lineHeight);
-  fontFamily = hasWhiteSpace(fontFamily as string | undefined) ? `'${fontFamily}'` : fontFamily;
 
   return `${isNothing(fontWeight) ? 400 : fontWeight} ${isNothing(fontSize) ? '16px' : fontSize}/${
     isNothing(lineHeight) ? 1 : lineHeight
-  } ${isNothing(fontFamily) ? 'sans-serif' : fontFamily}`;
+  } ${isNothing(fontFamily) ? 'sans-serif' : fontFamilySet}`;
 }

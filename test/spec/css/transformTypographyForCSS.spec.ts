@@ -45,8 +45,8 @@ describe('transform typography', () => {
         fontWeight: 'light',
         fontSize: '20',
         lineHeight: '1.5',
-        fontFamily: 'Arial Narrow',
+        fontFamily: 'Arial Narrow, Arial, sans-serif',
       }),
-    ).to.equal("300 20px/1.5 'Arial Narrow'");
+    ).to.equal("300 20px/1.5 'Arial Narrow', Arial, sans-serif");
   });
 });
