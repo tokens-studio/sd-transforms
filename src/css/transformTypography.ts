@@ -18,7 +18,6 @@ export function transformTypographyForCSS(
   }
 
   let { fontWeight, fontSize, lineHeight } = value;
-  // @ts-igrore
   const { fontFamily } = value;
   fontWeight = transformFontWeights(fontWeight);
 
