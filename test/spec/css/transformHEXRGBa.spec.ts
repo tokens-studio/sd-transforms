@@ -9,6 +9,10 @@ describe('transform HEXRGBa', () => {
     expect(transformHEXRGBaForCSS('rgba(#ABC123, 0.5)')).to.equal('rgba(171, 193, 35, 0.5)');
   });
 
+  it("transforms Figma's hex code RGBA to actual RGBA format regardless of whitespacing", () => {
+    expect(transformHEXRGBaForCSS('rgba( #ABC123 , 0.5)')).to.equal('rgba(171, 193, 35, 0.5)');
+  });
+
   it('does not transform the color if it doesnt match the regex', () => {
     expect(transformHEXRGBaForCSS('foo')).to.equal('foo');
   });
