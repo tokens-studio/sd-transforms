@@ -9,7 +9,7 @@ export function transformHEXRGBaForCSS(value: string | undefined): string | unde
   if (value === undefined) {
     return value;
   }
-  const match = /rgba\((?<hex>#.+?),\s*?(?<alpha>\d.*?)\)/g.exec(value);
+  const match = /rgba\(\s*(?<hex>#.+?)\s*,\s*?(?<alpha>\d.*?)\)/g.exec(value);
   if (match && match.groups) {
     const { hex, alpha } = match.groups;
     try {
