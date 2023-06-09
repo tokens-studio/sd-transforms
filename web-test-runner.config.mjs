@@ -19,5 +19,8 @@ export default {
     },
   },
   browsers: [playwrightLauncher({ product: 'chromium' })],
-  plugins: [commonjs({ requireReturnsDefault: true }), esbuildPlugin({ ts: true, target: 'auto' })],
+  plugins: [
+    commonjs({ requireReturnsDefault: 'preferred' }),
+    esbuildPlugin({ ts: true, target: 'auto' }),
+  ],
 };

@@ -3,14 +3,16 @@
 ![NPM version badge](https://img.shields.io/npm/v/@tokens-studio/sd-transforms) ![License badge](https://img.shields.io/github/license/tokens-studio/sd-transforms)
 
 ## Table of contents
-  * [Installation](#installation)
-  * [Getting Started](#usage)
-    + [Using the transforms](#using-the-transforms)
-    + [Custom Transform Group](#custom-transform-group)
-    + [Options](#options)
-  * [Full example](#full-example)
-    + [Themes full example](#themes-full-example)
-  * [Troubleshooting](#not-sure-how-to-fix-your-issue)
+
+- [Installation](#installation)
+- [Getting Started](#usage)
+  - [Using the transforms](#using-the-transforms)
+  - [Custom Transform Group](#custom-transform-group)
+  - [Options](#options)
+- [Full example](#full-example)
+  - [Themes full example](#themes-full-example)
+  - [Multi-dimensional theming](#multi-dimensional-theming)
+- [Troubleshooting](#not-sure-how-to-fix-your-issue)
 
 > This library is currently in beta.
 
@@ -156,8 +158,8 @@ Options:
 > Handy if you have your own parsers set up (e.g. for JS files), and you want the expansions to work there too.
 
 ## Full example
-Create a `.js` file, e.g.: `build-output.js`, with the contents:
 
+Create a `.js` file, e.g.: `build-output.js`, with the contents:
 
 ```cjs
 const { registerTransforms } = require('@tokens-studio/sd-transforms');
@@ -210,10 +212,10 @@ sd.buildAllPlatforms();
 ```
 
 #### To run it use following command
+
 ```sh
 node build-output.js
 ```
-
 
 > Note: make sure to choose either the full transformGroup, **OR** its separate transforms so you can adjust or add your own.
 > [Combining a transformGroup with a transforms array can give unexpected results](https://github.com/amzn/style-dictionary/issues/813).
@@ -236,7 +238,7 @@ registerTransforms(StyleDictionary, {
 });
 
 async function run() {
-  const $themes = JSON.parse(await promises.readFile('$themes.json'));
+  const $themes = JSON.parse(await promises.readFile('$themes.json', 'utf-8'));
   const configs = $themes.map(theme => ({
     source: Object.entries(theme.selectedTokenSets)
       .filter(([, val]) => val !== 'disabled')
@@ -264,10 +266,63 @@ async function run() {
 run();
 ```
 
-## Not sure how to fix your issue ? 
+### Multi-dimensional Theming
+
+If you're using Tokens Studio multi-dimensional theming, you'll have to run some logic to create permutations of those multiple dimensions of themes.
+We export a function called `permutateThemes` that allows passing the data from your `$themes.json`, and will give back an object with all the different permutations.
+
+```js
+const { permutateThemes } = require('@tokens-studio/sd-transforms');
+const fs = require('fs');
+
+// gives back e.g. { light_casual: ['core', 'light', 'theme', 'casual'], dark_business: ['core', 'dark', 'theme', 'business'], ... }
+permutateThemes(JSON.parse(fs.readFileSync('$themes.json'), { seperator: '_' }, 'utf-8'));
+```
+
+Full example with multi-dimensional themes:
+
+```js
+const { registerTransforms, permutateThemes } = require('@tokens-studio/sd-transforms');
+const StyleDictionary = require('style-dictionary');
+const { promises } = require('fs');
+
+registerTransforms(StyleDictionary, {
+  /* options here if needed */
+});
+
+async function run() {
+  const $themes = JSON.parse(await promises.readFile('$themes.json', 'utf-8'));
+  const themes = permutateThemes($themes, { seperator: '_' });
+  const configs = Object.entries(themes).map(([name, tokensets]) => ({
+    source: tokensets.map(tokenset => `${tokenset}.json`),
+    platforms: {
+      css: {
+        transformGroup: 'tokens-studio',
+        files: [
+          {
+            destination: `vars-${name}.css`,
+            format: 'css/variables',
+          },
+        ],
+      },
+    },
+  }));
+
+  configs.forEach(cfg => {
+    const sd = StyleDictionary.extend(cfg);
+    sd.cleanAllPlatforms(); // optionally, cleanup files first..
+    sd.buildAllPlatforms();
+  });
+}
+
+run();
+```
+
+## Not sure how to fix your issue ?
+
 ### Create a reproduction by :-
 
-1. Open configurator tool [link](https://configurator.tokens.studio/) 
+1. Open configurator tool [link](https://configurator.tokens.studio/)
 2. Upload your tokens and add your style dictionary config and transforms
 3. Copy the Url as it will include your settings.
 4. Join our slack [link](https://tokens.studio/slack)
