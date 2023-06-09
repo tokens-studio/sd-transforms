@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.8
+
+### Patch Changes
+
+- d8eabab: Fix font-families with spaces in between them for multiple comma separated font fallbacks.
+
 ## 0.9.7
 
 ### Patch Changes
