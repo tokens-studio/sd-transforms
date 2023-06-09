@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.7
+
+### Patch Changes
+
+- a18c91f: Export permutateThemes utility function, allowing you to input your multi-dimensional $themes.json data, and receive the permutations (single dimensional outputs) as a result. [See docs](./README.md#multi-dimensional-theming).
+
 ## 0.9.6
 
 ### Patch Changes
