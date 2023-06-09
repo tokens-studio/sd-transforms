@@ -18,3 +18,5 @@ export { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
 export { transformLetterSpacingForCSS } from './css/transformLetterSpacing.js';
 
 export { transformTypographyForCompose } from './compose/transformTypography.js';
+
+export { permutateThemes } from './permutateThemes.js';
