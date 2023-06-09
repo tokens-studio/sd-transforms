@@ -3,6 +3,7 @@ import { transformFontWeights } from '../transformFontWeights.js';
 import { checkAndEvaluateMath } from '../checkAndEvaluateMath.js';
 import { isNothing } from '../utils/is-nothing.js';
 import { hasWhiteSpace } from '../utils/has-whitespace.js';
+import { isCommaSeperated } from '../utils/is-comma-seperated.js';
 
 /**
  * Helper: Transforms typography object to typography shorthand for CSS
@@ -21,18 +22,21 @@ export function transformTypographyForCSS(
   const { fontFamily } = value;
   fontWeight = transformFontWeights(fontWeight);
 
-  let fontFamilyArray: string[];
-  if (fontFamily !== undefined) {
-    fontFamilyArray = fontFamily.split(', ');
-  } else {
-    fontFamilyArray = new Array('sans-serif');
+  let fontFamilySet;
+
+  if (fontFamily !== undefined && !isCommaSeperated(fontFamily)) {
+    fontFamilySet = hasWhiteSpace(fontFamily) ? `'${fontFamily}'` : fontFamily;
   }
 
-  const fontFamilySet = fontFamilyArray
-    .map(e => {
-      return hasWhiteSpace(e as string | undefined) ? `'${e}'` : e;
-    })
-    .join(', ');
+  if (fontFamily !== undefined && typeof fontFamily !== 'number' && isCommaSeperated(fontFamily)) {
+    let fontFamilyArray = [];
+    fontFamilyArray = fontFamily.split(', ');
+    fontFamilySet = fontFamilyArray
+      .map((e: string) => {
+        return hasWhiteSpace(e as string | undefined) ? `'${e}'` : e;
+      })
+      .join(', ');
+  }
 
   fontSize = transformDimension(checkAndEvaluateMath(fontSize));
   lineHeight = checkAndEvaluateMath(lineHeight);
