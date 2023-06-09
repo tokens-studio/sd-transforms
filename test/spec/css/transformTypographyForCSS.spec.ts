@@ -1,10 +1,20 @@
 import { expect } from '@esm-bundle/chai';
-import { transformTypographyForCSS } from '../../../src/css/transformTypography.js';
+import {
+  transformTypographyForCSS,
+  hasWhiteSpace,
+  isCommaSeparated,
+} from '../../../src/css/transformTypography.js';
 import { runTransformSuite } from '../../suites/transform-suite.spec.js';
 
 runTransformSuite(transformTypographyForCSS as (value: unknown) => unknown);
 
 describe('transform typography', () => {
+  describe('typography utils', () => {
+    it('isCommaSeparated returns true if string is comma seperated', () => {
+      expect(isCommaSeparated('foo,bar')).to.be.true;
+    });
+  });
+
   it('transforms typography object to typography shorthand', () => {
     expect(
       transformTypographyForCSS({
@@ -39,7 +49,7 @@ describe('transform typography', () => {
     expect(transformTypographyForCSS({})).to.equal('400 16px/1 sans-serif');
   });
 
-  it('set quotes around fontFamily if it has white spaces in name', () => {
+  it('sets quotes around fontFamily if it has white-spaces in name', () => {
     expect(
       transformTypographyForCSS({
         fontWeight: 'light',
@@ -48,5 +58,15 @@ describe('transform typography', () => {
         fontFamily: 'Arial Narrow, Arial, sans-serif',
       }),
     ).to.equal("300 20px/1.5 'Arial Narrow', Arial, sans-serif");
+  });
+
+  it('sets fontFamily to sans-serif when it is not defined ', () => {
+    expect(
+      transformTypographyForCSS({
+        fontWeight: 'light',
+        fontSize: '20',
+        lineHeight: '1.5',
+      }),
+    ).to.equal('300 20px/1.5 sans-serif');
   });
 });
