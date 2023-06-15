@@ -32,7 +32,7 @@ describe('sd-transforms smoke tests', () => {
     if (dict) {
       cleanup(dict);
     }
-    dict = init(cfg);
+    dict = init(cfg, { 'ts/color/modifiers': { format: 'hex' } });
   });
 
   afterEach(() => {
@@ -43,7 +43,6 @@ describe('sd-transforms smoke tests', () => {
 
   it('supports tokens-studio tokens', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    console.log(file);
     expect(file).to.include(`:root {
   --sdDimensionScale: 2;
   --sdDimensionXs: 4px;
