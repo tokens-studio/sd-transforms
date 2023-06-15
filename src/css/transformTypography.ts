@@ -8,15 +8,19 @@ export function hasWhiteSpace(value: string): boolean {
   return whiteSpaceRegex.test(value);
 }
 
+function isAlreadyQuoted(value: string): boolean {
+  return value.startsWith("'") && value.endsWith("'");
+}
+
 export function isCommaSeparated(value: string): boolean {
   return value.includes(',');
 }
 
 function quoteWrapWhitespacedFont(fontString: string) {
-  return hasWhiteSpace(fontString) ? `'${fontString}'` : fontString;
+  return hasWhiteSpace(fontString) && !isAlreadyQuoted(fontString) ? `'${fontString}'` : fontString;
 }
 
-function processFontFamily(fontFamily: string | undefined) {
+export function processFontFamily(fontFamily: string | undefined) {
   if (isNothing(fontFamily)) {
     return 'sans-serif';
   }
