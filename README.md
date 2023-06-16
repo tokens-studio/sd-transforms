@@ -35,6 +35,7 @@ CSS:
 
 - Transform letterspacing from `%` to `em` -> `ts/size/css/letterspacing`
 - Transform colors to `rgba()` format -> `ts/color/css/hexrgba`
+- Transform font name into valid CSS, quoting if necessary. Fixes `outputReferences: true` in css shorthand -> `ts/type/css/quoteFontName`
 - Transform typography objects to CSS shorthand -> `ts/typography/css/shorthand`
 - Transform Tokens Studio shadow objects to CSS shadow shorthand -> `ts/shadow/css/shorthand`
 - Transform border objects to CSS border shorthand -> `ts/border/css/shorthand`
@@ -189,6 +190,7 @@ const sd = StyleDictionary.extend({
         'ts/type/fontWeight',
         'ts/resolveMath',
         'ts/size/css/letterspacing',
+        'ts/type/css/quoteFontName',
         'ts/typography/css/shorthand',
         'ts/border/css/shorthand',
         'ts/shadow/css/shorthand',

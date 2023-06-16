@@ -24,9 +24,9 @@ export const transforms = [
   'ts/opacity',
   'ts/size/lineheight',
   'ts/type/fontWeight',
-  'ts/type/quoteFontName',
   'ts/resolveMath',
   'ts/size/css/letterspacing',
+  'ts/type/css/quoteFontName',
   'ts/typography/css/shorthand',
   'ts/border/css/shorthand',
   'ts/shadow/css/shorthand',
@@ -111,7 +111,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
   });
 
   _sd.registerTransform({
-    name: 'ts/type/quoteFontName',
+    name: 'ts/type/css/quoteFontName',
     type: 'value',
     matcher: token => token.type === 'fontFamilies',
     transformer: token => processFontFamily(token.value),
