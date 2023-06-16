@@ -275,8 +275,54 @@ We export a function called `permutateThemes` that allows passing the data from 
 const { permutateThemes } = require('@tokens-studio/sd-transforms');
 const fs = require('fs');
 
-// gives back e.g. { light_casual: ['core', 'light', 'theme', 'casual'], dark_business: ['core', 'dark', 'theme', 'business'], ... }
-permutateThemes(JSON.parse(fs.readFileSync('$themes.json'), { seperator: '_' }, 'utf-8'));
+/**
+ * Input:
+ * [
+ *  {
+ *    name: 'light'
+ *    group: 'theme',
+ *    selectedTokensets: {
+ *      'core': 'source',
+ *      'light': 'enabled',
+ *      'theme': 'enabled'
+ *    }
+ *  },
+ *  {
+ *    name: 'dark'
+ *    group: 'theme',
+ *    selectedTokensets: {
+ *      'core': 'source',
+ *      'dark': 'enabled',
+ *      'theme': 'enabled'
+ *    }
+ *  },
+ *  {
+ *    name: 'casual'
+ *    group: 'brand',
+ *    selectedTokensets: {
+ *      'core': 'source',
+ *      'casual': 'enabled'
+ *    }
+ *  },
+ *  {
+ *    name: 'business'
+ *    group: 'brand',
+ *    selectedTokensets: {
+ *      'core': 'source',
+ *      'business': 'enabled'
+ *    }
+ *  }
+ * ]
+ *
+ * Output:
+ * {
+ *   light_casual: ['core', 'light', 'theme', 'casual'],
+ *   dark_casual: ['core', 'dark', 'theme', 'casual'],
+ *   light_business: ['core', 'light', 'theme', 'business'],
+ *   dark_business: ['core', 'dark', 'theme', 'business'],
+ * }
+ */
+permutateThemes(JSON.parse(fs.readFileSync('$themes.json', 'utf-8')), { seperator: '_' });
 ```
 
 Full example with multi-dimensional themes:
