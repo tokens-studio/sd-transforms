@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.9
+
+### Patch Changes
+
+- 4a8a44f: Fix path to the typescript types
+
 ## 0.9.8
 
 ### Patch Changes
