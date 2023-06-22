@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.9.10
+
+### Patch Changes
+
+- c4bb776: Allow color modifications to format to hex when the color space is not sRGB. It will do a conversion step to sRGB space before formatting to hex.
+
 ## 0.9.9
 
 ### Patch Changes
