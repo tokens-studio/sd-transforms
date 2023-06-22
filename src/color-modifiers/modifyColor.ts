@@ -35,10 +35,15 @@ export function modifyColor(
     }
 
     returnedColor = returnedColor.to(modifier.space);
-    if (modifier.format && ['lch', 'srgb', 'p3', 'hsl'].includes(modifier.format)) {
-      returnedColor = returnedColor.to(modifier.format);
-    }
 
+    if (modifier.format && ['lch', 'srgb', 'p3', 'hsl', 'hex'].includes(modifier.format)) {
+      // Since hex is not a color space, convert to srgb, toString will then be able to format to hex
+      if (modifier.format === 'hex') {
+        returnedColor = returnedColor.to('srgb');
+      } else {
+        returnedColor = returnedColor.to(modifier.format);
+      }
+    }
     return returnedColor.toString({
       inGamut: true,
       precision: 3,

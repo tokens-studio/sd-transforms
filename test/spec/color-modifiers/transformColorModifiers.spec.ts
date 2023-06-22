@@ -183,4 +183,23 @@ describe('transform color modifiers', () => {
     // output to hex
     expect(transformColorModifiers(token('hex'))).to.equal('#9a3535');
   });
+
+  it('can convert from a non-srgb space to srgb space to then format it as a hex color (which is fundamentally rgb)', () => {
+    const token = {
+      value: '#C14242',
+      type: 'color',
+      $extensions: {
+        'studio.tokens': {
+          modify: {
+            type: 'darken',
+            value: '0.2',
+            space: 'lch',
+            format: 'hex',
+          },
+        },
+      },
+    };
+
+    expect(transformColorModifiers(token)).to.equal('#983735');
+  });
 });
