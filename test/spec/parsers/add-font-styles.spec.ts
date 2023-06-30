@@ -3,46 +3,63 @@ import { DeepKeyTokenMap } from '@tokens-studio/types';
 import { addFontStyles } from '../../../src/parsers/add-font-styles.js';
 
 const tokensInput = {
-  foo: {
+  italic: {
     value: {
-      fontFamily: 'Arial',
       fontWeight: 'Bold Italic',
-      lineHeight: '1.25',
-      fontSize: '26',
+    },
+    type: 'typography',
+  },
+  normal: {
+    value: {
+      fontWeight: 'Bold Normal',
+    },
+    type: 'typography',
+  },
+  oblique: {
+    value: {
+      fontWeight: 'Bold Oblique',
     },
     type: 'typography',
   },
   ref: {
-    value: '{foo}',
+    value: '{italic}',
     type: 'typography',
   },
 };
 
 const tokensOutput = {
-  foo: {
+  italic: {
     value: {
-      fontFamily: 'Arial',
       fontWeight: 'Bold',
       fontStyle: 'italic',
-      lineHeight: '1.25',
-      fontSize: '26',
+    },
+    type: 'typography',
+  },
+  normal: {
+    value: {
+      fontWeight: 'Bold',
+      fontStyle: 'normal',
+    },
+    type: 'typography',
+  },
+  oblique: {
+    value: {
+      fontWeight: 'Bold',
+      fontStyle: 'oblique',
     },
     type: 'typography',
   },
   ref: {
     value: {
-      fontFamily: 'Arial',
       fontWeight: 'Bold',
       fontStyle: 'italic',
-      lineHeight: '1.25',
-      fontSize: '26',
     },
     type: 'typography',
   },
 };
 
 describe('add font style', () => {
-  it.only(`should expand composition tokens by default`, () => {
+  it(`should expand composition tokens by default`, () => {
     expect(addFontStyles(tokensInput as DeepKeyTokenMap<false>)).to.eql(tokensOutput);
   });
 });

@@ -34,10 +34,15 @@ function recurse(
 
       // cast it to TokenTypographyValue now that we've resolved references all the way, we know it cannot be a string anymore.
       const tokenValue = value as TokenTypographyValue;
-      if (fontWeight && fontWeight.toLowerCase().indexOf('italic') > -1) {
-        // @ts-expect-error fontStyle is not a property that exists on Typography Tokens, we just add it ourselves
-        tokenValue.fontStyle = 'italic';
-        tokenValue.fontWeight = tokenValue.fontWeight?.replace(/italic$/i, '').trim();
+
+      if (fontWeight) {
+        const fontStyleReg = /(italic|oblique|normal)$/gi;
+        const fontStyleMatch = fontWeight.match(fontStyleReg);
+        if (fontStyleMatch) {
+          // @ts-expect-error fontStyle is not a property that exists on Typography Tokens, we just add it ourselves
+          tokenValue.fontStyle = fontStyleMatch[0].toLowerCase();
+          tokenValue.fontWeight = tokenValue.fontWeight?.replace(fontStyleReg, '').trim();
+        }
       }
     } else if (typeof token === 'object') {
       recurse(token as unknown as DeepKeyTokenMap<false>, boundGetRef);
