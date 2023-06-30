@@ -196,6 +196,9 @@ describe('transform dimension', () => {
       },
     ];
 
-    expect(permutateThemes(singleDimensionalThemes)).to.eql(singleDimensionalThemes);
+    expect(permutateThemes(singleDimensionalThemes)).to.eql({
+      dark: ['core', 'dark', 'theme'],
+      light: ['core', 'light', 'theme'],
+    });
   });
 });
