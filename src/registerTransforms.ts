@@ -23,10 +23,10 @@ export const transforms = [
   'ts/size/px',
   'ts/opacity',
   'ts/size/lineheight',
-  'ts/type/fontWeight',
+  'ts/typography/fontWeight',
   'ts/resolveMath',
   'ts/size/css/letterspacing',
-  'ts/type/css/quoteFontName',
+  'ts/typography/css/fontFamily',
   'ts/typography/css/shorthand',
   'ts/border/css/shorthand',
   'ts/shadow/css/shorthand',
@@ -104,14 +104,14 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
   });
 
   _sd.registerTransform({
-    name: 'ts/type/fontWeight',
+    name: 'ts/typography/fontWeight',
     type: 'value',
     matcher: token => token.type === 'fontWeights',
     transformer: token => transformFontWeights(token.value),
   });
 
   _sd.registerTransform({
-    name: 'ts/type/css/quoteFontName',
+    name: 'ts/typography/css/fontFamily',
     type: 'value',
     matcher: token => token.type === 'fontFamilies',
     transformer: token => processFontFamily(token.value),
