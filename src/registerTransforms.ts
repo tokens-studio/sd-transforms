@@ -5,7 +5,7 @@ import { transformShadowForCSS } from './css/transformShadow.js';
 import { transformFontWeights } from './transformFontWeights.js';
 import { transformLetterSpacingForCSS } from './css/transformLetterSpacing.js';
 import { transformLineHeight } from './transformLineHeight.js';
-import { transformTypographyForCSS } from './css/transformTypography.js';
+import { processFontFamily, transformTypographyForCSS } from './css/transformTypography.js';
 import { transformTypographyForCompose } from './compose/transformTypography.js';
 import { transformBorderForCSS } from './css/transformBorder.js';
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
@@ -23,9 +23,10 @@ export const transforms = [
   'ts/size/px',
   'ts/opacity',
   'ts/size/lineheight',
-  'ts/type/fontWeight',
+  'ts/typography/fontWeight',
   'ts/resolveMath',
   'ts/size/css/letterspacing',
+  'ts/typography/css/fontFamily',
   'ts/typography/css/shorthand',
   'ts/border/css/shorthand',
   'ts/shadow/css/shorthand',
@@ -103,10 +104,17 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
   });
 
   _sd.registerTransform({
-    name: 'ts/type/fontWeight',
+    name: 'ts/typography/fontWeight',
     type: 'value',
     matcher: token => token.type === 'fontWeights',
     transformer: token => transformFontWeights(token.value),
+  });
+
+  _sd.registerTransform({
+    name: 'ts/typography/css/fontFamily',
+    type: 'value',
+    matcher: token => token.type === 'fontFamilies',
+    transformer: token => processFontFamily(token.value),
   });
 
   /**

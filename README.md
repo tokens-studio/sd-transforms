@@ -28,13 +28,14 @@ Generic:
 - Transform dimensions tokens to have `px` as a unit when missing (transitive) -> `ts/size/px`
 - Transform opacity from `%` to number between `0` and `1` -> `ts/opacity`
 - Transform lineheight from `%` to unitless (150% -> 1.5) -> `ts/size/lineheight`
-- Transform fontweight from keynames to fontweight numbers (100, 200, 300 ... 900) -> `ts/type/fontWeight`
+- Transform fontweight from keynames to fontweight numbers (100, 200, 300 ... 900) -> `ts/typography/fontWeight`
 - Transform color modifiers from Tokens Studio to color values -> `ts/color/modifiers`
 
 CSS:
 
 - Transform letterspacing from `%` to `em` -> `ts/size/css/letterspacing`
 - Transform colors to `rgba()` format -> `ts/color/css/hexrgba`
+- Transform font family into valid CSS, adding single quotes if necessary -> `ts/typography/css/fontFamily`
 - Transform typography objects to CSS shorthand -> `ts/typography/css/shorthand`
 - Transform Tokens Studio shadow objects to CSS shadow shorthand -> `ts/shadow/css/shorthand`
 - Transform border objects to CSS border shorthand -> `ts/border/css/shorthand`
@@ -186,9 +187,10 @@ const sd = StyleDictionary.extend({
         'ts/size/px',
         'ts/opacity',
         'ts/size/lineheight',
-        'ts/type/fontWeight',
+        'ts/typography/fontWeight',
         'ts/resolveMath',
         'ts/size/css/letterspacing',
+        'ts/typography/css/fontFamily',
         'ts/typography/css/shorthand',
         'ts/border/css/shorthand',
         'ts/shadow/css/shorthand',
