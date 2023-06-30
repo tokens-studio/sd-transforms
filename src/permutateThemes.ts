@@ -4,6 +4,12 @@ declare interface Options {
   separator?: string;
 }
 
+function mapThemesToSetsObject(themes: ThemeObject[]) {
+  return Object.fromEntries(
+    themes.map(theme => [theme.name, filterTokenSets(theme.selectedTokenSets)]),
+  );
+}
+
 export function permutateThemes(themes: ThemeObject[], { separator = '-' } = {} as Options) {
   if (themes.some(theme => theme.group)) {
     // Sort themes by groups
@@ -19,9 +25,7 @@ export function permutateThemes(themes: ThemeObject[], { separator = '-' } = {} 
     });
 
     if (Object.keys(groups).length <= 1) {
-      return Object.fromEntries(
-        themes.map(theme => [theme.name, filterTokenSets(theme.selectedTokenSets)]),
-      );
+      return mapThemesToSetsObject(themes);
     }
 
     // Create theme permutations
@@ -44,7 +48,7 @@ export function permutateThemes(themes: ThemeObject[], { separator = '-' } = {} 
       }),
     );
   } else {
-    return themes;
+    return mapThemesToSetsObject(themes);
   }
 }
 
