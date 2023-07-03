@@ -83,4 +83,17 @@ describe('add font style', () => {
   it(`should expand composition tokens by default`, () => {
     expect(addFontStyles(tokensInput as DeepKeyTokenMap<false>)).to.eql(tokensOutput);
   });
+
+  it(`should ignore broken fontWeight reference`, () => {
+    const inputTokens = {
+      usesFwRef: {
+        value: {
+          fontWeight: '{fwRef}',
+        },
+        type: 'typography',
+      },
+    };
+
+    expect(addFontStyles(inputTokens as DeepKeyTokenMap<false>)).to.eql(inputTokens);
+  });
 });
