@@ -12,10 +12,13 @@ function recurse(
     const token = slice[key];
     const { type, value } = token;
     if (type === 'typography') {
-      let fontWeight;
+      if (typeof value !== 'object') {
+        continue;
+      }
+      let fontWeight = value.fontWeight;
 
-      if (usesReference(value)) {
-        let ref = { value: value } as SingleToken<false>;
+      if (usesReference(fontWeight)) {
+        let ref = { value: fontWeight } as SingleToken<false>;
         while (ref && ref.value && typeof ref.value === 'string' && usesReference(ref.value)) {
           try {
             ref = Object.fromEntries(
@@ -26,10 +29,7 @@ function recurse(
             return;
           }
         }
-        fontWeight = (ref.value as TokenTypographyValue).fontWeight;
-        (token as SingleToken<false>).value = ref.value;
-      } else if (typeof value === 'object') {
-        fontWeight = value.fontWeight;
+        fontWeight = ref.value as string;
       }
 
       // cast it to TokenTypographyValue now that we've resolved references all the way, we know it cannot be a string anymore.
@@ -41,7 +41,7 @@ function recurse(
         if (fontStyleMatch) {
           // @ts-expect-error fontStyle is not a property that exists on Typography Tokens, we just add it ourselves
           tokenValue.fontStyle = fontStyleMatch[0].toLowerCase();
-          tokenValue.fontWeight = tokenValue.fontWeight?.replace(fontStyleReg, '').trim();
+          tokenValue.fontWeight = fontWeight?.replace(fontStyleReg, '').trim();
         }
       }
     } else if (typeof token === 'object') {

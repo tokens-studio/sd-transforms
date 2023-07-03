@@ -21,6 +21,16 @@ const tokensInput = {
     },
     type: 'typography',
   },
+  fwRef: {
+    value: 'SemiBold Italic',
+    type: 'fontWeights',
+  },
+  usesFwRef: {
+    value: {
+      fontWeight: '{fwRef}',
+    },
+    type: 'typography',
+  },
   ref: {
     value: '{italic}',
     type: 'typography',
@@ -49,11 +59,22 @@ const tokensOutput = {
     },
     type: 'typography',
   },
-  ref: {
+  fwRef: {
+    value: 'SemiBold Italic',
+    type: 'fontWeights',
+  },
+  // since we are referencing a fontWeights token that has fontStyle,
+  // we can resolve the reference and create the fontStyle prop
+  usesFwRef: {
     value: {
-      fontWeight: 'Bold',
+      fontWeight: 'SemiBold',
       fontStyle: 'italic',
     },
+    type: 'typography',
+  },
+  // Keep full typo reference "as is", the referred token will be transformed as needed
+  ref: {
+    value: '{italic}',
     type: 'typography',
   },
 };
