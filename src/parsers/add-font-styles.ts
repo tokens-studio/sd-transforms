@@ -3,6 +3,7 @@ import { DeepKeyTokenMap, SingleToken, TokenTypographyValue } from '@tokens-stud
 import getReferences from 'style-dictionary/lib/utils/references/getReferences.js';
 // @ts-expect-error no type exported for this function
 import usesReference from 'style-dictionary/lib/utils/references/usesReference.js';
+import { fontWeightReg } from '../transformFontWeights.js';
 
 function recurse(
   slice: DeepKeyTokenMap<false>,
@@ -36,12 +37,11 @@ function recurse(
       const tokenValue = value as TokenTypographyValue;
 
       if (fontWeight) {
-        const fontStyleReg = /(italic|oblique|normal)$/gi;
-        const fontStyleMatch = fontWeight.match(fontStyleReg);
-        if (fontStyleMatch) {
+        const fontStyleMatch = fontWeight.match(fontWeightReg);
+        if (fontStyleMatch?.groups?.weight && fontStyleMatch.groups.style) {
           // @ts-expect-error fontStyle is not a property that exists on Typography Tokens, we just add it ourselves
-          tokenValue.fontStyle = fontStyleMatch[0].toLowerCase();
-          tokenValue.fontWeight = fontWeight?.replace(fontStyleReg, '').trim();
+          tokenValue.fontStyle = fontStyleMatch.groups.style.toLowerCase();
+          tokenValue.fontWeight = fontStyleMatch?.groups?.weight;
         }
       }
     } else if (typeof token === 'object') {

@@ -32,7 +32,7 @@
   "typography": {
     "value": {
       "fontFamily": "Arial",
-      "fontWeight": "500",
+      "fontWeight": "{fontWeightRef}",
       "lineHeight": "1.25",
       "fontSize": "26",
       "letterSpacing": "0",
@@ -42,6 +42,10 @@
       "textCase": "none"
     },
     "type": "typography"
+  },
+  "fontWeightRef": {
+    "value": "ExtraBold italic",
+    "type": "fontWeights"
   },
   "border": {
     "value": {

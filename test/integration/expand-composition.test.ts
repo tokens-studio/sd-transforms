@@ -51,6 +51,7 @@ describe('expand composition tokens', () => {
 
   it('only expands composition tokens by default', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
+
     expect(file).to.include(
       `
   --sdCompositionSize: 24px;
@@ -61,11 +62,12 @@ describe('expand composition tokens', () => {
   --sdCompositionHeaderFontFamilies: Roboto;
   --sdCompositionHeaderFontSizes: 96px;
   --sdCompositionHeaderFontWeights: 700;
-  --sdTypography: 500 26px/1.25 Arial;
+  --sdTypography: 800 italic 26px/1.25 Arial;
+  --sdFontWeightRef: 800 italic;
   --sdBorder: 4px solid #FFFF00;
   --sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
   --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
-  --sdRef: 500 26px/1.25 Arial;`,
+  --sdRef: 800 italic 26px/1.25 Arial;`,
     );
   });
 
@@ -91,7 +93,7 @@ describe('expand composition tokens', () => {
   --sdCompositionHeaderFontSizes: 96px;
   --sdCompositionHeaderFontWeights: 700;
   --sdTypographyFontFamily: Arial;
-  --sdTypographyFontWeight: 500;
+  --sdTypographyFontWeight: 800;
   --sdTypographyLineHeight: 1.25;
   --sdTypographyFontSize: 26px;
   --sdTypographyLetterSpacing: 0;
@@ -99,6 +101,8 @@ describe('expand composition tokens', () => {
   --sdTypographyParagraphIndent: 0;
   --sdTypographyTextDecoration: none;
   --sdTypographyTextCase: none;
+  --sdTypographyFontStyle: italic;
+  --sdFontWeightRef: 800 italic;
   --sdBorderColor: #FFFF00;
   --sdBorderWidth: 4px;
   --sdBorderStyle: solid;
@@ -136,7 +140,7 @@ describe('expand composition tokens', () => {
     expect(file).to.include(
       `
   --sdRefFontFamily: Arial;
-  --sdRefFontWeight: 500;
+  --sdRefFontWeight: 800;
   --sdRefLineHeight: 1.25;
   --sdRefFontSize: 26px;
   --sdRefLetterSpacing: 0;
@@ -144,15 +148,17 @@ describe('expand composition tokens', () => {
   --sdRefParagraphIndent: 0;
   --sdRefTextDecoration: none;
   --sdRefTextCase: none;
+  --sdRefFontStyle: italic;
   --sdDeepRefFontFamily: Arial;
-  --sdDeepRefFontWeight: 500;
+  --sdDeepRefFontWeight: 800;
   --sdDeepRefLineHeight: 1.25;
   --sdDeepRefFontSize: 26px;
   --sdDeepRefLetterSpacing: 0;
   --sdDeepRefParagraphSpacing: 0;
   --sdDeepRefParagraphIndent: 0;
   --sdDeepRefTextDecoration: none;
-  --sdDeepRefTextCase: none;`,
+  --sdDeepRefTextCase: none;
+  --sdDeepRefFontStyle: italic;`,
     );
   });
 });

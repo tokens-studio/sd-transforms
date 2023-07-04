@@ -19,4 +19,9 @@ describe('transform dimension', () => {
   it('supports case-insensitive input', () => {
     expect(transformFontWeights('Light')).to.equal(300);
   });
+
+  it('supports fontWeights with fontStyles inside of them', () => {
+    expect(transformFontWeights('Light normal')).to.equal(`300 normal`);
+    expect(transformFontWeights('ExtraBold Italic')).to.equal(`800 italic`);
+  });
 });
