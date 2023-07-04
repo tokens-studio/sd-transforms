@@ -15,6 +15,7 @@ import { TransformOptions } from './TransformOptions.js';
 import { expandComposites } from './parsers/expand-composites.js';
 import { excludeParentKeys } from './parsers/exclude-parent-keys.js';
 import { transformOpacity } from './transformOpacity.js';
+import { addFontStyles } from './parsers/add-font-styles.js';
 
 const isBrowser = typeof window === 'object';
 
@@ -59,7 +60,8 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
       parse: ({ filePath, contents }) => {
         const obj = JSON.parse(contents);
         const excluded = excludeParentKeys(obj, transformOpts);
-        const expanded = expandComposites(excluded, filePath, transformOpts);
+        const withFontStyles = addFontStyles(excluded);
+        const expanded = expandComposites(withFontStyles, filePath, transformOpts);
         return expanded;
       },
     });

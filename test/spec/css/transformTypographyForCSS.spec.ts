@@ -1,7 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import {
   transformTypographyForCSS,
-  hasWhiteSpace,
   isCommaSeparated,
 } from '../../../src/css/transformTypography.js';
 import { runTransformSuite } from '../../suites/transform-suite.spec.js';
@@ -68,5 +67,24 @@ describe('transform typography', () => {
         lineHeight: '1.5',
       }),
     ).to.equal('300 20px/1.5 sans-serif');
+  });
+
+  it('includes fontStyle if included in the fontWeight', () => {
+    expect(
+      transformTypographyForCSS({
+        fontWeight: 'light Italic',
+        fontSize: '20',
+        lineHeight: '1.5',
+      }),
+    ).to.equal('300 italic 20px/1.5 sans-serif');
+
+    expect(
+      transformTypographyForCSS({
+        fontWeight: 'light',
+        fontSize: '20',
+        lineHeight: '1.5',
+        fontStyle: 'italic',
+      }),
+    ).to.equal('300 italic 20px/1.5 sans-serif');
   });
 });

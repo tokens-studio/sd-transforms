@@ -8,7 +8,7 @@ export function hasWhiteSpace(value: string): boolean {
   return whiteSpaceRegex.test(value);
 }
 
-function isAlreadyQuoted(value: string): boolean {
+export function isAlreadyQuoted(value: string): boolean {
   return value.startsWith("'") && value.endsWith("'");
 }
 
@@ -48,12 +48,15 @@ export function transformTypographyForCSS(
   }
 
   let { fontFamily, fontWeight, fontSize, lineHeight } = value;
+  const { fontStyle } = value;
   fontSize = transformDimension(checkAndEvaluateMath(fontSize));
   lineHeight = checkAndEvaluateMath(lineHeight);
   fontWeight = transformFontWeights(fontWeight);
   fontFamily = processFontFamily(fontFamily as string | undefined);
 
-  return `${isNothing(fontWeight) ? 400 : fontWeight} ${isNothing(fontSize) ? '16px' : fontSize}/${
+  return `${isNothing(fontWeight) ? 400 : fontWeight}${
+    isNothing(fontStyle) ? '' : ` ${fontStyle}`
+  } ${isNothing(fontSize) ? '16px' : fontSize}/${
     isNothing(lineHeight) ? 1 : lineHeight
   } ${fontFamily}`;
 }

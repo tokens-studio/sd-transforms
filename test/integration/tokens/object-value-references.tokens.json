@@ -8,7 +8,7 @@
       "xxl": {
         "value": {
           "fontFamily": "Aria Sans",
-          "fontWeight": "bold",
+          "fontWeight": "{fontWeightRef}",
           "lineHeight": "1",
           "fontSize": "36",
           "letterSpacing": "1",
@@ -38,6 +38,10 @@
   },
   "shadowRef": {
     "value": "{shadow}"
+  },
+  "fontWeightRef": {
+    "value": "Regular Italic",
+    "type": "fontWeights"
   },
   "border": {
     "value": {

@@ -1,5 +1,6 @@
 import { Parser } from 'expr-eval';
 import { parse, reduceExpression } from 'postcss-calc-ast-parser';
+import { isAlreadyQuoted } from './css/transformTypography.js';
 
 const mathChars = ['+', '-', '*', '/'];
 
@@ -86,11 +87,19 @@ function parseAndReduce(expr: string): string {
   let evaluated;
   try {
     evaluated = parser.evaluate(unitlessExpr);
+
+    // In CSS shorthand with white-spaced font-family that has single quotes around it
+    // parser ends up evaluating that and removing the single quotes. If that happens, revert that change.
+    if (evaluated && isAlreadyQuoted(unitlessExpr)) {
+      evaluated = `'${evaluated}'`;
+    }
   } catch (ex) {
     return expr;
   }
   // Put back the px unit if needed and if reduced doesn't come with one
-  return `${Number.parseFloat(evaluated.toFixed(3))}${unit ?? (hasPx ? 'px' : '')}`;
+  return `${typeof evaluated !== 'string' ? Number.parseFloat(evaluated.toFixed(3)) : evaluated}${
+    unit ?? (hasPx ? 'px' : '')
+  }`;
 }
 
 export function checkAndEvaluateMath(expr: string | number | undefined): string | undefined {

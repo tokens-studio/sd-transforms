@@ -56,4 +56,10 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath('min(10, 24, 5, 12, 6) 8 * 14px')).to.equal('5 112px');
     expect(checkAndEvaluateMath('ceil(roundTo(16/1.2,0)/2)*2')).to.equal('14');
   });
+
+  it('does not unnecessarily remove wrapped quotes around font-family values', () => {
+    expect(checkAndEvaluateMath(`800 italic 16px/1 'Arial Black'`)).to.equal(
+      `800 italic 16px/1 'Arial Black'`,
+    );
+  });
 });

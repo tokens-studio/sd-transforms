@@ -25,6 +25,8 @@ export const fontWeightMap = {
   extrafett: 900,
 };
 
+export const fontWeightReg = /(?<weight>.+?)\s?(?<style>italic|oblique|normal)?$/i;
+
 /**
  * Helper: Transforms fontweight keynames to fontweight numbers (100, 200, 300 ... 900)
  */
@@ -34,7 +36,15 @@ export function transformFontWeights(
   if (value === undefined) {
     return value;
   }
-  const mapped = fontWeightMap[`${value}`.toLowerCase()];
+  const match = `${value}`.match(fontWeightReg);
+
+  let mapped;
+  if (match?.groups?.weight) {
+    mapped = fontWeightMap[match?.groups?.weight.toLowerCase()];
+    if (match.groups.style) {
+      mapped = `${mapped} ${match.groups.style.toLowerCase()}`;
+    }
+  }
 
   return mapped ?? value;
 }

@@ -29,6 +29,7 @@ const typeMaps = {
     fontWeight: 'fontWeights',
     lineHeight: 'lineHeights',
     fontSize: 'fontSizes',
+    fontStyle: 'fontStyles',
   },
 };
 
