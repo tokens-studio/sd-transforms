@@ -1,5 +1,20 @@
 # @tokens-studio/sd-transforms
 
+## 0.10.0
+
+### Minor Changes
+
+- 3425572: BREAKING: permutateThemes to return the same format regardless of whether multi-dimensional themes are used or not. Format: `{ themeName: [sets] }`.
+- 2731a5e: BREAKING: change name of ts/type/fontWeight transform to -> ts/typography/fontWeight, for consistency's sake.
+- 0363efc: BREAKING: add parser that extracts fontStyle from fontWeight and adds it as a separate property on Typography tokens object values.
+
+### Patch Changes
+
+- 2731a5e: Add value transform `ts/typography/css/fontFamily` to font-families which adds quotes if it has white space. The source
+  value will then match with how it's rendered in the composite typography token value. `outputReferences: true` will now replace
+  the quoted value with the reference. Previously, the reference was wrapped in quotes.
+- acb344c: Properly take into account fontStyle inside fontWeights values, in both the fontWeights and CSS typography shorthand transforms.
+
 ## 0.9.10
 
 ### Patch Changes
