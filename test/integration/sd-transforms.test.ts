@@ -43,6 +43,7 @@ describe('sd-transforms smoke tests', () => {
 
   it('supports tokens-studio tokens', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
+    console.log(file);
     expect(file).to.include(`:root {
   --sdDimensionScale: 2;
   --sdDimensionXs: 4px;
@@ -76,6 +77,8 @@ describe('sd-transforms smoke tests', () => {
   --sdShadow: inset 0 4px 10px 0 rgba(0,0,0,0.4);
   --sdBorderWidth: 5px;
   --sdBorder: 5px solid #000000;
+  --sdColor: #FF00FF;
+  --sdUsesColor: rgba(255, 0, 255, 1);
 }`);
   });
 });
