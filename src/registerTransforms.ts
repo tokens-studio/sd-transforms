@@ -177,7 +177,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     name: 'ts/color/css/hexrgba',
     type: 'value',
     transitive: true,
-    matcher: token => typeof token.value === 'string' && token.value.startsWith('rgba(#'),
+    matcher: token => typeof token.value === 'string' && token.type === 'color',
     transformer: token => transformHEXRGBaForCSS(token.value),
   });
 

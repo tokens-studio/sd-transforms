@@ -179,5 +179,13 @@
       "color": "#000000"
     },
     "type": "border"
+  },
+  "color": {
+    "value": "#FF00FF",
+    "type": "color"
+  },
+  "usesColor": {
+    "value": "rgba( {color}, 1)",
+    "type": "color"
   }
 }
