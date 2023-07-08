@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.10.1
+
+### Patch Changes
+
+- 6a6a5d2: ts/color/css/hexrgba to correctly apply on all color typed tokens, including those containing references.
+
 ## 0.10.0
 
 ### Minor Changes
