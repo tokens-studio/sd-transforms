@@ -1,4 +1,5 @@
 export const fontWeightMap = {
+  hairline: 1,
   thin: 100,
   extralight: 200,
   ultralight: 200,
@@ -23,6 +24,7 @@ export const fontWeightMap = {
   heavy: 900,
   super: 900,
   extrafett: 900,
+  ultra: 1000,
 };
 
 export const fontWeightReg = /(?<weight>.+?)\s?(?<style>italic|oblique|normal)?$/i;
