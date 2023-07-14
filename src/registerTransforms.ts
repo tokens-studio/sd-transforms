@@ -187,7 +187,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     transitive: true,
     matcher: token =>
       token.type === 'color' && token.$extensions && token.$extensions['studio.tokens']?.modify,
-    transformer: token => transformColorModifiers(token),
+    transformer: token => transformColorModifiers(token, transformOpts?.['ts/color/modifiers']),
   });
 
   _sd.registerTransformGroup({

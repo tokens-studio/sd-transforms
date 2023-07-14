@@ -24,7 +24,14 @@ export interface ExpandOptions {
   composition?: boolean | ExpandFilter<SingleCompositionToken>; // default true
 }
 
+export type ColorModifierFormat = 'hex' | 'hsl' | 'lch' | 'p3' | 'srgb';
+
+export interface ColorModifierOptions {
+  format: ColorModifierFormat;
+}
+
 export interface TransformOptions {
   expand?: ExpandOptions | false;
   excludeParentKeys?: boolean;
+  ['ts/color/modifiers']?: ColorModifierOptions;
 }

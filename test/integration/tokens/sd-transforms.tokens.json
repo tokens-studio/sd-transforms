@@ -70,8 +70,7 @@
             "modify": {
               "type": "lighten",
               "value": "0.1",
-              "space": "srgb",
-              "format": "hex"
+              "space": "srgb"
             }
           }
         }
@@ -88,8 +87,7 @@
             "modify": {
               "type": "darken",
               "value": "0.1",
-              "space": "srgb",
-              "format": "hex"
+              "space": "srgb"
             }
           }
         }

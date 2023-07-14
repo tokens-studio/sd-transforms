@@ -184,6 +184,95 @@ describe('transform color modifiers', () => {
     expect(transformColorModifiers(token('hex'))).to.equal('#9a3535');
   });
 
+  it('allows passing an output format as an option', () => {
+    const token = (space: ColorSpaceTypes | '') => ({
+      value: '#C14242',
+      type: 'color',
+      $extensions: {
+        'studio.tokens': {
+          modify: {
+            type: 'darken',
+            value: '0.2',
+            space,
+          },
+        },
+      },
+    });
+
+    // uses hex override for output format
+    expect(transformColorModifiers(token(ColorSpaceTypes.HSL), { format: 'hex' })).to.equal(
+      '#9c3333',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.LCH), { format: 'hex' })).to.equal(
+      '#983735',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.P3), { format: 'hex' })).to.equal(
+      '#9b3535',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.SRGB), { format: 'hex' })).to.equal(
+      '#9a3535',
+    );
+
+    // uses hsl override for output format
+    expect(transformColorModifiers(token(ColorSpaceTypes.HSL), { format: 'hsl' })).to.equal(
+      'hsl(0 50.6% 40.6%)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.LCH), { format: 'hsl' })).to.equal(
+      'hsl(0.85 47.9% 40.3%)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.P3), { format: 'hsl' })).to.equal(
+      'hsl(0.05 49% 40.7%)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.SRGB), { format: 'hsl' })).to.equal(
+      'hsl(0 49% 40.6%)',
+    );
+
+    // uses lch override for output format
+    expect(transformColorModifiers(token(ColorSpaceTypes.HSL), { format: 'lch' })).to.equal(
+      'lch(37.8 51 29.8)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.LCH), { format: 'lch' })).to.equal(
+      'lch(37.7 47.5 29.7)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.P3), { format: 'lch' })).to.equal(
+      'lch(37.9 49.4 29.4)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.SRGB), { format: 'lch' })).to.equal(
+      'lch(37.8 49.4 29.4)',
+    );
+
+    // uses p3 override for output format
+    expect(transformColorModifiers(token(ColorSpaceTypes.HSL), { format: 'p3' })).to.equal(
+      'color(display-p3 0.57 0.23 0.22)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.LCH), { format: 'p3' })).to.equal(
+      'color(display-p3 0.55 0.24 0.22)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.P3), { format: 'p3' })).to.equal(
+      'color(display-p3 0.56 0.24 0.22)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.SRGB), { format: 'p3' })).to.equal(
+      'color(display-p3 0.56 0.23 0.22)',
+    );
+
+    // uses srgb override for output format
+    expect(transformColorModifiers(token(ColorSpaceTypes.HSL), { format: 'srgb' })).to.equal(
+      'rgb(61.2% 20.1% 20.1%)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.LCH), { format: 'srgb' })).to.equal(
+      'rgb(59.5% 21.5% 21%)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.P3), { format: 'srgb' })).to.equal(
+      'rgb(60.6% 20.8% 20.7%)',
+    );
+    expect(transformColorModifiers(token(ColorSpaceTypes.SRGB), { format: 'srgb' })).to.equal(
+      'rgb(60.5% 20.7% 20.7%)',
+    );
+
+    // without space, return original
+    expect(transformColorModifiers(token(''))).to.equal('#C14242');
+  });
+
   it('can convert from a non-srgb space to srgb space to then format it as a hex color (which is fundamentally rgb)', () => {
     const token = {
       value: '#C14242',

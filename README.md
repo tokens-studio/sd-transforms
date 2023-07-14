@@ -140,20 +140,25 @@ registerTransforms({
     shadow: false,
   },
   excludeParentKeys: true,
+  'ts/color/modifiers': {
+    format: 'hex',
+  },
 });
 ```
 
 Options:
 
-| name               | type                     | required | default         | description                                                                                                                           |
-| ------------------ | ------------------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| excludeParentKeys  | boolean                  | ❌       | `false`         | Whether or not to exclude parent keys from your token files                                                                           |
-| expand             | boolean \| ExpandOptions | ❌       | See props below | `false` to not register the parser at all. By default, expands composition tokens. Optionally, border, shadow and typography as well. |
-| expand.composition | boolean \| ExpandFilter  | ❌       | `true`          | Whether or not to expand compositions. Also allows a filter callback function to conditionally expand per token/filePath              |
-| expand.typography  | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand typography. Also allows a filter callback function to conditionally expand per token/filePath                |
-| expand.shadow      | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand shadows. Also allows a filter callback function to conditionally expand per token/filePath                   |
-| expand.border      | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand borders. Also allows a filter callback function to conditionally expand per token/filePath                   |
-|                    |
+| name                          | type                     | required | default         | description                                                                                                                           |
+| ----------------------------- | ------------------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| excludeParentKeys             | boolean                  | ❌       | `false`         | Whether or not to exclude parent keys from your token files                                                                           |
+| expand                        | boolean \| ExpandOptions | ❌       | See props below | `false` to not register the parser at all. By default, expands composition tokens. Optionally, border, shadow and typography as well. |
+| expand.composition            | boolean \| ExpandFilter  | ❌       | `true`          | Whether or not to expand compositions. Also allows a filter callback function to conditionally expand per token/filePath              |
+| expand.typography             | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand typography. Also allows a filter callback function to conditionally expand per token/filePath                |
+| expand.shadow                 | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand shadows. Also allows a filter callback function to conditionally expand per token/filePath                   |
+| expand.border                 | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand borders. Also allows a filter callback function to conditionally expand per token/filePath                   |
+| ['ts/color/modifiers']        | ColorModifierOptions     | ❌       | See props below | Color modifier options                                                                                                                |
+| ['ts/color/modifiers'].format | ColorModifierFormat      | ❌       | `undefined`     | Color modifier output format override ('hex' \| 'hsl' \| 'lch' \| 'p3' \| 'srgb'), uses local format or modifier space as default     |
+|                               |
 
 > Note: you can also import and use the `expandComposites` function to run the expansion on your token object manually.
 > Handy if you have your own parsers set up (e.g. for JS files), and you want the expansions to work there too.
