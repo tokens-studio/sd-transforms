@@ -1,5 +1,13 @@
 # @tokens-studio/sd-transforms
 
+## 0.10.2
+
+### Patch Changes
+
+- 1327559: Add 'ts/color/modifiers' option: `format`, to globally set the output format for color modifiers.
+- 29ac771: Add hairline and ultra to fontWeightsMap, reflect to 1 and 1000 respectively.
+- c59df89: Add option to easily change the casing of the output token names, without requiring to create a custom transform group.
+
 ## 0.10.1
 
 ### Patch Changes
