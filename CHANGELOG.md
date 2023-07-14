@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.10.3
+
+### Patch Changes
+
+- eff2f93: Fix resolve math transform multi-value splitter function to properly split more than 2 values where each value does itself not contain any spaces.
+
 ## 0.10.2
 
 ### Patch Changes
