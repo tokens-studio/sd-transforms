@@ -25,6 +25,7 @@ function checkIfInsideGroup(expr: string, fullExpr: string): boolean {
  */
 function splitMultiIntoSingleValues(expr: string): string[] {
   const tokens = expr.split(' ');
+  // indexes in the string at which a space separator exists that is a multi-value space separator
   const indexes = [] as number[];
   let skipNextIteration = false;
   tokens.forEach((tok, i) => {
@@ -44,7 +45,13 @@ function splitMultiIntoSingleValues(expr: string): string[] {
     if (conditions.every(cond => !cond)) {
       if (!skipNextIteration) {
         indexes.push(i);
-        skipNextIteration = true;
+        // if the current token itself does not also contain a math character
+        // make sure we skip the next iteration, because otherwise the conditions
+        // will be all false again for the next char which is essentially a "duplicate" hit
+        // meaning we would unnecessarily push another index to split our multi-value by
+        if (!mathChars.find(char => tok.includes(char))) {
+          skipNextIteration = true;
+        }
       } else {
         skipNextIteration = false;
       }
@@ -87,19 +94,11 @@ function parseAndReduce(expr: string): string {
   let evaluated;
   try {
     evaluated = parser.evaluate(unitlessExpr);
-
-    // In CSS shorthand with white-spaced font-family that has single quotes around it
-    // parser ends up evaluating that and removing the single quotes. If that happens, revert that change.
-    if (evaluated && isAlreadyQuoted(unitlessExpr)) {
-      evaluated = `'${evaluated}'`;
-    }
   } catch (ex) {
     return expr;
   }
   // Put back the px unit if needed and if reduced doesn't come with one
-  return `${typeof evaluated !== 'string' ? Number.parseFloat(evaluated.toFixed(3)) : evaluated}${
-    unit ?? (hasPx ? 'px' : '')
-  }`;
+  return `${Number.parseFloat(evaluated.toFixed(3))}${unit ?? (hasPx ? 'px' : '')}`;
 }
 
 export function checkAndEvaluateMath(expr: string | number | undefined): string | undefined {

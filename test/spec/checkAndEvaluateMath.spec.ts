@@ -6,6 +6,7 @@ runTransformSuite(checkAndEvaluateMath as (value: unknown) => unknown);
 
 describe('check and evaluate math', () => {
   it('checks and evaluates math expressions', () => {
+    expect(checkAndEvaluateMath('4*1.5px 4*1.5px 4*1.5px')).to.equal('6px 6px 6px');
     expect(checkAndEvaluateMath('4px')).to.equal('4px');
     expect(checkAndEvaluateMath('4 * 7')).to.equal('28');
     expect(checkAndEvaluateMath('4 * 7px')).to.equal('28px');
