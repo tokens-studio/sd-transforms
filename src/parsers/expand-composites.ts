@@ -121,7 +121,7 @@ function recurse(
             }
             token.value = ref as SingleToken<false>['value'];
           }
-          slice[key] = expandToken(token, expandType === 'shadow');
+          slice[key + '-part'] = expandToken(token, expandType === 'shadow');
         }
       }
     } else if (typeof token === 'object') {
