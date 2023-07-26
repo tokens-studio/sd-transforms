@@ -96,4 +96,28 @@ describe('add font style', () => {
 
     expect(addFontStyles(inputTokens as DeepKeyTokenMap<false>)).to.eql(inputTokens);
   });
+
+  it(`allows always adding a default fontStyle`, () => {
+    expect(
+      addFontStyles(
+        {
+          foo: {
+            value: {
+              fontWeight: 'Bold',
+            },
+            type: 'typography',
+          },
+        } as DeepKeyTokenMap<false>,
+        { alwaysAddFontStyle: true },
+      ),
+    ).to.eql({
+      foo: {
+        value: {
+          fontWeight: 'Bold',
+          fontStyle: 'normal',
+        },
+        type: 'typography',
+      },
+    });
+  });
 });

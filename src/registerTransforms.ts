@@ -60,7 +60,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
       parse: ({ filePath, contents }) => {
         const obj = JSON.parse(contents);
         const excluded = excludeParentKeys(obj, transformOpts);
-        const withFontStyles = addFontStyles(excluded);
+        const withFontStyles = addFontStyles(excluded, transformOpts);
         const expanded = expandComposites(withFontStyles, filePath, transformOpts);
         return expanded;
       },

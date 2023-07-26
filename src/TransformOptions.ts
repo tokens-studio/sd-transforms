@@ -32,6 +32,7 @@ export interface ColorModifierOptions {
 
 export interface TransformOptions {
   casing?: 'camel' | 'pascal' | 'snake' | 'kebab' | 'constant';
+  alwaysAddFontStyle?: boolean;
   expand?: ExpandOptions | false;
   excludeParentKeys?: boolean;
   ['ts/color/modifiers']?: ColorModifierOptions;

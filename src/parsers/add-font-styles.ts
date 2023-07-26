@@ -4,10 +4,12 @@ import getReferences from 'style-dictionary/lib/utils/references/getReferences.j
 // @ts-expect-error no type exported for this function
 import usesReference from 'style-dictionary/lib/utils/references/usesReference.js';
 import { fontWeightReg } from '../transformFontWeights.js';
+import { TransformOptions } from '../TransformOptions.js';
 
 function recurse(
   slice: DeepKeyTokenMap<false>,
   boundGetRef: (ref: string) => Array<SingleToken<false>>,
+  alwaysAddFontStyle = false,
 ) {
   for (const key in slice) {
     const token = slice[key];
@@ -34,15 +36,19 @@ function recurse(
       }
 
       // cast it to TokenTypographyValue now that we've resolved references all the way, we know it cannot be a string anymore.
-      const tokenValue = value as TokenTypographyValue;
+      // fontStyle is a prop we add ourselves
+      const tokenValue = value as TokenTypographyValue & { fontStyle: string };
 
       if (fontWeight) {
         const fontStyleMatch = fontWeight.match(fontWeightReg);
         if (fontStyleMatch?.groups?.weight && fontStyleMatch.groups.style) {
-          // @ts-expect-error fontStyle is not a property that exists on Typography Tokens, we just add it ourselves
           tokenValue.fontStyle = fontStyleMatch.groups.style.toLowerCase();
           tokenValue.fontWeight = fontStyleMatch?.groups?.weight;
         }
+      }
+
+      if (!tokenValue.fontStyle && alwaysAddFontStyle) {
+        tokenValue.fontStyle = 'normal';
       }
     } else if (typeof token === 'object') {
       recurse(token as unknown as DeepKeyTokenMap<false>, boundGetRef);
@@ -50,9 +56,12 @@ function recurse(
   }
 }
 
-export function addFontStyles(dictionary: DeepKeyTokenMap<false>): DeepKeyTokenMap<false> {
+export function addFontStyles(
+  dictionary: DeepKeyTokenMap<false>,
+  transformOpts?: TransformOptions,
+): DeepKeyTokenMap<false> {
   const copy = { ...dictionary };
   const boundGetRef = getReferences.bind({ properties: copy });
-  recurse(copy, boundGetRef);
+  recurse(copy, boundGetRef, transformOpts?.alwaysAddFontStyle);
   return copy;
 }

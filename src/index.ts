@@ -3,6 +3,7 @@ export { transforms } from './registerTransforms.js';
 
 export { expandComposites } from './parsers/expand-composites.js';
 export { excludeParentKeys } from './parsers/exclude-parent-keys.js';
+export { addFontStyles } from './parsers/add-font-styles.js';
 
 export { mapDescriptionToComment } from './mapDescriptionToComment.js';
 export { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
