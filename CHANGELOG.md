@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 0.10.4
+
+### Patch Changes
+
+- 894efe4: Add option to always add font style when expanding typography objects.
+- d76b5cc: Add export for addFontStyles parser.
+
 ## 0.10.3
 
 ### Patch Changes
