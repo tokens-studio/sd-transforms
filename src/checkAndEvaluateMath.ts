@@ -1,6 +1,5 @@
 import { Parser } from 'expr-eval';
 import { parse, reduceExpression } from 'postcss-calc-ast-parser';
-import { isAlreadyQuoted } from './css/transformTypography.js';
 
 const mathChars = ['+', '-', '*', '/'];
 
