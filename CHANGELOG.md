@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.10.5
+
+### Patch Changes
+
+- 0032d8d: Hotfix for evaluate math of values that have non-numericals wrapped in spaces.
+
 ## 0.10.4
 
 ### Patch Changes
