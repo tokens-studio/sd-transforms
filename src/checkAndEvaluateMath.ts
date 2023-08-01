@@ -97,7 +97,7 @@ function parseAndReduce(expr: string): string {
     return expr;
   }
   // Put back the px unit if needed and if reduced doesn't come with one
-  return `${typeof evaluated !== 'string' ? Number.parseFloat(evaluated.toFixed(3)) : evaluated}${
+  return `${typeof evaluated === 'number' ? Number.parseFloat(evaluated.toFixed(3)) : evaluated}${
     unit ?? (hasPx ? 'px' : '')
   }`;
 }
