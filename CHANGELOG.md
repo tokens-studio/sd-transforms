@@ -1,5 +1,14 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.0
+
+### Minor Changes
+
+- 96a66a9: checkAndEvaluateMath to not stringify if not needed:
+
+  - for single math expressions resolving to a floating number without unit, we can keep it as a `Number`
+  - for expressions such as `false` or `true` (`Boolean`), keep as `Boolean` type
+
 ## 0.10.5
 
 ### Patch Changes
