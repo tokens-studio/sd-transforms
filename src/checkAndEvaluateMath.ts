@@ -102,7 +102,9 @@ function parseAndReduce(expr: string): string {
   }`;
 }
 
-export function checkAndEvaluateMath(expr: string | number | undefined): string | undefined {
+export function checkAndEvaluateMath(
+  expr: string | number | boolean | undefined,
+): string | undefined {
   if (expr === undefined) {
     return expr;
   }

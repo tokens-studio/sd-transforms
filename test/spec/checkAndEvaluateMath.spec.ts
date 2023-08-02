@@ -67,4 +67,9 @@ describe('check and evaluate math', () => {
   it('supports values that contain spaces and strings, e.g. a date format', () => {
     expect(checkAndEvaluateMath(`dd/MM/yyyy 'om' HH:mm`)).to.equal(`dd/MM/yyyy om HH:mm`);
   });
+
+  it('supports boolean values', () => {
+    expect(checkAndEvaluateMath(false)).to.equal(false);
+    expect(checkAndEvaluateMath(true)).to.equal(false);
+  });
 });
