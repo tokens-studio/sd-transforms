@@ -72,7 +72,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
   return [expr];
 }
 
-function parseAndReduce(expr: string): string {
+function parseAndReduce(expr: string): string | boolean | number {
   // We check for px unit, then remove it
   const hasPx = expr.match('px');
   let unitlessExpr = expr.replace(/px/g, '');
@@ -96,17 +96,26 @@ function parseAndReduce(expr: string): string {
   } catch (ex) {
     return expr;
   }
+
+  const formatted =
+    typeof evaluated === 'number' ? Number.parseFloat(evaluated.toFixed(3)) : evaluated;
   // Put back the px unit if needed and if reduced doesn't come with one
-  return `${typeof evaluated !== 'string' ? Number.parseFloat(evaluated.toFixed(3)) : evaluated}${
-    unit ?? (hasPx ? 'px' : '')
-  }`;
+  const formattedUnit = unit ?? (hasPx ? 'px' : '');
+
+  // This ensures stringification is not done when not needed (e.g. type number or boolean kept intact)
+  return formattedUnit ? `${formatted}${formattedUnit}` : formatted;
 }
 
-export function checkAndEvaluateMath(expr: string | number | undefined): string | undefined {
+export function checkAndEvaluateMath(
+  expr: string | number | boolean | undefined,
+): string | number | boolean | undefined {
   if (expr === undefined) {
     return expr;
   }
   const exprs = splitMultiIntoSingleValues(`${expr}`);
   const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
+  if (reducedExprs.length === 1) {
+    return reducedExprs[0];
+  }
   return reducedExprs.join(' ');
 }

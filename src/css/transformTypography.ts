@@ -49,8 +49,8 @@ export function transformTypographyForCSS(
 
   let { fontFamily, fontWeight, fontSize, lineHeight } = value;
   const { fontStyle } = value;
-  fontSize = transformDimension(checkAndEvaluateMath(fontSize));
-  lineHeight = checkAndEvaluateMath(lineHeight);
+  fontSize = transformDimension(checkAndEvaluateMath(fontSize) as number | string | undefined);
+  lineHeight = checkAndEvaluateMath(lineHeight) as number | string | undefined;
   fontWeight = transformFontWeights(fontWeight);
   fontFamily = processFontFamily(fontFamily as string | undefined);
 

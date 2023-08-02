@@ -16,7 +16,7 @@ export function transformBorderForCSS(
   }
   let { color, width } = border;
   const { style } = border;
-  width = transformDimension(checkAndEvaluateMath(width));
+  width = transformDimension(checkAndEvaluateMath(width) as number | string | undefined);
   color = transformHEXRGBaForCSS(color);
   return `${isNothing(width) ? '' : width} ${isNothing(style) ? '' : style} ${
     isNothing(color) ? '' : color
