@@ -16,10 +16,10 @@ export function transformShadowForCSS(
   }
   let { x, y, blur, spread } = shadow;
   const { color, type } = shadow;
-  x = transformDimension(checkAndEvaluateMath(x));
-  y = transformDimension(checkAndEvaluateMath(y));
-  blur = transformDimension(checkAndEvaluateMath(blur));
-  spread = transformDimension(checkAndEvaluateMath(spread));
+  x = transformDimension(checkAndEvaluateMath(x) as number | string | undefined);
+  y = transformDimension(checkAndEvaluateMath(y) as number | string | undefined);
+  blur = transformDimension(checkAndEvaluateMath(blur) as number | string | undefined);
+  spread = transformDimension(checkAndEvaluateMath(spread) as number | string | undefined);
   return `${type === 'innerShadow' ? 'inset ' : ''}${isNothing(x) ? 0 : x} ${
     isNothing(y) ? 0 : y
   } ${isNothing(blur) ? 0 : blur}${isNothing(spread) ? ' ' : ` ${spread} `}${

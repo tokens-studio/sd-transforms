@@ -8,14 +8,14 @@ describe('check and evaluate math', () => {
   it('checks and evaluates math expressions', () => {
     expect(checkAndEvaluateMath('4*1.5px 4*1.5px 4*1.5px')).to.equal('6px 6px 6px');
     expect(checkAndEvaluateMath('4px')).to.equal('4px');
-    expect(checkAndEvaluateMath('4 * 7')).to.equal('28');
+    expect(checkAndEvaluateMath('4 * 7')).to.equal(28);
     expect(checkAndEvaluateMath('4 * 7px')).to.equal('28px');
     expect(checkAndEvaluateMath('4 * 7rem')).to.equal('28rem');
     expect(checkAndEvaluateMath('(15 + 20 - 17 * 8 / 3) * 7px')).to.equal('-72.333px');
   });
 
   it('supports expression of type number', () => {
-    expect(checkAndEvaluateMath(10)).to.equal('10');
+    expect(checkAndEvaluateMath(10)).to.equal(10);
   });
 
   it('can evaluate math expressions where more than one token has a unit, in case of px', () => {
@@ -51,11 +51,11 @@ describe('check and evaluate math', () => {
   });
 
   it('supports expr-eval expressions', () => {
-    expect(checkAndEvaluateMath('roundTo(4 / 7, 1)')).to.equal('0.6');
+    expect(checkAndEvaluateMath('roundTo(4 / 7, 1)')).to.equal(0.6);
     expect(checkAndEvaluateMath('8 * 14px roundTo(4 / 7, 1)')).to.equal('112px 0.6');
     expect(checkAndEvaluateMath('roundTo(4 / 7, 1) 8 * 14px')).to.equal('0.6 112px');
     expect(checkAndEvaluateMath('min(10, 24, 5, 12, 6) 8 * 14px')).to.equal('5 112px');
-    expect(checkAndEvaluateMath('ceil(roundTo(16/1.2,0)/2)*2')).to.equal('14');
+    expect(checkAndEvaluateMath('ceil(roundTo(16/1.2,0)/2)*2')).to.equal(14);
   });
 
   it('does not unnecessarily remove wrapped quotes around font-family values', () => {
@@ -70,6 +70,6 @@ describe('check and evaluate math', () => {
 
   it('supports boolean values', () => {
     expect(checkAndEvaluateMath(false)).to.equal(false);
-    expect(checkAndEvaluateMath(true)).to.equal(false);
+    expect(checkAndEvaluateMath(true)).to.equal(true);
   });
 });
