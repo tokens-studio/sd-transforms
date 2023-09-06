@@ -9,6 +9,12 @@ const tokensInput = {
     },
     type: 'typography',
   },
+  italicOnly: {
+    value: {
+      fontWeight: 'Italic',
+    },
+    type: 'typography',
+  },
   normal: {
     value: {
       fontWeight: 'Bold Normal',
@@ -41,6 +47,13 @@ const tokensOutput = {
   italic: {
     value: {
       fontWeight: 'Bold',
+      fontStyle: 'italic',
+    },
+    type: 'typography',
+  },
+  italicOnly: {
+    value: {
+      fontWeight: 'Regular',
       fontStyle: 'italic',
     },
     type: 'typography',

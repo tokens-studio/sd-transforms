@@ -3,7 +3,7 @@ import { DeepKeyTokenMap, SingleToken, TokenTypographyValue } from '@tokens-stud
 import getReferences from 'style-dictionary/lib/utils/references/getReferences.js';
 // @ts-expect-error no type exported for this function
 import usesReference from 'style-dictionary/lib/utils/references/usesReference.js';
-import { fontWeightReg } from '../transformFontWeights.js';
+import { fontWeightReg, fontStyles } from '../transformFontWeights.js';
 import { TransformOptions } from '../TransformOptions.js';
 
 function recurse(
@@ -44,6 +44,13 @@ function recurse(
         if (fontStyleMatch?.groups?.weight && fontStyleMatch.groups.style) {
           tokenValue.fontStyle = fontStyleMatch.groups.style.toLowerCase();
           tokenValue.fontWeight = fontStyleMatch?.groups?.weight;
+        }
+
+        // Roboto Regular Italic might have only: `fontWeight: 'Italic'`
+        // which means that the weight is Regular and the style is Italic
+        if (fontStyles.includes(fontWeight.toLowerCase())) {
+          tokenValue.fontStyle = fontWeight.toLowerCase();
+          tokenValue.fontWeight = 'Regular';
         }
       }
 
