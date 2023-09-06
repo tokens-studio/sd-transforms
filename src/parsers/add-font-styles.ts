@@ -51,7 +51,7 @@ function recurse(
         tokenValue.fontStyle = 'normal';
       }
     } else if (typeof token === 'object') {
-      recurse(token as unknown as DeepKeyTokenMap<false>, boundGetRef);
+      recurse(token as unknown as DeepKeyTokenMap<false>, boundGetRef, alwaysAddFontStyle);
     }
   }
 }
