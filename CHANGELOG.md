@@ -1,5 +1,13 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.1
+
+### Patch Changes
+
+- 597ddcd: Slightly adjust how math evaluation is done on non-numeric string and boolean values, so as to not remove quotes inside strings.
+- e486d94: Handle fonts that put only fontStyle inside fontWeight properly e.g. "Italic", which should resolve to weight "Regular" and style "Italic".
+- 40e1b27: Add alwaysAddFontStyle to recursive function parameters.
+
 ## 0.11.0
 
 ### Minor Changes
