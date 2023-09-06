@@ -12,6 +12,7 @@
 - [Full example](#full-example)
   - [Themes full example](#themes-full-example)
   - [Multi-dimensional theming](#multi-dimensional-theming)
+- [Transforms](#transforms)
 - [Troubleshooting](#not-sure-how-to-fix-your-issue)
 
 > This library is currently in beta.
@@ -371,6 +372,427 @@ async function run() {
 }
 
 run();
+```
+
+## Transforms
+
+### ts/descriptionToComment
+
+This transform maps token descriptions to comments.
+
+**matches**: All tokens that have a description property.
+
+#### before
+
+```json
+{
+  "token": {
+    ...
+    "description": "Some description about the token",
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    ...
+    "description": "Some description about the token",
+    "comment": "Some description about the token",
+  }
+}
+```
+
+### ts/resolveMath
+
+This transform checks and evaluates math expressions
+
+**matches**: All tokens that have string values.
+
+#### before
+
+```json
+{
+  "token-one": {
+    ...
+    "value": "4*1.5px 4*1.5px 4*1.5px"
+  },
+  "token-two": {
+    ...
+    "value": "4 * 7"
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token-one": {
+    ...
+    "value": "6px 6px 6px"
+  },
+  "token-two": {
+    ...
+    "value": "28"
+  }
+}
+```
+
+### ts/size/px
+
+This transform adds `px` as a unit when missing to tokens.
+
+**matches**: `token.type` is one of `['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension']`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "dimension",
+    "value": 4
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "type": "dimension",
+    "value": "4px"
+  }
+}
+```
+
+### ts/opacity
+
+This transforms opacity token values declared with `%` to a number between `0` and `1`.
+
+**matches**: `token.type` is `'opacity'`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "opacity",
+    "value": "50%"
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "type": "opacity",
+    "value": 0.5
+  }
+}
+```
+
+### ts/size/lineheight
+
+This transforms line-height token values declared with `%` to a a unitless value.
+
+**matches**: `token.type` is `'lineHeights'`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "lineHeights",
+    "value": "50%"
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "type": "lineHeights",
+    "value": 0.5
+  }
+}
+```
+
+### ts/typography/fontWeight
+
+This transforms fontweight from keynames to fontweight numbers.
+
+**matches**: `token.type` is `'fontWeights'`
+
+#### before
+
+```json
+{
+  "token-one": {
+    "type": "fontWeights",
+    "value": "Bold"
+  },
+  "token-two": {
+    "type": "fontWeights",
+    "value": "Light"
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token-one": {
+    "type": "fontWeights",
+    "value": "700"
+  },
+  "token-two": {
+    "type": "fontWeights",
+    "value": "300"
+  }
+}
+```
+
+### ts/color/modifiers
+
+This transforms color modifiers from Tokens Studio to color values.
+
+**matches**: `token.type` is `'color'` and has `token.$extensions['studio.tokens'].modify`
+
+#### before
+
+```json
+{
+  "token-one": {
+    "value": "#C14242",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "lighten",
+          "value": "0.2",
+          "space": "srgb"
+        }
+      }
+    }
+  },
+  "token-two": {
+    "value": "#C14242",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "darken",
+          "value": "0.2",
+          "space": "hsl"
+        }
+      }
+    }
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token-one": {
+    "value": "rgb(80.5% 40.7% 40.7%)",
+    "type": "color"
+  },
+  "token-two": {
+    "value": "hsl(0 50.6% 40.6%)",
+    "type": "color"
+  }
+}
+```
+
+### ts/size/css/letterspacing
+
+This transforms letter-spacing token values declared with `%` to a value with `em`.
+
+**matches**: `token.type` is `'letterSpacing'`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "letterSpacing",
+    "value": "50%"
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "type": "letterSpacing",
+    "value": "0.5em"
+  }
+}
+```
+
+### ts/color/css/hexrgba
+
+This transforms color token values with Figma's "hex code RGBA" to an actual `rgba()` format
+
+**matches**: `token.type` is `'color'`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "color",
+    "value": "rgba(#ABC123, 0.5)"
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "type": "color",
+    "value": "rgba(171, 193, 35, 0.5)"
+  }
+}
+```
+
+### ts/typography/css/fontFamily
+
+This transforms font-family token values into valid CSS, adding single quotes if necessary.
+
+**matches**: `token.type` is `'fontFamilies'`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "fontFamilies",
+    "value": "Arial Black, Times New Roman, Foo, sans-serif"
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "type": "fontFamilies",
+    "value": "'Arial Black', 'Times New Roman', Foo, sans-serif"
+  }
+}
+```
+
+### ts/typography/css/shorthand
+
+This transforms typography tokens to a valid CSS shorthand
+
+**matches**: `token.type` is `'typography'`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "typography",
+    "value": {
+      "fontWeight": "500",
+      "fontSize": "20px",
+      "lineHeight": "1.5",
+      "fontFamily": "Arial"
+    }
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "value": "500 20px/1.5 Arial"
+  }
+}
+```
+
+### ts/shadow/css/shorthand
+
+This transforms shadow tokens to a valid CSS shadow shorthand
+
+**matches**: `token.type` is `'boxShadow'`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "boxShadow",
+    "value": {
+      "x": "5px",
+      "y": "3px",
+      "blur": "6px",
+      "spread": "2px",
+      "color": "#000000"
+    }
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "value": "5px 3px 6px 2px #000000"
+  }
+}
+```
+
+### ts/border/css/shorthand
+
+This transforms border tokens to a valid CSS border shorthand
+
+**matches**: `token.type` is `'border'`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "border",
+    "value": {
+      "width": "5",
+      "style": "dashed",
+      "color": "rgba(#000000, 1)"
+    }
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "value": "5px dashed rgba(0, 0, 0, 1)"
+  }
+}
 ```
 
 ## Not sure how to fix your issue ?
