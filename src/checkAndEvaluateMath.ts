@@ -93,12 +93,14 @@ function parseAndReduce(expr: string): string | boolean | number {
   let evaluated;
   try {
     evaluated = parser.evaluate(unitlessExpr);
+    if (typeof evaluated !== 'number') {
+      return expr;
+    }
   } catch (ex) {
     return expr;
   }
 
-  const formatted =
-    typeof evaluated === 'number' ? Number.parseFloat(evaluated.toFixed(3)) : evaluated;
+  const formatted = Number.parseFloat(evaluated.toFixed(3));
   // Put back the px unit if needed and if reduced doesn't come with one
   const formattedUnit = unit ?? (hasPx ? 'px' : '');
 
@@ -109,7 +111,7 @@ function parseAndReduce(expr: string): string | boolean | number {
 export function checkAndEvaluateMath(
   expr: string | number | boolean | undefined,
 ): string | number | boolean | undefined {
-  if (expr === undefined) {
+  if (expr === undefined || typeof expr === 'boolean') {
     return expr;
   }
   const exprs = splitMultiIntoSingleValues(`${expr}`);
