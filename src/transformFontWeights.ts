@@ -27,7 +27,11 @@ export const fontWeightMap = {
   ultra: 1000,
 };
 
-export const fontWeightReg = /(?<weight>.+?)\s?(?<style>italic|oblique|normal)?$/i;
+export const fontStyles = ['italic', 'oblique', 'normal'];
+export const fontWeightReg = new RegExp(
+  `(?<weight>.+?)\\s?(?<style>${fontStyles.join('|')})?$`,
+  'i',
+);
 
 /**
  * Helper: Transforms fontweight keynames to fontweight numbers (100, 200, 300 ... 900)
