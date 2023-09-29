@@ -13,6 +13,9 @@ function recurse(
 ) {
   for (const key in slice) {
     const token = slice[key];
+    if (typeof token !== 'object' || token === null) {
+      continue;
+    }
     const { type, value } = token;
     if (type === 'typography') {
       if (typeof value !== 'object') {

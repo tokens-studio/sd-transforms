@@ -133,4 +133,26 @@ describe('add font style', () => {
       },
     });
   });
+
+  it('does not error on value property equaling null', () => {
+    expect(
+      addFontStyles({
+        foo: {
+          value: {
+            fontWeight: 'Bold',
+            type: null,
+          },
+          type: 'typography',
+        },
+      } as DeepKeyTokenMap<false>),
+    ).to.eql({
+      foo: {
+        value: {
+          fontWeight: 'Bold',
+          type: null,
+        },
+        type: 'typography',
+      },
+    });
+  });
 });
