@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.2
+
+### Patch Changes
+
+- 3f37446: Fix for add-font-styles parser to deal with value props not being objects (e.g. null).
+
 ## 0.11.1
 
 ### Patch Changes
