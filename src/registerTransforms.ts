@@ -45,7 +45,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
   // NodeJS env and no passed SD? let's register on our installed SD
   // We're in ESM, but style-dictionary is CJS only, so we need module.createRequire
   if (!isBrowser && _sd === undefined) {
-    const module = await import('module');
+    const module = await import('node:module');
     const mod = module.default;
     const require = mod.createRequire(import.meta.url);
     _sd = require('style-dictionary');
