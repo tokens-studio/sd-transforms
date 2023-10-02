@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.3
+
+### Patch Changes
+
+- 333355b: Specify import to "module" as "node:module" for build tools to better understand it as a built-in.
+
 ## 0.11.2
 
 ### Patch Changes
