@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.4
+
+### Patch Changes
+
+- 77b4f04: Add a webpack ignore statement to dynamic import of node builtin in node env. Should be ignored at compile-time, done at run-time.
+
 ## 0.11.3
 
 ### Patch Changes
