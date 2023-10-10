@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.5
+
+### Patch Changes
+
+- Fix resolve reference for multi-value shadow tokens when expanding shadow tokens.
+
 ## 0.11.4
 
 ### Patch Changes

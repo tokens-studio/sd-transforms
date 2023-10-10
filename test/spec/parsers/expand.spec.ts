@@ -71,6 +71,10 @@ const tokensInput = {
       ],
       type: 'boxShadow',
     },
+    ref: {
+      value: '{shadow.double}',
+      type: 'boxShadow',
+    },
   },
 };
 
@@ -173,6 +177,56 @@ const tokensOutput = {
       },
     },
     double: {
+      1: {
+        x: {
+          value: '0',
+          type: 'dimension',
+        },
+        y: {
+          value: '4',
+          type: 'dimension',
+        },
+        blur: {
+          value: '10',
+          type: 'dimension',
+        },
+        spread: {
+          value: '0',
+          type: 'dimension',
+        },
+        color: {
+          value: 'rgba(0,0,0,0.4)',
+          type: 'color',
+        },
+        type: {
+          value: 'innerShadow',
+          type: 'other',
+        },
+      },
+      2: {
+        x: {
+          value: '0',
+          type: 'dimension',
+        },
+        y: {
+          value: '8',
+          type: 'dimension',
+        },
+        blur: {
+          value: '12',
+          type: 'dimension',
+        },
+        spread: {
+          value: '5',
+          type: 'dimension',
+        },
+        color: {
+          value: 'rgba(0,0,0,0.4)',
+          type: 'color',
+        },
+      },
+    },
+    ref: {
       1: {
         x: {
           value: '0',

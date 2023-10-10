@@ -130,8 +130,6 @@ describe('expand composition tokens', () => {
     transformOpts = {
       expand: {
         typography: true,
-        border: true,
-        shadow: true,
       },
     };
     before();
@@ -159,6 +157,31 @@ describe('expand composition tokens', () => {
   --sdDeepRefTextDecoration: none;
   --sdDeepRefTextCase: none;
   --sdDeepRefFontStyle: italic;`,
+    );
+  });
+
+  it('handles references for multi-shadow value', async () => {
+    transformOpts = {
+      expand: {
+        shadow: true,
+      },
+    };
+    before();
+
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    expect(file).to.include(
+      `
+  --sdDeepRefShadowMulti1X: 0;
+  --sdDeepRefShadowMulti1Y: 4px;
+  --sdDeepRefShadowMulti1Blur: 10px;
+  --sdDeepRefShadowMulti1Spread: 0;
+  --sdDeepRefShadowMulti1Color: rgba(0,0,0,0.4);
+  --sdDeepRefShadowMulti1Type: innerShadow;
+  --sdDeepRefShadowMulti2X: 0;
+  --sdDeepRefShadowMulti2Y: 8px;
+  --sdDeepRefShadowMulti2Blur: 12px;
+  --sdDeepRefShadowMulti2Spread: 5px;
+  --sdDeepRefShadowMulti2Color: rgba(0,0,0,0.4)`,
     );
   });
 });

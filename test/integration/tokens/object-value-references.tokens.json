@@ -26,18 +26,29 @@
     "type": "typography"
   },
   "shadow": {
-    "value": {
-      "x": "0",
-      "y": "4",
-      "blur": "10",
-      "spread": "0",
-      "color": "rgba(0,0,0,0.4)",
-      "type": "innerShadow"
-    },
+    "value": [
+      {
+        "x": "0",
+        "y": "4",
+        "blur": "10",
+        "spread": "0",
+        "color": "rgba(0,0,0,0.4)",
+        "type": "dropShadow"
+      },
+      {
+        "x": "0",
+        "y": "8",
+        "blur": "10",
+        "spread": "4",
+        "color": "rgba(0,0,0,0.6)",
+        "type": "innerShadow"
+      }
+    ],
     "type": "boxShadow"
   },
   "shadowRef": {
-    "value": "{shadow}"
+    "value": "{shadow}",
+    "type": "boxShadow"
   },
   "fontWeightRef": {
     "value": "Regular Italic",
@@ -52,6 +63,7 @@
     "type": "border"
   },
   "borderRef": {
-    "value": "{border}"
+    "value": "{border}",
+    "type": "border"
   }
 }
