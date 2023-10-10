@@ -1,8 +1,4 @@
 import { DeepKeyTokenMap, SingleToken } from '@tokens-studio/types';
-// @ts-expect-error no type exported for this function
-import getReferences from 'style-dictionary/lib/utils/references/getReferences.js';
-// @ts-expect-error no type exported for this function
-import usesReference from 'style-dictionary/lib/utils/references/usesReference.js';
 import {
   ExpandFilter,
   TransformOptions,
@@ -10,6 +6,7 @@ import {
   ExpandablesAsStrings,
   expandablesAsStringsArr,
 } from '../TransformOptions.js';
+import { resolveReference } from './resolveReference.js';
 
 const typeMaps = {
   boxShadow: {
@@ -34,6 +31,9 @@ const typeMaps = {
 };
 
 export function expandToken(compToken: SingleToken<false>, isShadow = false): SingleToken<false> {
+  if (typeof compToken.value !== 'object') {
+    return compToken;
+  }
   const expandedObj = {} as SingleToken<false>;
 
   const getType = (key: string) => typeMaps[compToken.type][key] ?? key;
@@ -74,9 +74,9 @@ function shouldExpand<T extends SingleToken>(
 
 function recurse(
   slice: DeepKeyTokenMap<false>,
+  copy: DeepKeyTokenMap<false>,
   filePath: string,
   transformOpts: TransformOptions = {},
-  boundGetRef: (ref: string) => Array<SingleToken<false>>,
 ) {
   const opts = {
     ...transformOpts,
@@ -102,25 +102,7 @@ function recurse(
         );
         if (expand) {
           // if token uses a reference, resolve it
-          if (typeof token.value === 'string' && usesReference(token.value)) {
-            let ref = { value: token.value } as SingleToken<false>;
-            while (ref && ref.value && typeof ref.value === 'string' && usesReference(ref.value)) {
-              // boundGetRef = getReferences() but bound to this style-dictionary object during parsing
-              // this spits back either { value: '{deepRef}' } if it's a nested reference or
-              // the object value (typography/composition/border/shadow)
-              // However, when it's the final resolved value, the props are as { value, type }
-              // instead of just the value, so we use a map to grab only the value...
-              try {
-                ref = Object.fromEntries(
-                  Object.entries(boundGetRef(ref.value)[0]).map(([k, v]) => [k, v.value]),
-                ) as SingleToken<false>;
-              } catch (e) {
-                console.warn(`Warning: could not resolve reference ${ref.value}`);
-                return;
-              }
-            }
-            token.value = ref as SingleToken<false>['value'];
-          }
+          token.value = resolveReference(token.value, copy);
           slice[key] = expandToken(token, expandType === 'shadow');
         }
       }
@@ -128,7 +110,7 @@ function recurse(
       // TODO: figure out why we have to hack this typecast, if a value doesn't have a value & type,
       // it is definitely a nested DeepKeyTokenMap and not a SingleToken, but TS seems to think it must be
       // a SingleToken after this if statement
-      recurse(token as unknown as DeepKeyTokenMap<false>, filePath, transformOpts, boundGetRef);
+      recurse(token as unknown as DeepKeyTokenMap<false>, copy, filePath, transformOpts);
     }
   }
 }
@@ -139,7 +121,6 @@ export function expandComposites(
   transformOpts?: TransformOptions,
 ): DeepKeyTokenMap<false> {
   const copy = { ...dictionary };
-  const boundGetRef = getReferences.bind({ properties: copy });
-  recurse(copy, filePath, transformOpts, boundGetRef);
+  recurse(copy, copy, filePath, transformOpts);
   return copy;
 }

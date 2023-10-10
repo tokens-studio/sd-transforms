@@ -55,8 +55,8 @@ describe('typography references', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
-  --sdShadow: inset 0 4px 10px 0 rgba(0,0,0,0.4);
-  --sdShadowRef: inset 0 4px 10px 0 rgba(0,0,0,0.4);`,
+  --sdShadow: 0 4px 10px 0 rgba(0,0,0,0.4), inset 0 8px 10px 4px rgba(0,0,0,0.6);
+  --sdShadowRef: 0 4px 10px 0 rgba(0,0,0,0.4), inset 0 8px 10px 4px rgba(0,0,0,0.6);`,
     );
   });
 
