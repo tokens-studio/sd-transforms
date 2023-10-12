@@ -79,6 +79,11 @@ function parseAndReduce(expr: string): string | boolean | number {
   // Remove it here so we can evaluate expressions like 16px + 24px
   const calcParsed = parse(unitlessExpr, { allowInlineCommnets: false });
 
+  // No expression to evaluate, just return it (in case of number as string e.g. '10')
+  if (calcParsed.nodes.length === 1 && calcParsed.nodes[0].type === 'Number') {
+    return expr;
+  }
+
   // Attempt to reduce the math expression
   const reduced = reduceExpression(calcParsed);
   let unit;
@@ -111,10 +116,10 @@ function parseAndReduce(expr: string): string | boolean | number {
 export function checkAndEvaluateMath(
   expr: string | number | boolean | undefined,
 ): string | number | boolean | undefined {
-  if (expr === undefined || typeof expr === 'boolean') {
+  if (typeof expr !== 'string') {
     return expr;
   }
-  const exprs = splitMultiIntoSingleValues(`${expr}`);
+  const exprs = splitMultiIntoSingleValues(expr);
   const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
   if (reducedExprs.length === 1) {
     return reducedExprs[0];
