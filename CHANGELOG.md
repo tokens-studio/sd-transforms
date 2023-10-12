@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.6
+
+### Patch Changes
+
+- 2e8576e: resolveMath no longer unnecessarily changes the token type to number if the token value is a string without any expressions to resolve.
+
 ## 0.11.5
 
 ### Patch Changes
