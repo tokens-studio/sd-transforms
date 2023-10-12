@@ -64,6 +64,14 @@ describe('check and evaluate math', () => {
     );
   });
 
+  it('does not unnecessarily change the type of the value', () => {
+    expect(checkAndEvaluateMath(11)).to.equal(11);
+    // qchanges to number because the expression is a math expression evaluating to a number result
+    expect(checkAndEvaluateMath('11 * 5')).to.equal(55);
+    // keeps it as string because there is no math expression to evaluate, so just keep it as is
+    expect(checkAndEvaluateMath('11')).to.equal('11');
+  });
+
   it('supports values that contain spaces and strings, e.g. a date format', () => {
     expect(checkAndEvaluateMath(`dd/MM/yyyy 'om' HH:mm`)).to.equal(`dd/MM/yyyy 'om' HH:mm`);
   });

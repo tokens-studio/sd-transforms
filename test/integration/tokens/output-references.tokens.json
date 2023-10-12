@@ -1,0 +1,30 @@
+{
+  "my": {
+    "base": {
+      "token": {
+        "value": "11",
+        "type": "spacing"
+      }
+    },
+    "reference": {
+      "token": {
+        "value": "{my.base.token}",
+        "type": "spacing"
+      }
+    }
+  },
+  "transformed": {
+    "base": {
+      "token": {
+        "value": "4",
+        "type": "spacing"
+      }
+    },
+    "reference": {
+      "token": {
+        "value": "{my.base.token} * 5",
+        "type": "spacing"
+      }
+    }
+  }
+}
