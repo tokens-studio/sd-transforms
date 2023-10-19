@@ -53,9 +53,20 @@ export function permutateThemes(themes: ThemeObject[], { separator = '-' } = {} 
 }
 
 function filterTokenSets(tokensets: Record<string, TokenSetStatus>) {
-  return Object.entries(tokensets)
-    .filter(([, val]) => val !== 'disabled')
-    .map(entry => entry[0]);
+  return (
+    Object.entries(tokensets)
+      .filter(([, val]) => val !== 'disabled')
+      // ensure source type sets are always ordered before enabled type sets
+      .sort((a, b) => {
+        if (a[1] === 'source' && b[1] === 'enabled') {
+          return -1;
+        } else if (a[1] === 'enabled' && b[1] === 'source') {
+          return 1;
+        }
+        return 0;
+      })
+      .map(entry => entry[0])
+  );
 }
 
 // cartesian permutations: [[1,2], [3,4]] -> [[1,3], [1,4], [2,3], [2,4]]
