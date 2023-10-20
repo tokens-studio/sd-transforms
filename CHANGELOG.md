@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.7
+
+### Patch Changes
+
+- 72b828d: Fix permutateThemes to order "enabled" sets below "source" sets so enabled sets overrides are prioritized in Style-Dictionary.
+
 ## 0.11.6
 
 ### Patch Changes
