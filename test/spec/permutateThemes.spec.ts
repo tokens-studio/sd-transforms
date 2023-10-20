@@ -144,6 +144,36 @@ describe('transform dimension', () => {
     });
   });
 
+  it('orders enabled sets to the bottom compared to source sets', () => {
+    expect(
+      permutateThemes([
+        {
+          id: '0',
+          name: 'light',
+          group: 'theme',
+          selectedTokenSets: {
+            light: enabled,
+            theme: enabled,
+            core: source,
+          },
+        },
+        {
+          id: '1',
+          name: 'dark',
+          group: 'theme',
+          selectedTokenSets: {
+            dark: enabled,
+            theme: enabled,
+            core: source,
+          },
+        },
+      ]),
+    ).to.eql({
+      dark: ['core', 'dark', 'theme'],
+      light: ['core', 'light', 'theme'],
+    });
+  });
+
   it('throws when not all themes have a group property', () => {
     expect(() =>
       permutateThemes([
