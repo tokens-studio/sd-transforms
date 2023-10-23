@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.8
+
+### Patch Changes
+
+- dd58528: Remove reliance on browser-style-dictionary. This created problems with CJS style-dictionary config files (default export).
+
 ## 0.11.7
 
 ### Patch Changes
