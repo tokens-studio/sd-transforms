@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.9
+
+### Patch Changes
+
+- a3ad58b: Fix the webpackIgnore statement to use single \*. For NextJS integration (webpack).
+
 ## 0.11.8
 
 ### Patch Changes
