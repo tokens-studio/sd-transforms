@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.11.10
+
+### Patch Changes
+
+- 8c2e03f: Fix types for expandComposites functions, no longer trips up on key value pairs with primitive values during parsing process.
+
 ## 0.11.9
 
 ### Patch Changes
