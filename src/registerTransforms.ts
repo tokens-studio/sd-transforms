@@ -1,4 +1,4 @@
-import { Core } from 'style-dictionary';
+import { Core, DesignTokens } from 'style-dictionary';
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
 import { transformShadowForCSS } from './css/transformShadow.js';
@@ -62,7 +62,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
         const excluded = excludeParentKeys(obj, transformOpts);
         const withFontStyles = addFontStyles(excluded, transformOpts);
         const expanded = expandComposites(withFontStyles, filePath, transformOpts);
-        return expanded;
+        return expanded as DesignTokens;
       },
     });
   }

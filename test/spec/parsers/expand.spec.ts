@@ -373,4 +373,18 @@ describe('expand', () => {
       },
     });
   });
+
+  it('should not trip up when the recursed token contains a primitive value', () => {
+    expect(
+      expandComposites(
+        {
+          value: '#ffffff',
+          type: 'color',
+          comment: null,
+        } as SingleToken<false>,
+        'foo/bar.json',
+        { expand: { typography: true } },
+      ),
+    );
+  });
 });

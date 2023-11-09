@@ -22,7 +22,7 @@ type boundGetRef = (
 
 export function resolveReference<T extends SingleToken<false>['value']>(
   tokenValue: T,
-  copy: DeepKeyTokenMap<false>,
+  copy: DeepKeyTokenMap<false> | SingleToken<false>,
 ): T {
   const boundGetRef = getReferences.bind({ properties: copy }) as boundGetRef;
 

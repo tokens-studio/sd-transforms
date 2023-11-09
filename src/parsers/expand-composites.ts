@@ -73,8 +73,8 @@ function shouldExpand<T extends SingleToken>(
 }
 
 function recurse(
-  slice: DeepKeyTokenMap<false>,
-  copy: DeepKeyTokenMap<false>,
+  slice: DeepKeyTokenMap<false> | SingleToken<false>,
+  copy: DeepKeyTokenMap<false> | SingleToken<false>,
   filePath: string,
   transformOpts: TransformOptions = {},
 ) {
@@ -91,6 +91,9 @@ function recurse(
 
   for (const key in slice) {
     const token = slice[key];
+    if (typeof token !== 'object' || token === null) {
+      continue;
+    }
     const { type } = token;
     if (token.value && type) {
       if (typeof type === 'string' && expandablesAsStringsArr.includes(type)) {
@@ -106,20 +109,17 @@ function recurse(
           slice[key] = expandToken(token, expandType === 'shadow');
         }
       }
-    } else if (typeof token === 'object') {
-      // TODO: figure out why we have to hack this typecast, if a value doesn't have a value & type,
-      // it is definitely a nested DeepKeyTokenMap and not a SingleToken, but TS seems to think it must be
-      // a SingleToken after this if statement
-      recurse(token as unknown as DeepKeyTokenMap<false>, copy, filePath, transformOpts);
+    } else {
+      recurse(token, copy, filePath, transformOpts);
     }
   }
 }
 
 export function expandComposites(
-  dictionary: DeepKeyTokenMap<false>,
+  dictionary: DeepKeyTokenMap<false> | SingleToken<false>,
   filePath: string,
   transformOpts?: TransformOptions,
-): DeepKeyTokenMap<false> {
+): DeepKeyTokenMap<false> | SingleToken<false> {
   const copy = { ...dictionary };
   recurse(copy, copy, filePath, transformOpts);
   return copy;
