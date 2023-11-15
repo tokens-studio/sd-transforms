@@ -16,8 +16,8 @@ export function isCommaSeparated(value: string): boolean {
   return value.includes(',');
 }
 
-export function escapeApostrophes(str: string) {
-  return str.replace(/'/g, "\\'");
+export function escapeApostrophes(value: string) {
+  return value.replace(/'/g, "\\'");
 }
 
 function quoteWrapWhitespacedFont(fontString: string) {
