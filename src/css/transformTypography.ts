@@ -16,8 +16,13 @@ export function isCommaSeparated(value: string): boolean {
   return value.includes(',');
 }
 
+export function escapeApostrophes(str: string) {
+  return str.replace(/'/g, "\\'");
+}
+
 function quoteWrapWhitespacedFont(fontString: string) {
-  return hasWhiteSpace(fontString) && !isAlreadyQuoted(fontString) ? `'${fontString}'` : fontString;
+  let escapedFontString = escapeApostrophes(fontString);
+  return hasWhiteSpace(escapedFontString) && !isAlreadyQuoted(escapedFontString) ? `'${escapedFontString}'` : escapedFontString;
 }
 
 export function processFontFamily(fontFamily: string | undefined) {
