@@ -64,7 +64,7 @@ export function expandToken(compToken: SingleToken<false>, isShadow = false): Si
 function shouldExpand<T extends SingleToken>(
   token: T,
   condition: boolean | ExpandFilter<T>,
-  filePath: string,
+  filePath?: string,
 ): boolean {
   if (typeof condition === 'function') {
     return condition(token, filePath);
@@ -75,8 +75,8 @@ function shouldExpand<T extends SingleToken>(
 function recurse(
   slice: DeepKeyTokenMap<false> | SingleToken<false>,
   copy: DeepKeyTokenMap<false> | SingleToken<false>,
-  filePath: string,
   transformOpts: TransformOptions = {},
+  filePath?: string,
 ) {
   const opts = {
     ...transformOpts,
@@ -110,17 +110,17 @@ function recurse(
         }
       }
     } else {
-      recurse(token, copy, filePath, transformOpts);
+      recurse(token, copy, transformOpts, filePath);
     }
   }
 }
 
 export function expandComposites(
   dictionary: DeepKeyTokenMap<false> | SingleToken<false>,
-  filePath: string,
   transformOpts?: TransformOptions,
+  filePath?: string,
 ): DeepKeyTokenMap<false> | SingleToken<false> {
   const copy = { ...dictionary };
-  recurse(copy, copy, filePath, transformOpts);
+  recurse(copy, copy, transformOpts, filePath);
   return copy;
 }

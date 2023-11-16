@@ -15,7 +15,7 @@ export type Expandables =
 export const expandablesAsStringsArr = ['composition', 'typography', 'border', 'boxShadow'];
 export type ExpandablesAsStrings = (typeof expandablesAsStringsArr)[number];
 
-export type ExpandFilter<T extends SingleToken> = (token: T, filePath: string) => boolean;
+export type ExpandFilter<T extends SingleToken> = (token: T, filePath?: string) => boolean;
 
 export interface ExpandOptions {
   typography?: boolean | ExpandFilter<SingleTypographyToken>; // default false
@@ -31,6 +31,7 @@ export interface ColorModifierOptions {
 }
 
 export interface TransformOptions {
+  addAttributeCTI?: boolean;
   casing?: 'camel' | 'pascal' | 'snake' | 'kebab' | 'constant';
   alwaysAddFontStyle?: boolean;
   expand?: ExpandOptions | false;

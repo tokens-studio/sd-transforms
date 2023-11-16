@@ -124,4 +124,16 @@ describe('sd-transforms smoke tests', () => {
   --sd-uses-color: rgba(255, 0, 255, 1);
 }`);
   });
+
+  it('allows easily adding attribute/cti transform to tokens-studio group', async () => {
+    if (dict) {
+      cleanup(dict);
+    }
+    dict = init(cfg, { 'ts/color/modifiers': { format: 'hex' }, addAttributeCTI: true });
+    const enrichedTokens = dict.exportPlatform('css'); // platform to parse for is 'css' in this case
+    expect(enrichedTokens.dimension.scale.attributes).to.eql({
+      category: 'dimension',
+      type: 'scale',
+    });
+  });
 });

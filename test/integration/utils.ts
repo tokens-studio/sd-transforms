@@ -4,8 +4,7 @@ import { registerTransforms } from '../../src/registerTransforms.js';
 export function init(cfg: Config, transformOpts = {}) {
   registerTransforms(StyleDictionary, transformOpts);
   const dict = StyleDictionary.extend(cfg);
-  dict.buildAllPlatforms();
-  return dict;
+  return dict.buildAllPlatforms();
 }
 
 export function cleanup(dict: StyleDictionary.Core) {
