@@ -146,7 +146,7 @@
     "value": {
       "fontSize": "{fontSizes.h6}",
       "fontWeight": "700",
-      "fontFamily": "Arial",
+      "fontFamily": "Arial Black, Suisse Int'l, sans-serif",
       "lineHeight": "1"
     },
     "type": "typography"
