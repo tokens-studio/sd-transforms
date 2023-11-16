@@ -1,5 +1,18 @@
 # @tokens-studio/sd-transforms
 
+## 0.12.0
+
+### Minor Changes
+
+- 6f4b5ed: BREAKING: swap expandComposites 2nd argument and 3rd argument. 2nd argument is now TransformOptions and 3rd argument the filePath (string). This used to be vice versa and was inconsistent with the other parser functions.
+- 6f4b5ed: Add and expose a parseTokens function to make it more developer friendly to add the sd-transforms parsing step to your own custom parser.
+- f7e88b6: BREAKNG: Use structuredClone instead of shallow Object.assign copy in parsers. Must use NodeJS v17 at minimum now, as opposed to v15.14.0 before this update.
+- 6f4b5ed: Add the addAttributeCTI option to registerTransforms function, to automatically add `attribute/cti` predefined transform to the `tokens-studio` transformGroup.
+
+### Patch Changes
+
+- 2307b9d: Refined CSS font name processing: Enhanced escapeApostrophes for accurate apostrophe handling in font names. Updated quoteWrapWhitespacedFont for smart quoting and escaping in multi-word fonts. Ensures better CSS font family compatibility.
+
 ## 0.11.10
 
 ### Patch Changes
