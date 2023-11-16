@@ -120,7 +120,7 @@ export function expandComposites(
   transformOpts?: TransformOptions,
   filePath?: string,
 ): DeepKeyTokenMap<false> | SingleToken<false> {
-  const copy = { ...dictionary };
+  const copy = structuredClone(dictionary);
   recurse(copy, copy, transformOpts, filePath);
   return copy;
 }

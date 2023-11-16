@@ -80,7 +80,7 @@
     "style-dictionary"
   ],
   "engines": {
-    "node": ">=15.14.0"
+    "node": ">=17.0.0"
   },
   "prettier": {
     "printWidth": 100,

@@ -12,10 +12,7 @@ import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 import { TransformOptions } from './TransformOptions.js';
-import { expandComposites } from './parsers/expand-composites.js';
-import { excludeParentKeys } from './parsers/exclude-parent-keys.js';
 import { transformOpacity } from './transformOpacity.js';
-import { addFontStyles } from './parsers/add-font-styles.js';
 import { parseTokens } from './parsers/parse-tokens.js';
 
 const isBrowser = typeof window === 'object';
