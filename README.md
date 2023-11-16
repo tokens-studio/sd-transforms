@@ -9,8 +9,8 @@
   - [Using the transforms](#using-the-transforms)
   - [Custom Transform Group](#custom-transform-group)
   - [Options](#options)
-- [Full example](#full-example)
-  - [Themes full example](#themes-full-example)
+- [Complete example](#full-example)
+  - [Themes complete example](#themes-complete-example)
   - [Multi-dimensional theming](#multi-dimensional-theming)
 - [Transforms](#transforms)
 - [Troubleshooting](#not-sure-how-to-fix-your-issue)
@@ -112,7 +112,7 @@ StyleDictionary.registerTransform({
 
 In Style-Dictionary, [`transformGroup` and `transforms` cannot be combined in a platform inside your config](https://github.com/amzn/style-dictionary/issues/813).
 
-Therefore, if you wish to use the transform group, but adjust, add or remove a few transforms, your best option is creating a custom transformGroup:
+Therefore, if you wish to use the transform group, but adjust, add or remove a few transforms, your best option is to create a custom transform group:
 
 ```js
 const { transforms } = require('@tokens-studio/sd-transforms');
@@ -126,6 +126,9 @@ StyleDictionary.registerTransformGroup({
   transforms: [...transforms, 'name/cti/camel'].filter(transform => transform !== 'ts/size/px'),
 });
 ```
+
+> Note: it is easy to change the casing or to add attributes/cti transform to the group, without needing to create a custom transform group.
+> For this, see section "Options" below for the `casing` and `addAttributeCTI` option.
 
 ### Options
 
@@ -152,6 +155,7 @@ Options:
 | name                          | type                     | required | default         | description                                                                                                                           |
 | ----------------------------- | ------------------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | excludeParentKeys             | boolean                  | ❌       | `false`         | Whether or not to exclude parent keys from your token files                                                                           |
+| addAttributeCTI               | boolean                  | ❌       | `false`         | Whether or not to add `'attribute/cti'` predefined transform to the `tokens-studio` transformGroup                                    |
 | alwaysAddFontStyle            | boolean                  | ❌       | `false`         | Whether or not to always add a 'normal' fontStyle property to typography tokens which do not have explicit fontStyle                  |
 | casing                        | string                   | ❌       | `camel`         | What kind of casing to use for token names. Options: [`camel`, `pascal`, `snake`, `kebab`, `constant`]                                |
 | expand                        | boolean \| ExpandOptions | ❌       | See props below | `false` to not register the parser at all. By default, expands composition tokens. Optionally, border, shadow and typography as well. |
@@ -163,8 +167,8 @@ Options:
 | ['ts/color/modifiers'].format | ColorModifierFormat      | ❌       | `undefined`     | Color modifier output format override ('hex' \| 'hsl' \| 'lch' \| 'p3' \| 'srgb'), uses local format or modifier space as default     |
 |                               |
 
-> Note: you can also import and use the `expandComposites` function to run the expansion on your token object manually.
-> Handy if you have your own parsers set up (e.g. for JS files), and you want the expansions to work there too.
+> Note: you can also import and use the `parseTokens` function to run the parsing steps on your tokens object manually.
+> Handy if you have your own parsers set up (e.g. for JS files), and you want the parser-based features like composites-expansion to work there too.
 
 ## Full example
 
@@ -221,7 +225,7 @@ sd.cleanAllPlatforms();
 sd.buildAllPlatforms();
 ```
 
-#### To run it use following command
+To run it use the following command
 
 ```sh
 node build-output.js
@@ -230,7 +234,7 @@ node build-output.js
 > Note: make sure to choose either the full transformGroup, **OR** its separate transforms so you can adjust or add your own.
 > [Combining a transformGroup with a transforms array can give unexpected results](https://github.com/amzn/style-dictionary/issues/813).
 
-### Themes full example
+### Themes: complete example
 
 You might be using Themes in the PRO version of Tokens Studio.
 
@@ -378,7 +382,7 @@ run();
 
 ### ts/descriptionToComment
 
-This transform maps token descriptions to comments.
+This transform maps token descriptions into comments.
 
 **matches**: All tokens that have a description property.
 
@@ -443,7 +447,7 @@ This transform checks and evaluates math expressions
 
 ### ts/size/px
 
-This transform adds `px` as a unit when missing to tokens.
+This transform adds `px` as a unit when dimension-like tokens do not have a unit.
 
 **matches**: `token.type` is one of `['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension']`
 
@@ -471,7 +475,7 @@ This transform adds `px` as a unit when missing to tokens.
 
 ### ts/opacity
 
-This transforms opacity token values declared with `%` to a number between `0` and `1`.
+This transforms opacity token values declared with `%` into a number between `0` and `1`.
 
 **matches**: `token.type` is `'opacity'`
 
@@ -499,7 +503,7 @@ This transforms opacity token values declared with `%` to a number between `0` a
 
 ### ts/size/lineheight
 
-This transforms line-height token values declared with `%` to a a unitless value.
+This transforms line-height token values declared with `%` into a unitless value.
 
 **matches**: `token.type` is `'lineHeights'`
 
@@ -645,7 +649,7 @@ This transforms letter-spacing token values declared with `%` to a value with `e
 
 ### ts/color/css/hexrgba
 
-This transforms color token values with Figma's "hex code RGBA" to an actual `rgba()` format
+This transforms color token values with Figma's "hex code RGBA" into actual `rgba()` format
 
 **matches**: `token.type` is `'color'`
 
@@ -701,7 +705,7 @@ This transforms font-family token values into valid CSS, adding single quotes if
 
 ### ts/typography/css/shorthand
 
-This transforms typography tokens to a valid CSS shorthand
+This transforms typography tokens into a valid CSS shorthand
 
 **matches**: `token.type` is `'typography'`
 
@@ -733,7 +737,7 @@ This transforms typography tokens to a valid CSS shorthand
 
 ### ts/shadow/css/shorthand
 
-This transforms shadow tokens to a valid CSS shadow shorthand
+This transforms shadow tokens into a valid CSS shadow shorthand
 
 **matches**: `token.type` is `'boxShadow'`
 
@@ -766,7 +770,7 @@ This transforms shadow tokens to a valid CSS shadow shorthand
 
 ### ts/border/css/shorthand
 
-This transforms border tokens to a valid CSS border shorthand
+This transforms border tokens into a valid CSS border shorthand
 
 **matches**: `token.type` is `'border'`
 
@@ -795,13 +799,13 @@ This transforms border tokens to a valid CSS border shorthand
 }
 ```
 
-## Not sure how to fix your issue ?
+## Not sure how to fix your issue?
 
-### Create a reproduction by :-
+### Create a reproduction by:-
 
-1. Open configurator tool [link](https://configurator.tokens.studio/)
+1. Open the configurator tool [link](https://configurator.tokens.studio/)
 2. Upload your tokens and add your style dictionary config and transforms
-3. Copy the Url as it will include your settings.
-4. Join our slack [link](https://tokens.studio/slack)
-5. Open style-dictionary-configurator channel.
-6. Create a thread about your issue and paste your reproduction link inside it.
+3. Copy the URL as it will include your settings
+4. Join our Slack [link](https://tokens.studio/slack)
+5. Open style-dictionary-configurator channel
+6. Create a thread about your issue and paste your reproduction link inside it

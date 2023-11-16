@@ -12,10 +12,8 @@ import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 import { TransformOptions } from './TransformOptions.js';
-import { expandComposites } from './parsers/expand-composites.js';
-import { excludeParentKeys } from './parsers/exclude-parent-keys.js';
 import { transformOpacity } from './transformOpacity.js';
-import { addFontStyles } from './parsers/add-font-styles.js';
+import { parseTokens } from './parsers/parse-tokens.js';
 
 const isBrowser = typeof window === 'object';
 
@@ -58,11 +56,8 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     _sd.registerParser({
       pattern: /\.json$/,
       parse: ({ filePath, contents }) => {
-        const obj = JSON.parse(contents);
-        const excluded = excludeParentKeys(obj, transformOpts);
-        const withFontStyles = addFontStyles(excluded, transformOpts);
-        const expanded = expandComposites(withFontStyles, filePath, transformOpts);
-        return expanded as DesignTokens;
+        const tokens = JSON.parse(contents);
+        return parseTokens(tokens, transformOpts, filePath) as DesignTokens;
       },
     });
   }
@@ -195,6 +190,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
   _sd.registerTransformGroup({
     name: 'tokens-studio',
     transforms: [
+      ...(transformOpts?.addAttributeCTI === true ? ['attribute/cti'] : []),
       ...transforms,
       // by default we go with camel, as having no default will likely give the user
       // errors straight away. This can be overridden by manually passing an array of transforms

@@ -50,7 +50,7 @@ export function addFontStyles(
   dictionary: DeepKeyTokenMap<false>,
   transformOpts?: TransformOptions,
 ): DeepKeyTokenMap<false> {
-  const copy = { ...dictionary };
+  const copy = structuredClone(dictionary);
   recurse(copy, copy, transformOpts?.alwaysAddFontStyle);
   return copy;
 }
