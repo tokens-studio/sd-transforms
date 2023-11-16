@@ -21,8 +21,12 @@ export function escapeApostrophes(value: string): string {
 }
 
 function quoteWrapWhitespacedFont(fontString: string) {
-  let escapedFontString = escapeApostrophes(fontString);
-  return hasWhiteSpace(escapedFontString) && !isAlreadyQuoted(escapedFontString) ? `'${escapedFontString}'` : escapedFontString;
+  let fontName = fontString.trim();
+  const isQuoted = isAlreadyQuoted(fontName);
+  if (!isQuoted) {
+    fontName = escapeApostrophes(fontName);
+  }
+  return hasWhiteSpace(fontName) && !isQuoted ? `'${fontName}'` : fontName;
 }
 
 export function processFontFamily(fontFamily: string | undefined) {
