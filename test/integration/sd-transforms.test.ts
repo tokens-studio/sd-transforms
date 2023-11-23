@@ -71,7 +71,7 @@ describe('sd-transforms smoke tests', () => {
   --sdFontWeightsBodyRegular: 400;
   --sdFontSizesH6: 16px;
   --sdFontSizesBody: 16px;
-  --sdHeading6: 700 16px/1 'Arial Black', 'Suisse Int\\'l', sans-serif;
+  --sdHeading6: 700 16px/1 'Arial Black', 'Suisse intl', sans-serif;
   --sdShadowBlur: 10px;
   --sdShadow: inset 0 4px 10px 0 rgba(0,0,0,0.4);
   --sdBorderWidth: 5px;
@@ -115,7 +115,7 @@ describe('sd-transforms smoke tests', () => {
   --sd-font-weights-body-regular: 400;
   --sd-font-sizes-h6: 16px;
   --sd-font-sizes-body: 16px;
-  --sd-heading-6: 700 16px/1 'Arial Black', 'Suisse Int\\'l', sans-serif;
+  --sd-heading-6: 700 16px/1 'Arial Black', 'Suisse intl', sans-serif;
   --sd-shadow-blur: 10px;
   --sd-shadow: inset 0 4px 10px 0 rgba(0,0,0,0.4);
   --sd-border-width: 5px;

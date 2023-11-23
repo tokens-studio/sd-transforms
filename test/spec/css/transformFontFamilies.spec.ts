@@ -12,10 +12,9 @@ describe('process font family', () => {
     expect(processFontFamily('Arial Black, Times New Roman, Foo, sans-serif')).to.equal(
       `'Arial Black', 'Times New Roman', Foo, sans-serif`,
     );
-    expect(processFontFamily(`'Arial Black', Times New Roman, Foo, sans-serif`)).to.equal(
-      `'Arial Black', 'Times New Roman', Foo, sans-serif`,
-    );
-    expect(processFontFamily("Suisse Int'l")).to.equal("'Suisse intl'");
+    expect(
+      processFontFamily(`'Arial Black', Times New Roman, Suisse Int'l, Foo, sans-serif`),
+    ).to.equal(`'Arial Black', 'Times New Roman', 'Suisse intl', Foo, sans-serif`);
   });
 });
 
