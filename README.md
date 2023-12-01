@@ -285,6 +285,36 @@ run();
 If you're using Tokens Studio multi-dimensional theming, you'll have to run some logic to create permutations of those multiple dimensions of themes.
 We export a function called `permutateThemes` that allows passing the data from your `$themes.json`, and will give back an object with all the different permutations.
 
+For example, consider the following multi-dimensional theme hierarchy (Group > Theme > TokenSet):
+
+```
+mode
+  |-- light
+  |     `-- core, light, theme
+  `-- dark
+        `-- core, dark, theme
+
+brand
+  |-- casual
+  |     `-- core, casual
+  `-- business
+        `-- core, business
+```
+
+Here we have two groups:
+
+1. `mode`: has two themes `light` & `dark`
+2. `brand`: has two themes `casual` & `business`
+
+Running `permutateThemes` on these themes will generate 4 theme combinations:
+
+1. `light_casual`
+2. `dark_casual`
+3. `light_business`
+4. `dark_business`
+
+See details below:
+
 ```js
 const { permutateThemes } = require('@tokens-studio/sd-transforms');
 const fs = require('fs');
@@ -294,7 +324,7 @@ const fs = require('fs');
  * [
  *  {
  *    name: 'light'
- *    group: 'theme',
+ *    group: 'mode',
  *    selectedTokensets: {
  *      'core': 'source',
  *      'light': 'enabled',
@@ -303,7 +333,7 @@ const fs = require('fs');
  *  },
  *  {
  *    name: 'dark'
- *    group: 'theme',
+ *    group: 'mode',
  *    selectedTokensets: {
  *      'core': 'source',
  *      'dark': 'enabled',
@@ -336,8 +366,10 @@ const fs = require('fs');
  *   dark_business: ['core', 'dark', 'theme', 'business'],
  * }
  */
-permutateThemes(JSON.parse(fs.readFileSync('$themes.json', 'utf-8')), { seperator: '_' });
+permutateThemes(JSON.parse(fs.readFileSync('$themes.json', 'utf-8')), { separator: '_' });
 ```
+
+Note that it is a best practice to generate standalone output files for each theme combination. In the example above, we should generate 4 standalone CSS file `light_casual.css`, `dark_casual.css`, `light_business.css` and `dark_business.css`. We can then switch between them to change themes. Avoid generating all this output in a single file and trying to select different sections of the file. This will increase the file size as the number of theme combinations grows resulting in increased load times.
 
 Full example with multi-dimensional themes:
 
@@ -352,7 +384,7 @@ registerTransforms(StyleDictionary, {
 
 async function run() {
   const $themes = JSON.parse(await promises.readFile('$themes.json', 'utf-8'));
-  const themes = permutateThemes($themes, { seperator: '_' });
+  const themes = permutateThemes($themes, { separator: '_' });
   const configs = Object.entries(themes).map(([name, tokensets]) => ({
     source: tokensets.map(tokenset => `${tokenset}.json`),
     platforms: {
@@ -377,6 +409,8 @@ async function run() {
 
 run();
 ```
+
+You can find a variation of this example [here](https://github.com/tokens-studio/lion-example). It outputs a CSS file for every theme combination _for every component_, e.g. `button-business-blue.css`, `date-picker-business-blue.css` and so on. This caters to use cases where component-level tokens as required, e.g. when implementing Web Components.
 
 ## Transforms
 
