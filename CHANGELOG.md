@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.12.1
+
+### Patch Changes
+
+- e7ecf43: Fixes transform HEXRGBa format when this format is contained within a value, e.g. linear-gradient() or multi-value.
+
 ## 0.12.0
 
 ### Minor Changes
