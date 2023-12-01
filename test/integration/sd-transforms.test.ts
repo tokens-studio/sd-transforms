@@ -61,6 +61,7 @@ describe('sd-transforms smoke tests', () => {
   --sdColorsRed400: #f67474;
   --sdColorsRed500: #f56565;
   --sdColorsRed600: #dd5b5b;
+  --sdColorsGradient: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.00) 45%);
   --sdLineHeightsHeading: 1.1;
   --sdLineHeightsBody: 1.4;
   --sdLetterSpacingDefault: 0;
@@ -105,6 +106,7 @@ describe('sd-transforms smoke tests', () => {
   --sd-colors-red-400: #f67474;
   --sd-colors-red-500: #f56565;
   --sd-colors-red-600: #dd5b5b;
+  --sd-colors-gradient: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.00) 45%);
   --sd-line-heights-heading: 1.1;
   --sd-line-heights-body: 1.4;
   --sd-letter-spacing-default: 0;

@@ -92,6 +92,10 @@
           }
         }
       }
+    },
+    "gradient": {
+      "value": "linear-gradient(180deg, {colors.black} 0%, rgba({colors.black}, 0.00) 45%)",
+      "type": "color"
     }
   },
   "lineHeights": {
