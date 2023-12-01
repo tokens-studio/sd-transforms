@@ -24,4 +24,13 @@ describe('transform HEXRGBa', () => {
   it('does not transform if the hex value cannot be interpreted properly', () => {
     expect(transformHEXRGBaForCSS('rgba(#000000abcd, 0.3)')).to.equal('rgba(#000000abcd, 0.3)');
   });
+
+  it('correctly transforms values containing the HEXRGBa pattern', () => {
+    expect(
+      transformHEXRGBaForCSS('linear-gradient(180deg, #000000 0%, rgba(#000000, 0.00) 45%)'),
+    ).to.equal('linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.00) 45%)');
+    expect(transformHEXRGBaForCSS('rgba(#000000, 0.00) rgba(#000000, 1)')).to.equal(
+      'rgba(0, 0, 0, 0.00) rgba(0, 0, 0, 1)',
+    );
+  });
 });

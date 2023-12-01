@@ -9,16 +9,16 @@ export function transformHEXRGBaForCSS(value: string | undefined): string | unde
   if (value === undefined) {
     return value;
   }
-  const match = /rgba\(\s*(?<hex>#.+?)\s*,\s*?(?<alpha>\d.*?)\)/g.exec(value);
-  if (match && match.groups) {
-    const { hex, alpha } = match.groups;
+
+  const regex = /rgba\(\s*(?<hex>#.+?)\s*,\s*(?<alpha>[\d.]+)\s*\)/g;
+
+  return value.replace(regex, (match, hex, alpha) => {
     try {
       const [r, g, b] = parseToRgba(hex);
       return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     } catch (e) {
       console.warn(`Tried parsing "${hex}" as a hex value, but failed.`);
-      return value;
+      return match;
     }
-  }
-  return value;
+  });
 }
