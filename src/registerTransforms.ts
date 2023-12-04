@@ -40,6 +40,13 @@ export const transforms = [
 export async function registerTransforms(sd: Core, transformOpts?: TransformOptions) {
   let _sd = sd;
 
+  // TODO: Remove in breaking change, this is a bad idea in general because our local Style-Dictionary
+  // installation will be preferred by Node resolution algorithm over the user's installed version
+  // in the scenario that multiple versions are installed (e.g. v3 by user and v4 by sd-transforms)
+  // e.g. node_modules/@tokens-studio/sd-transforms/node_modules/style-dictionary (sd-transforms local)
+  // versus node_modules/style-dictionary (user local)
+  // Force user to always pass the instance directly, to prevent nasty bugs.
+
   // NodeJS env and no passed SD? let's register on our installed SD
   // We're in ESM, but style-dictionary is CJS only, so we need module.createRequire
   if (!isBrowser && _sd === undefined) {
