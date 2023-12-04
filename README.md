@@ -173,7 +173,7 @@ StyleDictionary.registerTransformGroup({
 You can pass options to the `registerTransforms` function.
 
 ```js
-registerTransforms({
+registerTransforms(StyleDictionary, {
   expand: {
     composition: false,
     typography: true,
