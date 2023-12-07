@@ -291,4 +291,23 @@ describe('transform color modifiers', () => {
 
     expect(transformColorModifiers(token)).to.equal('#983735');
   });
+
+  it('supports UIColor(r,g,b,a) format', () => {
+    const token = {
+      value: 'UIColor(red: 1, green: 0, blue: 0.5, alpha: 0.5)',
+      type: 'color',
+      $extensions: {
+        'studio.tokens': {
+          modify: {
+            type: 'darken',
+            value: '0.5',
+            space: 'srgb',
+            format: 'srgb',
+          },
+        },
+      },
+    };
+
+    expect(transformColorModifiers(token)).to.equal('rgb(50% 0% 25% / 0.5)');
+  });
 });

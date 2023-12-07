@@ -1,0 +1,34 @@
+{
+  "color": {
+    "red": {
+      "value": "#f00",
+      "type": "color"
+    },
+    "danger": {
+      "value": "{color.red}",
+      "type": "color",
+      "$extensions": {
+        "studio.tokens": {
+          "modify": {
+            "type": "darken",
+            "value": "0.75",
+            "space": "hsl"
+          }
+        }
+      }
+    },
+    "error": {
+      "value": "{color.danger}",
+      "type": "color",
+      "$extensions": {
+        "studio.tokens": {
+          "modify": {
+            "type": "darken",
+            "value": "0.5",
+            "space": "hsl"
+          }
+        }
+      }
+    }
+  }
+}
