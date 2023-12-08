@@ -28,17 +28,13 @@ const cfg = {
 let dict: StyleDictionary.Core | undefined;
 
 describe('sd-transforms advanced tests', () => {
-  beforeEach(() => {
-    if (dict) {
-      cleanup(dict);
-    }
-    dict = init(cfg);
+  beforeEach(async () => {
+    await cleanup(dict);
+    dict = await init(cfg);
   });
 
-  afterEach(() => {
-    if (dict) {
-      cleanup(dict);
-    }
+  afterEach(async () => {
+    await cleanup(dict);
   });
 
   it('supports typography tokens with math or fontweight alias', async () => {

@@ -1,4 +1,4 @@
-import { Core, DesignTokens } from 'style-dictionary';
+import StyleDictionary, { DesignTokens } from 'style-dictionary';
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
 import { transformShadowForCSS } from './css/transformShadow.js';
@@ -35,7 +35,10 @@ export const transforms = [
  * typecasting since this will need to work in browser environment, so we cannot
  * import style-dictionary as it depends on nodejs env
  */
-export async function registerTransforms(sd: Core, transformOpts?: TransformOptions) {
+export async function registerTransforms(
+  sd: StyleDictionary.Core,
+  transformOpts?: TransformOptions,
+) {
   // Allow completely disabling the registering of this parser
   // in case people want to combine the expandComposites() utility with their own parser and prevent conflicts
   if (transformOpts?.expand !== false) {

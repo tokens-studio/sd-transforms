@@ -27,26 +27,22 @@ const cfg = {
 let transformOpts = {};
 let dict: StyleDictionary.Core | undefined;
 
-function before() {
-  if (dict) {
-    cleanup(dict);
-  }
-  dict = init(cfg, transformOpts);
+async function before() {
+  await cleanup(dict);
+  dict = await init(cfg, transformOpts);
 }
 
-function after() {
-  if (dict) {
-    cleanup(dict);
-  }
+async function after() {
+  await cleanup(dict);
 }
 
 describe('expand composition tokens', () => {
-  beforeEach(() => {
-    before();
+  beforeEach(async () => {
+    await before();
   });
 
-  afterEach(() => {
-    after();
+  afterEach(async () => {
+    await after();
   });
 
   it('only expands composition tokens by default', async () => {
@@ -79,7 +75,7 @@ describe('expand composition tokens', () => {
         shadow: true,
       },
     };
-    before();
+    await before();
 
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
@@ -132,7 +128,7 @@ describe('expand composition tokens', () => {
         typography: true,
       },
     };
-    before();
+    await before();
 
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
@@ -166,7 +162,7 @@ describe('expand composition tokens', () => {
         shadow: true,
       },
     };
-    before();
+    await before();
 
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(

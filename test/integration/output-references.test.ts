@@ -31,22 +31,17 @@ const cfg = {
 let dict: StyleDictionary.Core | undefined;
 
 describe('outputReferences integration', () => {
-  beforeEach(() => {
-    if (dict) {
-      cleanup(dict);
-    }
-    dict = init(cfg);
+  beforeEach(async () => {
+    await cleanup(dict);
+    dict = await init(cfg);
   });
 
-  afterEach(() => {
-    if (dict) {
-      cleanup(dict);
-    }
+  afterEach(async () => {
+    await cleanup(dict);
   });
 
   it('supports outputReferences with resolveMath', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    console.log(file);
     expect(file).to.include(`--sd-my-base-token: 11;`);
     expect(file).to.include(`--sd-my-reference-token: var(--sd-my-base-token);`);
   });

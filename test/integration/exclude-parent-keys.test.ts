@@ -1,5 +1,4 @@
 import { expect } from '@esm-bundle/chai';
-import StyleDictionary from 'style-dictionary';
 import { promises } from 'fs';
 import path from 'path';
 import { cleanup, init } from './utils.js';
@@ -25,36 +24,30 @@ const cfg = {
   },
 };
 let transformOpts = {};
-let dict: StyleDictionary.Core | undefined;
-
-function before() {
-  if (dict) {
-    cleanup(dict);
-  }
-  dict = init(cfg, transformOpts);
-}
-
-function after() {
-  if (dict) {
-    cleanup(dict);
-  }
-}
 
 describe('exclude parent keys', () => {
-  afterEach(() => {
-    after();
+  beforeEach(async () => {
+    await cleanup();
+  });
+
+  afterEach(async () => {
+    await cleanup();
   });
 
   it('does not expand parent keys by default and throws on broken references', async () => {
-    expect(before).to.throw('Problems were found when trying to resolve property references');
+    let error;
+    await init(cfg).catch(e => {
+      error = e.message;
+    });
+    expect(error).to.include('Problems were found when trying to resolve property references');
   });
 
   it('optionally excludes parent keys', async () => {
     transformOpts = {
       excludeParentKeys: true,
     };
-    before();
-
+    await init(cfg, transformOpts);
+    await cleanup();
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `

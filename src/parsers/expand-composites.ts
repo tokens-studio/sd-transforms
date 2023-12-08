@@ -1,4 +1,6 @@
-import { DeepKeyTokenMap, SingleToken } from '@tokens-studio/types';
+import type { DeepKeyTokenMap, SingleToken, TokenBoxshadowValue } from '@tokens-studio/types';
+import type { DesignTokens } from 'style-dictionary';
+import { usesReference, resolveReferences } from 'style-dictionary/utils';
 import {
   ExpandFilter,
   TransformOptions,
@@ -6,7 +8,6 @@ import {
   ExpandablesAsStrings,
   expandablesAsStringsArr,
 } from '../TransformOptions.js';
-import { resolveReference } from './resolveReference.js';
 
 const typeMaps = {
   boxShadow: {
@@ -29,6 +30,10 @@ const typeMaps = {
     fontStyle: 'fontStyles',
   },
 };
+
+function flattenValues<T extends SingleToken<false>['value']>(val: T): T {
+  return Object.fromEntries(Object.entries(val).map(([k, v]) => [k, v.value])) as T;
+}
 
 export function expandToken(compToken: SingleToken<false>, isShadow = false): SingleToken<false> {
   if (typeof compToken.value !== 'object') {
@@ -90,7 +95,7 @@ function recurse(
   };
 
   for (const key in slice) {
-    const token = slice[key];
+    const token = slice[key] as SingleToken<false>;
     if (typeof token !== 'object' || token === null) {
       continue;
     }
@@ -104,8 +109,21 @@ function recurse(
           filePath,
         );
         if (expand) {
-          // if token uses a reference, resolve it
-          token.value = resolveReference(token.value, copy);
+          // if token uses a reference, attempt to resolve it
+          if (typeof token.value === 'string' && usesReference(token.value)) {
+            token.value = resolveReferences(token.value, copy as DesignTokens) ?? token.value;
+            // If every key of the result (object) is a number, the ref value is a multi-value, which means TokenBoxshadowValue[]
+            if (
+              typeof token.value === 'object' &&
+              Object.keys(token.value).every(key => !isNaN(Number(key)))
+            ) {
+              token.value = (Object.values(token.value) as TokenBoxshadowValue[]).map(part =>
+                flattenValues(part),
+              );
+            } else if (!usesReference(token.value)) {
+              token.value = flattenValues(token.value);
+            }
+          }
           slice[key] = expandToken(token, expandType === 'shadow');
         }
       }

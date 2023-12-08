@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "lib": ["ESNext", "dom"],
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -10,10 +10,11 @@
     "alwaysStrict": true,
     "types": ["node", "mocha"],
     "esModuleInterop": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "noImplicitAny": false,
     "outDir": "dist/src",
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "**/*.d.ts"],
   "exclude": ["node_modules", "**/coverage/*"]
 }
