@@ -5,6 +5,28 @@ import { darken } from './darken.js';
 import { lighten } from './lighten.js';
 import { ColorModifier } from '@tokens-studio/types';
 
+// Users using UIColor swift format are blocked from using such transform in
+// combination with this color modify transform when using references.
+// This is because reference value props are deferred so the UIColor
+// transform always applies first to non-reference tokens, and only after that
+// can the color modifier transitive transform apply to deferred tokens, at which point
+// it is already UIColor format.
+// We can remove this hotfix later once  https://github.com/amzn/style-dictionary/issues/1063
+// is resolved. Then users can use a post-transitive transform for more fine grained control
+function parseUIColor(value: string): string {
+  const reg = new RegExp(
+    `UIColor\\(red: (?<red>[\\d\\.]+?), green: (?<green>[\\d\\.]+?), blue: (?<blue>[\\d\\.]+?), alpha: (?<alpha>[\\d\\.]+?)\\)`,
+  );
+  const match = value.match(reg);
+  if (match?.groups) {
+    const { red, green, blue, alpha } = match.groups;
+    return `rgba(${parseFloat(red) * 255}, ${parseFloat(green) * 255}, ${
+      parseFloat(blue) * 255
+    }, ${alpha})`;
+  }
+  return value;
+}
+
 export function modifyColor(
   baseColor: string | undefined,
   modifier: ColorModifier,
@@ -12,6 +34,9 @@ export function modifyColor(
   if (baseColor === undefined) {
     return baseColor;
   }
+
+  baseColor = parseUIColor(baseColor);
+
   const color = new Color(baseColor);
   let returnedColor = color;
   try {
