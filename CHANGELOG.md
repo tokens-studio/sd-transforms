@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.12.2
+
+### Patch Changes
+
+- 7dad579: Workaround fix in color modifiers transform to allow UIColor format. This workaround should be removed (in a breaking change) if https://github.com/amzn/style-dictionary/issues/1063 gets resolved and post-transitive transforms become a thing.
+
 ## 0.12.1
 
 ### Patch Changes
