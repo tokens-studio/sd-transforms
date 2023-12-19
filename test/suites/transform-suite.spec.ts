@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { DesignToken } from 'style-dictionary';
+import { DesignToken } from 'style-dictionary/types';
 
 export function runTransformSuite(transformer: (value: unknown) => unknown, token?: DesignToken) {
   describe('Test Suite: Transforms', () => {

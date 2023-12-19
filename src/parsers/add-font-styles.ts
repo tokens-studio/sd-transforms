@@ -1,5 +1,5 @@
 import { DeepKeyTokenMap, TokenTypographyValue } from '@tokens-studio/types';
-import { usesReference, resolveReferences } from 'style-dictionary/utils';
+import { usesReferences, resolveReferences } from 'style-dictionary/utils';
 import { fontWeightReg, fontStyles } from '../transformFontWeights.js';
 import { TransformOptions } from '../TransformOptions.js';
 
@@ -19,8 +19,8 @@ function recurse(
         continue;
       }
       let fontWeight = value.fontWeight;
-      if (usesReference(fontWeight)) {
-        fontWeight = resolveReferences(fontWeight, copy) ?? fontWeight;
+      if (usesReferences(fontWeight)) {
+        fontWeight = `${resolveReferences(fontWeight, copy) ?? fontWeight}`;
       }
       // cast because fontStyle is a prop we will add ourselves
       const tokenValue = value as TokenTypographyValue & { fontStyle: string };

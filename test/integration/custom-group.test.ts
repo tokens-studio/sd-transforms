@@ -25,7 +25,7 @@ const cfg = {
     },
   },
 };
-let dict: StyleDictionary.Core | undefined;
+let dict: StyleDictionary | undefined;
 
 async function before() {
   cleanup(dict);
@@ -35,7 +35,6 @@ async function before() {
     // remove 'px' appending transform to unitless values
     transforms: transforms.filter(transform => transform !== 'ts/size/px'),
   });
-  // @ts-expect-error v4 does not have types aligned yet
   dict = new StyleDictionary(cfg);
   await dict?.buildAllPlatforms();
 }

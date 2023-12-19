@@ -1,5 +1,5 @@
+import type StyleDictionary from 'style-dictionary';
 import { expect } from '@esm-bundle/chai';
-import StyleDictionary from 'style-dictionary';
 import { promises } from 'fs';
 import path from 'path';
 import { cleanup, init } from './utils.js';
@@ -24,8 +24,7 @@ const cfg = {
     },
   },
 };
-
-let dict: StyleDictionary.Core | undefined;
+let dict: StyleDictionary | undefined;
 
 describe('sd-transforms advanced tests', () => {
   beforeEach(async () => {

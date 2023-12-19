@@ -1,4 +1,5 @@
-import StyleDictionary, { DesignTokens } from 'style-dictionary';
+import type StyleDictionary from 'style-dictionary';
+import type { DesignTokens } from 'style-dictionary/types';
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
 import { transformShadowForCSS } from './css/transformShadow.js';
@@ -36,7 +37,7 @@ export const transforms = [
  * import style-dictionary as it depends on nodejs env
  */
 export async function registerTransforms(
-  sd: StyleDictionary.Core,
+  sd: typeof StyleDictionary,
   transformOpts?: TransformOptions,
 ) {
   // Allow completely disabling the registering of this parser

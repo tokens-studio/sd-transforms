@@ -1,15 +1,15 @@
-import StyleDictionary, { Config } from 'style-dictionary';
+import type { Config } from 'style-dictionary/types';
+import StyleDictionary from 'style-dictionary';
 import { registerTransforms } from '../../src/registerTransforms.js';
 
 export async function init(cfg: Config, transformOpts = {}) {
   registerTransforms(StyleDictionary, transformOpts);
-  // @ts-expect-error v4 does not have types aligned yet
   const dict = new StyleDictionary(cfg);
   await dict.buildAllPlatforms();
   return dict;
 }
 
-export async function cleanup(dict?: StyleDictionary.Core) {
+export async function cleanup(dict?: StyleDictionary) {
   // @ts-expect-error polluting dictionary it on purpose
   if (dict && !dict.cleaned) {
     await dict.cleanAllPlatforms();

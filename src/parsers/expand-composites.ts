@@ -1,6 +1,6 @@
 import type { DeepKeyTokenMap, SingleToken, TokenBoxshadowValue } from '@tokens-studio/types';
-import type { DesignTokens } from 'style-dictionary';
-import { usesReference, resolveReferences } from 'style-dictionary/utils';
+import type { DesignTokens } from 'style-dictionary/types';
+import { usesReferences, resolveReferences } from 'style-dictionary/utils';
 import {
   ExpandFilter,
   TransformOptions,
@@ -110,7 +110,7 @@ function recurse(
         );
         if (expand) {
           // if token uses a reference, attempt to resolve it
-          if (typeof token.value === 'string' && usesReference(token.value)) {
+          if (typeof token.value === 'string' && usesReferences(token.value)) {
             token.value = resolveReferences(token.value, copy as DesignTokens) ?? token.value;
             // If every key of the result (object) is a number, the ref value is a multi-value, which means TokenBoxshadowValue[]
             if (
@@ -120,7 +120,7 @@ function recurse(
               token.value = (Object.values(token.value) as TokenBoxshadowValue[]).map(part =>
                 flattenValues(part),
               );
-            } else if (!usesReference(token.value)) {
+            } else if (!usesReferences(token.value)) {
               token.value = flattenValues(token.value);
             }
           }
