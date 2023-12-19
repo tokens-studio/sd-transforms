@@ -9,7 +9,7 @@
   - [Using the transforms](#using-the-transforms)
   - [Custom Transform Group](#custom-transform-group)
   - [Options](#options)
-- [Complete example](#full-example)
+- [Theming](#theming)
   - [Themes complete example](#themes-complete-example)
   - [Multi-dimensional theming](#multi-dimensional-theming)
 - [Transforms](#transforms)
@@ -66,9 +66,37 @@ const StyleDictionary = require('style-dictionary');
 // will register them on StyleDictionary object
 // that is installed as a dependency of this package.
 registerTransforms(StyleDictionary);
+
+const sd = StyleDictionary.extend({
+  source: ['**/*.json'], // <-- make sure to have this match your token files!!!
+  platforms: {
+    css: {
+      transformGroup: 'tokens-studio',
+      buildPath: 'build/css/',
+      files: [
+        {
+          destination: 'variables.css',
+          format: 'css/variables',
+        },
+      ],
+    },
+  },
+});
+
+sd.cleanAllPlatforms();
+sd.buildAllPlatforms();
 ```
 
-Can also import in ESM if needed.
+> You can also import as ES Modules if needed.
+
+To run it use the following command
+
+```sh
+node build-output.js
+```
+
+> Note: make sure to choose either the full transformGroup, **OR** its separate transforms so you can adjust or add your own.
+> [Combining a transformGroup with a transforms array can give unexpected results](https://github.com/amzn/style-dictionary/issues/813).
 
 ### Using the transforms
 
@@ -80,6 +108,16 @@ In your Style-Dictionary config, you can **either** use the `tokens-studio` tran
   "platforms": {
     "css": {
       "transformGroup": "tokens-studio",
+      "buildPath": "build/css/",
+      "files": [
+        {
+          "destination": "variables.css",
+          "format": "css/variables"
+        }
+      ]
+    },
+    "css": {
+      "transforms": ["ts/size/px", "ts/opacity"],
       "buildPath": "build/css/",
       "files": [
         {
@@ -170,69 +208,7 @@ Options:
 > Note: you can also import and use the `parseTokens` function to run the parsing steps on your tokens object manually.
 > Handy if you have your own parsers set up (e.g. for JS files), and you want the parser-based features like composites-expansion to work there too.
 
-## Full example
-
-Create a `.js` file, e.g.: `build-output.js`, with the contents:
-
-```cjs
-const { registerTransforms } = require('@tokens-studio/sd-transforms');
-const StyleDictionary = require('style-dictionary');
-
-registerTransforms(StyleDictionary);
-
-const sd = StyleDictionary.extend({
-  source: ['**/*.tokens.json'],
-  platforms: {
-    js: {
-      transformGroup: 'tokens-studio',
-      buildPath: 'build/js/',
-      files: [
-        {
-          destination: 'variables.js',
-          format: 'javascript/es6',
-        },
-      ],
-    },
-    css: {
-      transforms: [
-        'ts/descriptionToComment',
-        'ts/size/px',
-        'ts/opacity',
-        'ts/size/lineheight',
-        'ts/typography/fontWeight',
-        'ts/resolveMath',
-        'ts/size/css/letterspacing',
-        'ts/typography/css/fontFamily',
-        'ts/typography/css/shorthand',
-        'ts/border/css/shorthand',
-        'ts/shadow/css/shorthand',
-        'ts/color/css/hexrgba',
-        'ts/color/modifiers',
-        'name/cti/kebab',
-      ],
-      buildPath: 'build/css/',
-      files: [
-        {
-          destination: 'variables.css',
-          format: 'css/variables',
-        },
-      ],
-    },
-  },
-});
-
-sd.cleanAllPlatforms();
-sd.buildAllPlatforms();
-```
-
-To run it use the following command
-
-```sh
-node build-output.js
-```
-
-> Note: make sure to choose either the full transformGroup, **OR** its separate transforms so you can adjust or add your own.
-> [Combining a transformGroup with a transforms array can give unexpected results](https://github.com/amzn/style-dictionary/issues/813).
+## Theming
 
 ### Themes: complete example
 
