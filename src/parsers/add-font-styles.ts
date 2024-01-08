@@ -20,7 +20,15 @@ function recurse(
       }
       let fontWeight = value.fontWeight;
       if (usesReferences(fontWeight)) {
-        fontWeight = `${resolveReferences(fontWeight, copy) ?? fontWeight}`;
+        try {
+          const resolved = resolveReferences(fontWeight, copy);
+          if (resolved) {
+            fontWeight = `${resolved}`;
+          }
+        } catch (e) {
+          // we don't want to throw a fatal error, we'll just keep the ref as is
+          console.error(e);
+        }
       }
       // cast because fontStyle is a prop we will add ourselves
       const tokenValue = value as TokenTypographyValue & { fontStyle: string };

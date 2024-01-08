@@ -40,17 +40,32 @@ export async function registerTransforms(
   sd: typeof StyleDictionary,
   transformOpts?: TransformOptions,
 ) {
+  // >= 4.0.0-prelease.2, once SD reaches full release: 4.0.0, sd-transforms will get
+  // a breaking release where we always use preprocessors
+  // and are no longer backwards compatible with sd 3 or lower
+  const supportsPreprocessors =
+    sd.VERSION.match(/4\.0\.0(-prerelease\.([2-9]|[0-9]{2}))/g) !== null;
   // Allow completely disabling the registering of this parser
   // in case people want to combine the expandComposites() utility with their own parser and prevent conflicts
   if (transformOpts?.expand !== false) {
     // expand composition tokens, typography, border, shadow (latter 3 conditionally, as opt-in)
-    sd.registerParser({
-      pattern: /\.json$/,
-      parse: ({ filePath, contents }) => {
-        const tokens = JSON.parse(contents);
-        return parseTokens(tokens, transformOpts, filePath) as DesignTokens;
-      },
-    });
+    if (supportsPreprocessors) {
+      sd.registerPreprocessor({
+        name: 'sd-transforms-preprocessors',
+        preprocessor: dictionary => {
+          console.log('halllelujah');
+          return parseTokens(dictionary, transformOpts) as DesignTokens;
+        },
+      });
+    } else {
+      sd.registerParser({
+        pattern: /\.json$/,
+        parse: ({ filePath, contents }) => {
+          const tokens = JSON.parse(contents);
+          return parseTokens(tokens, transformOpts, filePath) as DesignTokens;
+        },
+      });
+    }
   }
 
   sd.registerTransform({

@@ -111,7 +111,15 @@ function recurse(
         if (expand) {
           // if token uses a reference, attempt to resolve it
           if (typeof token.value === 'string' && usesReferences(token.value)) {
-            token.value = resolveReferences(token.value, copy as DesignTokens) ?? token.value;
+            try {
+              const resolved = resolveReferences(token.value, copy as DesignTokens);
+              if (resolved) {
+                token.value = resolved;
+              }
+            } catch (e) {
+              // we don't want to throw a fatal error, expansion can still occur, just with the reference kept as is
+              console.error(e);
+            }
             // If every key of the result (object) is a number, the ref value is a multi-value, which means TokenBoxshadowValue[]
             if (
               typeof token.value === 'object' &&
