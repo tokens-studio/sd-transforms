@@ -30,13 +30,12 @@ function quoteWrapWhitespacedFont(fontString: string) {
 }
 
 export function processFontFamily(fontFamily: string | undefined) {
-  if (isNothing(fontFamily)) {
+  if (isNothing(fontFamily) || fontFamily === undefined) {
     return 'sans-serif';
   }
 
-  if (isCommaSeparated(fontFamily as string)) {
-    let fontFamilyArray = [];
-    fontFamilyArray = (fontFamily as string).split(',').map(part => part.trim());
+  if (isCommaSeparated(fontFamily)) {
+    const fontFamilyArray = fontFamily.split(',').map(part => part.trim());
     return fontFamilyArray.map((part: string) => quoteWrapWhitespacedFont(part)).join(', ');
   }
 

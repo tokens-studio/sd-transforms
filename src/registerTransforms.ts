@@ -1,4 +1,5 @@
-import { Core, DesignTokens } from 'style-dictionary';
+import type StyleDictionary from 'style-dictionary';
+import type { DesignTokens } from 'style-dictionary/types';
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
 import { transformShadowForCSS } from './css/transformShadow.js';
@@ -14,8 +15,6 @@ import { transformColorModifiers } from './color-modifiers/transformColorModifie
 import { TransformOptions } from './TransformOptions.js';
 import { transformOpacity } from './transformOpacity.js';
 import { parseTokens } from './parsers/parse-tokens.js';
-
-const isBrowser = typeof window === 'object';
 
 export const transforms = [
   'ts/descriptionToComment',
@@ -37,46 +36,46 @@ export const transforms = [
  * typecasting since this will need to work in browser environment, so we cannot
  * import style-dictionary as it depends on nodejs env
  */
-export async function registerTransforms(sd: Core, transformOpts?: TransformOptions) {
-  let _sd = sd;
-
-  // TODO: Remove in breaking change, this is a bad idea in general because our local Style-Dictionary
-  // installation will be preferred by Node resolution algorithm over the user's installed version
-  // in the scenario that multiple versions are installed (e.g. v3 by user and v4 by sd-transforms)
-  // e.g. node_modules/@tokens-studio/sd-transforms/node_modules/style-dictionary (sd-transforms local)
-  // versus node_modules/style-dictionary (user local)
-  // Force user to always pass the instance directly, to prevent nasty bugs.
-
-  // NodeJS env and no passed SD? let's register on our installed SD
-  // We're in ESM, but style-dictionary is CJS only, so we need module.createRequire
-  if (!isBrowser && _sd === undefined) {
-    const module = await import(/* webpackIgnore: true */ 'node:module');
-    const mod = module.default;
-    const require = mod.createRequire(import.meta.url);
-    _sd = require('style-dictionary');
-  }
-
+export async function registerTransforms(
+  sd: typeof StyleDictionary,
+  transformOpts?: TransformOptions,
+) {
+  // >= 4.0.0-prelease.2, once SD reaches full release: 4.0.0, sd-transforms will get
+  // a breaking release where we always use preprocessors
+  // and are no longer backwards compatible with sd 3 or lower
+  const supportsPreprocessors =
+    sd.VERSION.match(/4\.0\.0(-prerelease\.([2-9]|[0-9]{2}))/g) !== null;
   // Allow completely disabling the registering of this parser
   // in case people want to combine the expandComposites() utility with their own parser and prevent conflicts
   if (transformOpts?.expand !== false) {
     // expand composition tokens, typography, border, shadow (latter 3 conditionally, as opt-in)
-    _sd.registerParser({
-      pattern: /\.json$/,
-      parse: ({ filePath, contents }) => {
-        const tokens = JSON.parse(contents);
-        return parseTokens(tokens, transformOpts, filePath) as DesignTokens;
-      },
-    });
+    if (supportsPreprocessors) {
+      sd.registerPreprocessor({
+        name: 'sd-transforms-preprocessors',
+        preprocessor: dictionary => {
+          console.log('halllelujah');
+          return parseTokens(dictionary, transformOpts) as DesignTokens;
+        },
+      });
+    } else {
+      sd.registerParser({
+        pattern: /\.json$/,
+        parse: ({ filePath, contents }) => {
+          const tokens = JSON.parse(contents);
+          return parseTokens(tokens, transformOpts, filePath) as DesignTokens;
+        },
+      });
+    }
   }
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/descriptionToComment',
     type: 'attribute',
     matcher: token => token.description,
     transformer: token => mapDescriptionToComment(token),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/size/px',
     type: 'value',
     matcher: token =>
@@ -86,35 +85,35 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     transformer: token => transformDimension(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/opacity',
     type: 'value',
     matcher: token => token.type === 'opacity',
     transformer: token => transformOpacity(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/size/css/letterspacing',
     type: 'value',
     matcher: token => token.type === 'letterSpacing',
     transformer: token => transformLetterSpacingForCSS(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/size/lineheight',
     type: 'value',
     matcher: token => token.type === 'lineHeights',
     transformer: token => transformLineHeight(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/typography/fontWeight',
     type: 'value',
     matcher: token => token.type === 'fontWeights',
     transformer: token => transformFontWeights(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/typography/css/fontFamily',
     type: 'value',
     matcher: token => token.type === 'fontFamilies',
@@ -132,7 +131,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
    * or because the modifications have to be done on this specific token,
    * after resolution, e.g. color modify
    */
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/resolveMath',
     type: 'value',
     transitive: true,
@@ -140,7 +139,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     transformer: token => checkAndEvaluateMath(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/typography/css/shorthand',
     type: 'value',
     transitive: true,
@@ -148,7 +147,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     transformer: token => transformTypographyForCSS(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/typography/compose/shorthand',
     type: 'value',
     transitive: true,
@@ -156,7 +155,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     transformer: token => transformTypographyForCompose(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/border/css/shorthand',
     type: 'value',
     transitive: true,
@@ -164,7 +163,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     transformer: token => transformBorderForCSS(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/shadow/css/shorthand',
     type: 'value',
     transitive: true,
@@ -175,7 +174,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
         : transformShadowForCSS(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/color/css/hexrgba',
     type: 'value',
     transitive: true,
@@ -183,7 +182,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
     transformer: token => transformHEXRGBaForCSS(token.value),
   });
 
-  _sd.registerTransform({
+  sd.registerTransform({
     name: 'ts/color/modifiers',
     type: 'value',
     transitive: true,
@@ -194,7 +193,7 @@ export async function registerTransforms(sd: Core, transformOpts?: TransformOpti
 
   const casing = transformOpts?.casing ?? 'camel';
   const casingTransform = `name/cti/${casing}`;
-  _sd.registerTransformGroup({
+  sd.registerTransformGroup({
     name: 'tokens-studio',
     transforms: [
       ...(transformOpts?.addAttributeCTI === true ? ['attribute/cti'] : []),

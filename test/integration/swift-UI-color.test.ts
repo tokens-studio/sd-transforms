@@ -1,5 +1,5 @@
-import { expect } from '@esm-bundle/chai';
 import StyleDictionary from 'style-dictionary';
+import { expect } from '@esm-bundle/chai';
 import Color from 'tinycolor2';
 import { promises } from 'fs';
 import path from 'path';
@@ -43,14 +43,14 @@ const cfg = {
   },
 };
 
-let dict: StyleDictionary.Core | undefined;
+let dict: StyleDictionary | undefined;
 
 describe('outputReferences integration', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     if (dict) {
       cleanup(dict);
     }
-    dict = init(cfg, { 'ts/color/modifiers': { format: 'hex' } });
+    dict = await init(cfg, { 'ts/color/modifiers': { format: 'hex' } });
   });
 
   afterEach(() => {

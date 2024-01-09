@@ -1,5 +1,5 @@
+import type StyleDictionary from 'style-dictionary';
 import { expect } from '@esm-bundle/chai';
-import StyleDictionary from 'style-dictionary';
 import { promises } from 'fs';
 import path from 'path';
 import { cleanup, init } from './utils.js';
@@ -25,20 +25,17 @@ const cfg = {
   },
 };
 
-let dict: StyleDictionary.Core | undefined;
+let dict: StyleDictionary | undefined;
 
 describe('sd-transforms smoke tests', () => {
-  beforeEach(() => {
-    if (dict) {
-      cleanup(dict);
-    }
-    dict = init(cfg, { 'ts/color/modifiers': { format: 'hex' } });
+  beforeEach(async () => {
+    cleanup(dict);
+
+    dict = await init(cfg, { 'ts/color/modifiers': { format: 'hex' } });
   });
 
-  afterEach(() => {
-    if (dict) {
-      cleanup(dict);
-    }
+  afterEach(async () => {
+    await cleanup(dict);
   });
 
   it('supports tokens-studio tokens', async () => {
@@ -83,10 +80,9 @@ describe('sd-transforms smoke tests', () => {
   });
 
   it('allows easily changing the casing', async () => {
-    if (dict) {
-      cleanup(dict);
-    }
-    dict = init(cfg, { 'ts/color/modifiers': { format: 'hex' }, casing: 'kebab' });
+    await cleanup(dict);
+
+    dict = await init(cfg, { 'ts/color/modifiers': { format: 'hex' }, casing: 'kebab' });
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(`:root {
   --sd-dimension-scale: 2;
@@ -128,12 +124,10 @@ describe('sd-transforms smoke tests', () => {
   });
 
   it('allows easily adding attribute/cti transform to tokens-studio group', async () => {
-    if (dict) {
-      cleanup(dict);
-    }
-    dict = init(cfg, { 'ts/color/modifiers': { format: 'hex' }, addAttributeCTI: true });
-    const enrichedTokens = dict.exportPlatform('css'); // platform to parse for is 'css' in this case
-    expect(enrichedTokens.dimension.scale.attributes).to.eql({
+    await cleanup(dict);
+    dict = await init(cfg, { 'ts/color/modifiers': { format: 'hex' }, addAttributeCTI: true });
+    const enrichedTokens = await dict?.exportPlatform('css'); // platform to parse for is 'css' in this case
+    expect(enrichedTokens?.dimension.scale.attributes).to.eql({
       category: 'dimension',
       type: 'scale',
     });

@@ -25,36 +25,32 @@ const cfg = {
     },
   },
 };
-let dict: StyleDictionary.Core | undefined;
+let dict: StyleDictionary | undefined;
 
-function before() {
-  if (dict) {
-    cleanup(dict);
-  }
+async function before() {
+  cleanup(dict);
   registerTransforms(StyleDictionary);
   StyleDictionary.registerTransformGroup({
     name: 'custom/tokens-studio',
     // remove 'px' appending transform to unitless values
     transforms: transforms.filter(transform => transform !== 'ts/size/px'),
   });
-  dict = StyleDictionary.extend(cfg);
-  dict.buildAllPlatforms();
+  dict = new StyleDictionary(cfg);
+  await dict?.buildAllPlatforms();
 }
 
-function after() {
+async function after() {
+  await cleanup(dict);
   delete StyleDictionary.transformGroup['custom/tokens-studio'];
-  if (dict) {
-    cleanup(dict);
-  }
 }
 
 describe('custom transform group', () => {
-  afterEach(() => {
-    after();
+  afterEach(async () => {
+    await after();
   });
 
   it('allows easy use of custom transform group with sd-transforms', async () => {
-    before();
+    await before();
 
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(`--length: 24;`);

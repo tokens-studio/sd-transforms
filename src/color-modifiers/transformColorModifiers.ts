@@ -1,4 +1,4 @@
-import { DesignToken } from 'style-dictionary';
+import type { DesignToken } from 'style-dictionary/types';
 import { modifyColor } from './modifyColor.js';
 import { ColorModifier } from '@tokens-studio/types';
 import { ColorModifierOptions } from '../TransformOptions.js';

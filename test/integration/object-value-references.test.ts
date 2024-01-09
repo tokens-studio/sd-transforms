@@ -1,5 +1,5 @@
+import type StyleDictionary from 'style-dictionary';
 import { expect } from '@esm-bundle/chai';
-import StyleDictionary from 'style-dictionary';
 import { promises } from 'fs';
 import path from 'path';
 import { cleanup, init } from './utils.js';
@@ -25,20 +25,16 @@ const cfg = {
   },
 };
 
-let dict: StyleDictionary.Core | undefined;
+let dict: StyleDictionary | undefined;
 
 describe('typography references', () => {
-  beforeEach(() => {
-    if (dict) {
-      cleanup(dict);
-    }
-    dict = init(cfg);
+  beforeEach(async () => {
+    await cleanup(dict);
+    dict = await init(cfg);
   });
 
-  afterEach(() => {
-    if (dict) {
-      cleanup(dict);
-    }
+  afterEach(async () => {
+    await cleanup(dict);
   });
 
   it('supports typography objects when referenced by another token', async () => {

@@ -173,10 +173,12 @@ StyleDictionary.registerTransformGroup({
 You can pass options to the `registerTransforms` function.
 
 ```js
-registerTransforms({
+registerTransforms(StyleDictionary, {
   expand: {
     composition: false,
     typography: true,
+    // Note: when using Style-Dictionary v4.0.0-prerelease.2 or higher, filePath no longer gets passed
+    // as an argument, because preprocessors work on the full dictionary rather than per file (parsers)
     border: (token, filePath) =>
       token.value.width !== 0 && filePath.startsWith(path.resolve('tokens/core')),
     shadow: false,

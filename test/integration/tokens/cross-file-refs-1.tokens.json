@@ -1,0 +1,8 @@
+{
+  "typo": {
+    "value": {
+      "fontWeight": "{weight}"
+    },
+    "type": "typography"
+  }
+}
