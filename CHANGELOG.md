@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 0.13.0
+
+### Minor Changes
+
+- 6c95fe4: BREAKING: remove code that allowed user to not pass StyleDictionary instance to registerTransforms, and grabbed the locally installed StyleDictionary automatically. This seemed like a cool feature at first, but can cause hard to trace bugs if there are multiple installations of style-dictionary (due to incompatible semver).
+- 6c95fe4: Will now use preprocessors instead of parsers when user Style-Dictionary is v4.0.0-prerelease.2 or higher. Fixes an issue with multi-file references not being resolvable when running composite token expansion or add font style utilities.
+
 ## 0.12.2
 
 ### Patch Changes
