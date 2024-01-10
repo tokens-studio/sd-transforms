@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.13.1
+
+### Patch Changes
+
+- 7409419: Use expr-eval-fork to work around a prototype pollution vulnerability in the original package.
+
 ## 0.13.0
 
 ### Minor Changes
