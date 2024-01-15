@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.13.2
+
+### Patch Changes
+
+- 3f97dc2: Remove trailing console logs from previous update.
+
 ## 0.13.1
 
 ### Patch Changes
