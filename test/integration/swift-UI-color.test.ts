@@ -61,7 +61,6 @@ describe('outputReferences integration', () => {
 
   it('supports UIColor with color modifiers', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    console.log(file);
     expect(file).to
       .include(`    public static let colorDanger = UIColor(red: 0.251, green: 0.000, blue: 0.000, alpha: 1)
     public static let colorError = UIColor(red: 0.125, green: 0.000, blue: 0.000, alpha: 1)
