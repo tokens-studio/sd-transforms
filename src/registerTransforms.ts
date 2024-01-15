@@ -53,7 +53,6 @@ export async function registerTransforms(
       sd.registerPreprocessor({
         name: 'sd-transforms-preprocessors',
         preprocessor: dictionary => {
-          console.log('halllelujah');
           return parseTokens(dictionary, transformOpts) as DesignTokens;
         },
       });

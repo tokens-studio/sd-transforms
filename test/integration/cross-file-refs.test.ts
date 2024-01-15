@@ -39,7 +39,6 @@ describe('cross file references', () => {
 
   it('supports cross file references e.g. expanding typography', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    console.log(file);
     expect(file).to.include(`
   --sdTypoFontWeight: 400;
   --sdTypoFontStyle: italic;
