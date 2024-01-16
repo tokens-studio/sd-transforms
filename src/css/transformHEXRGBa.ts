@@ -10,7 +10,7 @@ export function transformHEXRGBaForCSS(value: string | undefined): string | unde
     return value;
   }
 
-  const regex = /rgba\(\s*(?<hex>#.+?)\s*,\s*(?<alpha>[\d.]+)\s*\)/g;
+  const regex = /rgba\(\s*(?<hex>#.+?)\s*,\s*(?<alpha>\d*(\.\d*|%)*)\s*\)/g;
 
   return value.replace(regex, (match, hex, alpha) => {
     try {

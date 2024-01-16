@@ -7,6 +7,12 @@ runTransformSuite(transformHEXRGBaForCSS as (value: unknown) => unknown);
 describe('transform HEXRGBa', () => {
   it("transforms Figma's hex code RGBA to actual RGBA format", () => {
     expect(transformHEXRGBaForCSS('rgba(#ABC123, 0.5)')).to.equal('rgba(171, 193, 35, 0.5)');
+    expect(transformHEXRGBaForCSS('rgba(#ABC123, 1)')).to.equal('rgba(171, 193, 35, 1)');
+    expect(transformHEXRGBaForCSS('rgba(#ABC123, 50%)')).to.equal('rgba(171, 193, 35, 50%)');
+    expect(transformHEXRGBaForCSS('rgba(#ABC123, 1%)')).to.equal('rgba(171, 193, 35, 1%)');
+    expect(transformHEXRGBaForCSS('rgba(#ABC123, 0.75666)')).to.equal(
+      'rgba(171, 193, 35, 0.75666)',
+    );
   });
 
   it("transforms Figma's hex code RGBA to actual RGBA format regardless of whitespacing", () => {

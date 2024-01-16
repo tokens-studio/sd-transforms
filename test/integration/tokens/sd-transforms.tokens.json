@@ -58,7 +58,7 @@
       "type": "color"
     },
     "blue-alpha": {
-      "value": "rgba({colors.blue}, 0.5)",
+      "value": "rgba({colors.blue}, 50%)",
       "type": "color"
     },
     "red": {
