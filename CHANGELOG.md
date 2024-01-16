@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.13.3
+
+### Patch Changes
+
+- cfc0c3d: Fix rgba(hex, alpha) regex to allow percentages, add more tests for different types of alpha values.
+
 ## 0.13.2
 
 ### Patch Changes
