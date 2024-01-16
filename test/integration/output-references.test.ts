@@ -46,10 +46,9 @@ describe('outputReferences integration', () => {
     expect(file).to.include(`--sd-my-reference-token: var(--sd-my-base-token);`);
   });
 
-  // Pending Style-Dictionary v3 release with the new outputReferences fixes
-  it.skip('supports outputReferences with resolveMath when evaluating an expression', async () => {
+  it('supports outputReferences with resolveMath when evaluating an expression', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(`--sd-transformed-base-token: 4;`);
-    expect(file).to.include(`--sd-transformed-reference-token: 5 * var(--sd-my-base-token);`);
+    expect(file).to.include(`--sd-transformed-reference-token: var(--sd-my-base-token) * 5;`);
   });
 });

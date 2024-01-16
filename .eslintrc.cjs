@@ -5,8 +5,10 @@ module.exports = {
     'eslint-config-prettier',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'mocha'],
   rules: {
     'no-console': ['error', { allow: ['warn', 'error'] }],
+    'mocha/no-skipped-tests': 'warn',
+    'mocha/no-exclusive-tests': 'error',
   },
 };
