@@ -54,7 +54,7 @@ describe('sd-transforms smoke tests', () => {
   --sdColorsBlack: #000000;
   --sdColorsWhite: #ffffff;
   --sdColorsBlue: #0000FF;
-  --sdColorsBlueAlpha: rgba(0, 0, 255, 0.5);
+  --sdColorsBlueAlpha: rgba(0, 0, 255, 50%);
   --sdColorsRed400: #f67474;
   --sdColorsRed500: #f56565;
   --sdColorsRed600: #dd5b5b;
@@ -98,7 +98,7 @@ describe('sd-transforms smoke tests', () => {
   --sd-colors-black: #000000;
   --sd-colors-white: #ffffff;
   --sd-colors-blue: #0000FF;
-  --sd-colors-blue-alpha: rgba(0, 0, 255, 0.5);
+  --sd-colors-blue-alpha: rgba(0, 0, 255, 50%);
   --sd-colors-red-400: #f67474;
   --sd-colors-red-500: #f56565;
   --sd-colors-red-600: #dd5b5b;
