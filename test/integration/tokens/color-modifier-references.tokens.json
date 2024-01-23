@@ -16,5 +16,22 @@
         }
       }
     }
+  },
+  "modifier": {
+    "value": {
+      "type": "alpha",
+      "value": "{alpha}",
+      "space": "srgb",
+      "format": "hex"
+    }
+  },
+  "color2": {
+    "value": "#000000",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": "{modifier}"
+      }
+    }
   }
 }

@@ -1,8 +1,8 @@
 import { expect } from '@esm-bundle/chai';
 import StyleDictionary from 'style-dictionary';
 import { transforms, registerTransforms } from '../../src/index.js';
-import { promises } from 'fs';
-import path from 'path';
+import { promises } from 'node:fs';
+import path from 'node:path';
 import { cleanup } from './utils.js';
 
 const outputDir = 'test/integration/tokens/';
