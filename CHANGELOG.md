@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 0.13.4
+
+### Patch Changes
+
+- 8bde22d: Support references in color modifiers now that style-dictionary transformers can defer themselves.
+- 771428a: Fix expanding composition tokens flattening to not occur for certain object values and resulting in [object Object].
+
 ## 0.13.3
 
 ### Patch Changes
