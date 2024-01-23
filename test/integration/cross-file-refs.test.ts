@@ -42,9 +42,22 @@ describe('cross file references', () => {
     expect(file).to.include(`
   --sdTypoFontWeight: 400;
   --sdTypoFontStyle: italic;
+  --sdPrimaryFont: Inter;
+  --sdFontWeight: 800;
+  --sdLineHeight: 1.5;
+  --sdTypo2FontFamily: Inter;
+  --sdTypo2FontWeight: 800;
+  --sdTypo2LineHeight: 1.5;
+  --sdTypo2FontSize: 8px;
+  --sdDimensionScale: 2;
+  --sdDimensionXs: 4px;
   --sdWeight: 400 italic;
   --sdTypoAliasFontWeight: 400;
   --sdTypoAliasFontStyle: italic;
+  --sdTypo3FontFamily: Inter;
+  --sdTypo3FontWeight: 800;
+  --sdTypo3LineHeight: 1.5;
+  --sdTypo3FontSize: 8px;
 `);
   });
 });

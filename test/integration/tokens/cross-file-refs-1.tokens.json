@@ -4,5 +4,36 @@
       "fontWeight": "{weight}"
     },
     "type": "typography"
+  },
+  "primaryFont": {
+    "value": "Inter",
+    "type": "fontFamilies"
+  },
+  "fontWeight": {
+    "value": "ExtraBold",
+    "type": "fontWeights"
+  },
+  "lineHeight": {
+    "value": "1.5",
+    "type": "lineHeights"
+  },
+  "typo-2": {
+    "value": {
+      "fontFamily": "{primaryFont}",
+      "fontWeight": "{fontWeight}",
+      "lineHeight": "{lineHeight}",
+      "fontSize": "{dimension.scale}*{dimension.xs}"
+    },
+    "type": "typography"
+  },
+  "dimension": {
+    "scale": {
+      "value": "2",
+      "type": "number"
+    },
+    "xs": {
+      "value": "4px",
+      "type": "number"
+    }
   }
 }

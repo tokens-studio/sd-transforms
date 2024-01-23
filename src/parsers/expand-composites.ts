@@ -121,15 +121,14 @@ function recurse(
               console.error(e);
             }
             // If every key of the result (object) is a number, the ref value is a multi-value, which means TokenBoxshadowValue[]
-            if (
-              typeof token.value === 'object' &&
-              Object.keys(token.value).every(key => !isNaN(Number(key)))
-            ) {
-              token.value = (Object.values(token.value) as TokenBoxshadowValue[]).map(part =>
-                flattenValues(part),
-              );
-            } else if (!usesReferences(token.value)) {
-              token.value = flattenValues(token.value);
+            if (typeof token.value === 'object') {
+              if (Object.keys(token.value).every(key => !isNaN(Number(key)))) {
+                token.value = (Object.values(token.value) as TokenBoxshadowValue[]).map(part =>
+                  flattenValues(part),
+                );
+              } else {
+                token.value = flattenValues(token.value);
+              }
             }
           }
           slice[key] = expandToken(token, expandType === 'shadow');
