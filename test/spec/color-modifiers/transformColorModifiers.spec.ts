@@ -310,4 +310,24 @@ describe('transform color modifiers', () => {
 
     expect(transformColorModifiers(token)).to.equal('rgb(50% 0% 25% / 0.5)');
   });
+
+  // https://github.com/amzn/style-dictionary/blob/v4/docs/transforms.md#defer-transitive-transformation-manually
+  it('should return undefined if the transformation needs to be deferred', () => {
+    const token = {
+      value: '#C14242',
+      type: 'color',
+      $extensions: {
+        'studio.tokens': {
+          modify: {
+            type: 'darken',
+            value: '{darkenAmount}',
+            space: 'srgb',
+            format: 'srgb',
+          },
+        },
+      },
+    };
+
+    expect(transformColorModifiers(token)).to.be.undefined;
+  });
 });

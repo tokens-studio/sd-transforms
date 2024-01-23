@@ -9,7 +9,7 @@ const outputFileName = 'vars.css';
 const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
-  source: ['test/integration/tokens/object-value-references.tokens.json'],
+  source: ['test/integration/tokens/color-modifier-references.tokens.json'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
@@ -29,39 +29,28 @@ let dict: StyleDictionary | undefined;
 
 describe('typography references', () => {
   beforeEach(async () => {
-    await cleanup(dict);
+    if (dict) {
+      cleanup(dict);
+    }
     dict = await init(cfg);
   });
 
   afterEach(async () => {
-    await cleanup(dict);
+    if (dict) {
+      await cleanup(dict);
+    }
   });
 
-  it('supports typography objects when referenced by another token', async () => {
+  it('supports references inside color modifiers', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
-      `
-  --sdBefore: 400 italic 36px/1 'Aria Sans';
-  --sdFontHeadingXxl: 400 italic 36px/1 'Aria Sans';
-  --sdAfter: 400 italic 36px/1 'Aria Sans';`,
+      `--sdAlpha: 0.3;
+  --sdColor: #ffffff4d;`,
     );
   });
 
-  it('supports boxShadow objects when referenced by another token', async () => {
+  it('supports color modifier that is a reference itself, containing another reference', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdShadow: 0 4px 10px 0 rgba(0,0,0,0.4), inset 0 8px 10px 4px rgba(0,0,0,0.6);
-  --sdShadowRef: 0 4px 10px 0 rgba(0,0,0,0.4), inset 0 8px 10px 4px rgba(0,0,0,0.6);`,
-    );
-  });
-
-  it('supports border objects when referenced by another token', async () => {
-    const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdBorder: 4px solid #FFFF00;
-  --sdBorderRef: 4px solid #FFFF00;`,
-    );
+    expect(file).to.include(`--sdColor2: #0000004d;`);
   });
 });

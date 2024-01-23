@@ -78,6 +78,7 @@ export async function registerTransforms(
     name: 'ts/size/px',
     type: 'value',
     matcher: token =>
+      typeof token.type === 'string' &&
       ['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension'].includes(
         token.type,
       ),
@@ -166,7 +167,7 @@ export async function registerTransforms(
     name: 'ts/shadow/css/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => ['boxShadow'].includes(token.type),
+    matcher: token => typeof token.type === 'string' && ['boxShadow'].includes(token.type),
     transformer: token =>
       Array.isArray(token.value)
         ? token.value.map(single => transformShadowForCSS(single)).join(', ')
