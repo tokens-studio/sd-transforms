@@ -2,5 +2,9 @@
   "typo-alias": {
     "value": "{typo}",
     "type": "typography"
+  },
+  "typo-3": {
+    "value": "{typo-2}",
+    "type": "typography"
   }
 }
