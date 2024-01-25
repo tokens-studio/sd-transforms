@@ -1,0 +1,174 @@
+{
+  "dimension": {
+    "$type": "dimension",
+    "scale": {
+      "$value": "2",
+      "$type": "math"
+    },
+    "xs": {
+      "$value": "4px"
+    },
+    "sm": {
+      "$value": "{dimension.xs} * {dimension.scale}"
+    },
+    "md": {
+      "$value": "{dimension.sm} * {dimension.scale}"
+    },
+    "lg": {
+      "$value": "{dimension.md} * {dimension.scale}"
+    },
+    "xl": {
+      "$value": "{dimension.lg} * {dimension.scale}"
+    }
+  },
+  "opacity": {
+    "$value": "25%",
+    "$type": "opacity"
+  },
+  "spacing": {
+    "$type": "spacing",
+    "sm": {
+      "$value": "{dimension.sm}"
+    },
+    "xl": {
+      "$value": "{dimension.xl}"
+    },
+    "multi-value": {
+      "$value": "{dimension.sm} {dimension.xl}",
+      "$description": "You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-$value-spacing-tokens"
+    }
+  },
+  "colors": {
+    "$type": "color",
+    "black": {
+      "$value": "#000000"
+    },
+    "white": {
+      "$value": "#ffffff"
+    },
+    "blue": {
+      "$value": "#0000FF"
+    },
+    "blue-alpha": {
+      "$value": "rgba({colors.blue}, 50%)"
+    },
+    "red": {
+      "400": {
+        "$value": "{colors.red.500}",
+        "$extensions": {
+          "studio.tokens": {
+            "modify": {
+              "type": "lighten",
+              "value": "0.1",
+              "space": "srgb"
+            }
+          }
+        }
+      },
+      "500": {
+        "$value": "#f56565"
+      },
+      "600": {
+        "$value": "{colors.red.500}",
+        "$extensions": {
+          "studio.tokens": {
+            "modify": {
+              "type": "darken",
+              "value": "0.1",
+              "space": "srgb"
+            }
+          }
+        }
+      }
+    },
+    "gradient": {
+      "$value": "linear-gradient(180deg, {colors.black} 0%, rgba({colors.black}, 0.00) 45%)"
+    }
+  },
+  "lineHeights": {
+    "$type": "lineHeights",
+    "heading": {
+      "$value": "110%"
+    },
+    "body": {
+      "$value": 1.4
+    }
+  },
+  "letterSpacing": {
+    "$type": "letterSpacing",
+    "default": {
+      "$value": 0
+    },
+    "increased": {
+      "$value": "150%"
+    },
+    "decreased": {
+      "$value": "-5%"
+    }
+  },
+  "fontWeights": {
+    "$type": "fontWeights",
+    "headingRegular": {
+      "$value": "600"
+    },
+    "headingBold": {
+      "$value": 700
+    },
+    "bodyRegular": {
+      "$value": "Regular"
+    }
+  },
+  "fontSizes": {
+    "$type": "fontSizes",
+    "h6": {
+      "$value": "{fontSizes.body} * 1"
+    },
+    "body": {
+      "$value": "16"
+    }
+  },
+  "heading-6": {
+    "$value": {
+      "fontSize": "{fontSizes.h6}",
+      "fontWeight": "700",
+      "fontFamily": "Arial Black, Suisse Int'l, sans-serif",
+      "lineHeight": "1"
+    },
+    "$type": "typography"
+  },
+  "shadow-blur": {
+    "$value": "10",
+    "$type": "sizing"
+  },
+  "shadow": {
+    "$value": {
+      "x": "0",
+      "y": "4",
+      "blur": "{shadow-blur}",
+      "spread": "0",
+      "color": "rgba(0,0,0,0.4)",
+      "type": "innerShadow"
+    },
+    "$type": "boxShadow"
+  },
+  "border-width": {
+    "$value": "5",
+    "$type": "sizing"
+  },
+  "border": {
+    "$value": {
+      "style": "solid",
+      "width": "{border-width}",
+      "color": "#000000"
+    },
+    "$type": "border"
+  },
+  "color": {
+    "$value": "#FF00FF",
+    "$type": "color"
+  },
+  "usesColor": {
+    "$value": "rgba( {color}, 1)",
+    "$type": "color"
+  }
+}

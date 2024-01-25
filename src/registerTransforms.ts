@@ -70,54 +70,59 @@ export async function registerTransforms(
   sd.registerTransform({
     name: 'ts/descriptionToComment',
     type: 'attribute',
-    matcher: token => token.description,
+    // in style-dictionary v4.0.0-prerelease.9, $description is converted to comments (createPropertyFormatter)
+    matcher: token => !token.$description && token.description,
     transformer: token => mapDescriptionToComment(token),
   });
 
   sd.registerTransform({
     name: 'ts/size/px',
     type: 'value',
-    matcher: token =>
-      typeof token.type === 'string' &&
-      ['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension'].includes(
-        token.type,
-      ),
-    transformer: token => transformDimension(token.value),
+    matcher: token => {
+      const type = token.$type ?? token.type;
+      return (
+        typeof type === 'string' &&
+        ['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension'].includes(
+          type,
+        )
+      );
+    },
+    transformer: token => transformDimension(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/opacity',
     type: 'value',
-    matcher: token => token.type === 'opacity',
-    transformer: token => transformOpacity(token.value),
+    matcher: token => (token.$type ?? token.type) === 'opacity',
+    transformer: token => transformOpacity(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/size/css/letterspacing',
     type: 'value',
-    matcher: token => token.type === 'letterSpacing',
-    transformer: token => transformLetterSpacingForCSS(token.value),
+    matcher: token => (token.$type ?? token.type) === 'letterSpacing',
+    transformer: token => transformLetterSpacingForCSS(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/size/lineheight',
     type: 'value',
-    matcher: token => token.type === 'lineHeights',
-    transformer: token => transformLineHeight(token.value),
+    matcher: token => (token.$type ?? token.type) === 'lineHeights',
+    transformer: token => transformLineHeight(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/typography/fontWeight',
     type: 'value',
-    matcher: token => token.type === 'fontWeights',
-    transformer: token => transformFontWeights(token.value),
+    matcher: token => (token.$type ?? token.type) === 'fontWeights',
+    transformer: token => transformFontWeights(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/typography/css/fontFamily',
     type: 'value',
-    matcher: token => token.type === 'fontFamilies',
-    transformer: token => processFontFamily(token.value),
+    matcher: token => (token.$type ?? token.type) === 'fontFamilies',
+    transformer: token => processFontFamily(token.$value ?? token.value),
   });
 
   /**
@@ -135,51 +140,58 @@ export async function registerTransforms(
     name: 'ts/resolveMath',
     type: 'value',
     transitive: true,
-    matcher: token => typeof token.value === 'string',
-    transformer: token => checkAndEvaluateMath(token.value),
+    matcher: token => typeof (token.$value ?? token.value) === 'string',
+    transformer: token => checkAndEvaluateMath(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/typography/css/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => token.type === 'typography',
-    transformer: token => transformTypographyForCSS(token.value),
+    matcher: token => (token.$type ?? token.type) === 'typography',
+    transformer: token => transformTypographyForCSS(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/typography/compose/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => token.type === 'typography',
-    transformer: token => transformTypographyForCompose(token.value),
+    matcher: token => (token.$type ?? token.type) === 'typography',
+    transformer: token => transformTypographyForCompose(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/border/css/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => token.type === 'border',
-    transformer: token => transformBorderForCSS(token.value),
+    matcher: token => {
+      return (token.$type ?? token.type) === 'border';
+    },
+    transformer: token => transformBorderForCSS(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/shadow/css/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => typeof token.type === 'string' && ['boxShadow'].includes(token.type),
-    transformer: token =>
-      Array.isArray(token.value)
-        ? token.value.map(single => transformShadowForCSS(single)).join(', ')
-        : transformShadowForCSS(token.value),
+    matcher: token => {
+      const type = token.$type ?? token.type;
+      return typeof type === 'string' && ['boxShadow'].includes(type);
+    },
+    transformer: token => {
+      const val = token.$value ?? token.value;
+      return Array.isArray(val)
+        ? val.map(single => transformShadowForCSS(single)).join(', ')
+        : transformShadowForCSS(val);
+    },
   });
 
   sd.registerTransform({
     name: 'ts/color/css/hexrgba',
     type: 'value',
     transitive: true,
-    matcher: token => typeof token.value === 'string' && token.type === 'color',
-    transformer: token => transformHEXRGBaForCSS(token.value),
+    matcher: token => (token.$type ?? token.type) === 'color',
+    transformer: token => transformHEXRGBaForCSS(token.$value ?? token.value),
   });
 
   sd.registerTransform({
@@ -187,7 +199,9 @@ export async function registerTransforms(
     type: 'value',
     transitive: true,
     matcher: token =>
-      token.type === 'color' && token.$extensions && token.$extensions['studio.tokens']?.modify,
+      (token.$type ?? token.type) === 'color' &&
+      token.$extensions &&
+      token.$extensions['studio.tokens']?.modify,
     transformer: token => transformColorModifiers(token, transformOpts?.['ts/color/modifiers']),
   });
 

@@ -13,21 +13,16 @@ function recurse(
     if (typeof token !== 'object' || token === null) {
       continue;
     }
-    const { type, value } = token;
-    if (type === 'typography') {
+    const { value, type, $type } = token;
+    if ($type === 'typography' || type === 'typography') {
       if (typeof value !== 'object' || value.fontWeight === undefined) {
         continue;
       }
       let fontWeight = value.fontWeight;
       if (usesReferences(fontWeight)) {
-        try {
-          const resolved = resolveReferences(fontWeight, copy);
-          if (resolved) {
-            fontWeight = `${resolved}`;
-          }
-        } catch (e) {
-          // we don't want to throw a fatal error, we'll just keep the ref as is
-          console.error(e);
+        const resolved = resolveReferences(fontWeight, copy);
+        if (resolved) {
+          fontWeight = `${resolved}`;
         }
       }
       // cast because fontStyle is a prop we will add ourselves

@@ -655,8 +655,9 @@ describe('expand', () => {
     ).to.eql({ typography: tokensInput.typography });
   });
 
-  it(`should handle when a token reference in a composite cannot be resolved`, () => {
-    expect(
+  it(`should throw when token reference in a composite cannot be resolved`, () => {
+    let error;
+    try {
       expandComposites(
         {
           ref: {
@@ -670,13 +671,16 @@ describe('expand', () => {
           },
         },
         'foo/bar.json',
-      ),
-    ).to.eql({
-      ref: {
-        value: '{typography.foo}',
-        type: 'typography',
-      },
-    });
+      );
+    } catch (e) {
+      if (e instanceof Error) {
+        error = e.message;
+      }
+    }
+
+    expect(error).to.equal(
+      "Reference doesn't exist: tries to reference typography.foo, which is not defined.",
+    );
   });
 
   it('should not trip up when the recursed token contains a primitive value', () => {
@@ -691,5 +695,189 @@ describe('expand', () => {
         'foo/bar.json',
       ),
     );
+  });
+
+  it('should support w3c syntax and expand into w3c syntax if it encounters this', () => {
+    expect(
+      expandComposites(
+        {
+          foo: {
+            $value: {
+              fontFamily: 'Arial',
+              fontWeight: '500',
+              lineHeight: '1.25',
+              fontSize: '26',
+            },
+            $type: 'typography',
+          },
+          ref: {
+            $value: '{foo}',
+            $type: 'typography',
+          },
+          shadow: {
+            $value: [
+              {
+                x: '0',
+                y: '4',
+                blur: '10',
+                spread: '0',
+                color: 'rgba(0,0,0,0.4)',
+                type: 'innerShadow',
+              },
+              {
+                x: '0',
+                y: '8',
+                blur: '12',
+                spread: '5',
+                color: 'rgba(0,0,0,0.4)',
+              },
+            ],
+            $type: 'boxShadow',
+          },
+          shadowRef: {
+            $value: '{shadow}',
+            $type: 'boxShadow',
+          },
+        } as DeepKeyTokenMap<false>,
+        { expand: { typography: true, shadow: true } },
+      ),
+    ).to.eql({
+      foo: {
+        fontFamily: {
+          $value: 'Arial',
+          $type: 'fontFamilies',
+        },
+        fontWeight: {
+          $value: '500',
+          $type: 'fontWeights',
+        },
+        lineHeight: {
+          $value: '1.25',
+          $type: 'lineHeights',
+        },
+        fontSize: {
+          $value: '26',
+          $type: 'fontSizes',
+        },
+      },
+      ref: {
+        fontFamily: {
+          $value: 'Arial',
+          $type: 'fontFamilies',
+        },
+        fontWeight: {
+          $value: '500',
+          $type: 'fontWeights',
+        },
+        lineHeight: {
+          $value: '1.25',
+          $type: 'lineHeights',
+        },
+        fontSize: {
+          $value: '26',
+          $type: 'fontSizes',
+        },
+      },
+      shadow: {
+        '1': {
+          blur: {
+            $value: '10',
+            $type: 'dimension',
+          },
+          color: {
+            $value: 'rgba(0,0,0,0.4)',
+            $type: 'color',
+          },
+          spread: {
+            $value: '0',
+            $type: 'dimension',
+          },
+          type: {
+            $value: 'innerShadow',
+            $type: 'other',
+          },
+          x: {
+            $value: '0',
+            $type: 'dimension',
+          },
+          y: {
+            $value: '4',
+            $type: 'dimension',
+          },
+        },
+        '2': {
+          blur: {
+            $value: '12',
+            $type: 'dimension',
+          },
+          color: {
+            $value: 'rgba(0,0,0,0.4)',
+            $type: 'color',
+          },
+          spread: {
+            $value: '5',
+            $type: 'dimension',
+          },
+          x: {
+            $value: '0',
+            $type: 'dimension',
+          },
+          y: {
+            $value: '8',
+            $type: 'dimension',
+          },
+        },
+      },
+      shadowRef: {
+        '1': {
+          blur: {
+            $value: '10',
+            $type: 'dimension',
+          },
+          color: {
+            $value: 'rgba(0,0,0,0.4)',
+            $type: 'color',
+          },
+          spread: {
+            $value: '0',
+            $type: 'dimension',
+          },
+          type: {
+            $value: 'innerShadow',
+            $type: 'other',
+          },
+          x: {
+            $value: '0',
+            $type: 'dimension',
+          },
+          y: {
+            $value: '4',
+            $type: 'dimension',
+          },
+        },
+        '2': {
+          blur: {
+            $value: '12',
+            $type: 'dimension',
+          },
+          color: {
+            $value: 'rgba(0,0,0,0.4)',
+            $type: 'color',
+          },
+          spread: {
+            $value: '5',
+            $type: 'dimension',
+          },
+          x: {
+            $value: '0',
+            $type: 'dimension',
+          },
+          y: {
+            $value: '8',
+            $type: 'dimension',
+          },
+        },
+      },
+    });
   });
 });
