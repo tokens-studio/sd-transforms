@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.14.0
+
+### Minor Changes
+
+- 03e3819: Add [W3C Design Token Community Group draft spec](https://design-tokens.github.io/community-group/format/) forward compatibility.
+
 ## 0.13.4
 
 ### Patch Changes
