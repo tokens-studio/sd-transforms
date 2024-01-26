@@ -31,34 +31,43 @@ const typeMaps = {
   },
 };
 
-function flattenValues<T extends SingleToken<false>['value']>(val: T): T {
-  return Object.fromEntries(Object.entries(val).map(([k, v]) => [k, v.value])) as T;
+function flattenValues<T extends Required<SingleToken<false>>['value']>(val: T): T {
+  return Object.fromEntries(Object.entries(val).map(([k, v]) => [k, v.$value ?? v.value])) as T;
 }
 
-export function expandToken(compToken: SingleToken<false>, isShadow = false): SingleToken<false> {
-  if (typeof compToken.value !== 'object') {
-    return compToken;
+export function expandToken(token: Expandables, isShadow = false): SingleToken<false> {
+  const uses$ = token.$value != null;
+  const value = uses$ ? token.$value : token.value;
+  // the $type and type may both be missing if the $type is coming from an ancestor,
+  // however, style-dictionary runs a preprocessing step so missing $type is added from the closest ancestor
+  // our token types are not aware of that however, so we must do an undefined check here
+  const tokenType = token.$type ?? token.type;
+  // ignore coverage, this undefined check is purely to appease TypeScript,
+  // but we know type cannot be undefined here since we checked it in recurse()
+  /* c8 ignore next 3 */
+  if (tokenType === undefined) {
+    return token;
   }
-  const expandedObj = {} as SingleToken<false>;
 
-  const getType = (key: string) => typeMaps[compToken.type][key] ?? key;
+  const expandedObj = {} as SingleToken<false>;
+  const getType = (key: string) => typeMaps[tokenType][key] ?? key;
 
   // multi-shadow
-  if (isShadow && Array.isArray(compToken.value)) {
-    compToken.value.forEach((shadow, index) => {
+  if (isShadow && Array.isArray(value)) {
+    value.forEach((shadow, index) => {
       expandedObj[index + 1] = {};
       Object.entries(shadow).forEach(([key, value]) => {
         expandedObj[index + 1][key] = {
-          value: `${value}`,
-          type: getType(key),
+          [`${uses$ ? '$' : ''}value`]: `${value}`,
+          [`${uses$ ? '$' : ''}type`]: getType(key),
         };
       });
     });
   } else {
-    Object.entries(compToken.value).forEach(([key, value]) => {
+    Object.entries(value).forEach(([key, value]) => {
       expandedObj[key] = {
-        value: `${value}`,
-        type: getType(key),
+        [`${uses$ ? '$' : ''}value`]: `${value}`,
+        [`${uses$ ? '$' : ''}type`]: getType(key),
       };
     });
   }
@@ -99,8 +108,11 @@ function recurse(
     if (typeof token !== 'object' || token === null) {
       continue;
     }
-    const { type } = token;
-    if (token.value && type) {
+
+    const uses$ = token.$value != null;
+    const value = uses$ ? token.$value : token.value;
+    const type = token.$type ?? token.type;
+    if (value && type) {
       if (typeof type === 'string' && expandablesAsStringsArr.includes(type)) {
         const expandType = (type as ExpandablesAsStrings) === 'boxShadow' ? 'shadow' : type;
         const expand = shouldExpand<Expandables>(
@@ -110,28 +122,31 @@ function recurse(
         );
         if (expand) {
           // if token uses a reference, attempt to resolve it
-          if (typeof token.value === 'string' && usesReferences(token.value)) {
-            try {
-              const resolved = resolveReferences(token.value, copy as DesignTokens);
-              if (resolved) {
-                token.value = resolved;
-              }
-            } catch (e) {
-              // we don't want to throw a fatal error, expansion can still occur, just with the reference kept as is
-              console.error(e);
-            }
-            // If every key of the result (object) is a number, the ref value is a multi-value, which means TokenBoxshadowValue[]
-            if (typeof token.value === 'object') {
-              if (Object.keys(token.value).every(key => !isNaN(Number(key)))) {
-                token.value = (Object.values(token.value) as TokenBoxshadowValue[]).map(part =>
+          if (typeof value === 'string' && usesReferences(value)) {
+            let resolved = resolveReferences(
+              value,
+              copy as DesignTokens,
+            ) as SingleToken<false>['value'];
+            if (typeof resolved === 'object') {
+              // If every key of the result (object) is a number, the ref value is a multi-value, which means TokenBoxshadowValue[]
+              if (Object.keys(resolved).every(key => !isNaN(Number(key)))) {
+                resolved = (Object.values(resolved) as TokenBoxshadowValue[]).map(part =>
                   flattenValues(part),
                 );
               } else {
-                token.value = flattenValues(token.value);
+                resolved = flattenValues(resolved);
+              }
+            }
+
+            if (resolved) {
+              if (uses$) {
+                token.$value = resolved;
+              } else {
+                token.value = resolved;
               }
             }
           }
-          slice[key] = expandToken(token, expandType === 'shadow');
+          slice[key] = expandToken(token as Expandables, expandType === 'shadow');
         }
       }
     } else {

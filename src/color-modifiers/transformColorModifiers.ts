@@ -22,5 +22,5 @@ export function transformColorModifiers(
   if (options?.format) {
     modifier.format = options.format;
   }
-  return modifyColor(token.value, modifier);
+  return modifyColor(token.$value ?? token.value, modifier);
 }

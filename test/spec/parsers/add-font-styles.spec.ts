@@ -97,7 +97,7 @@ describe('add font style', () => {
     expect(addFontStyles(tokensInput as DeepKeyTokenMap<false>)).to.eql(tokensOutput);
   });
 
-  it(`should ignore broken fontWeight reference`, () => {
+  it(`throw when encountering a broken fontWeight reference`, () => {
     const inputTokens = {
       usesFwRef: {
         value: {
@@ -107,7 +107,18 @@ describe('add font style', () => {
       },
     };
 
-    expect(addFontStyles(inputTokens as DeepKeyTokenMap<false>)).to.eql(inputTokens);
+    let error;
+    try {
+      addFontStyles(inputTokens as DeepKeyTokenMap<false>);
+    } catch (e) {
+      if (e instanceof Error) {
+        error = e.message;
+      }
+    }
+
+    expect(error).to.equal(
+      "Reference doesn't exist: tries to reference fwRef, which is not defined.",
+    );
   });
 
   it(`allows always adding a default fontStyle`, () => {

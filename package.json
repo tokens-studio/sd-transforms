@@ -39,14 +39,14 @@
   },
   "types": "./dist/src/index.d.ts",
   "dependencies": {
-    "@tokens-studio/types": "^0.2.4",
+    "@tokens-studio/types": "^0.4.0",
     "color2k": "^2.0.1",
     "colorjs.io": "^0.4.3",
     "deepmerge": "^4.3.1",
     "expr-eval-fork": "^2.0.2",
     "is-mergeable-object": "^1.1.1",
     "postcss-calc-ast-parser": "^0.1.4",
-    "style-dictionary": "4.0.0-prerelease.9"
+    "style-dictionary": "4.0.0-prerelease.10"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
