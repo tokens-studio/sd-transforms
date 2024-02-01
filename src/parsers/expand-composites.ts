@@ -37,6 +37,21 @@ function flattenValues<T extends Required<SingleToken<false>>['value']>(val: T):
 
 export function expandToken(token: Expandables, isShadow = false): SingleToken<false> {
   const uses$ = token.$value != null;
+
+  // create a copy of the token without the value/type, so that we have all the meta sibling props
+  const copyMeta = {};
+  Object.keys(token)
+    // either filter $value & $type, or value and type depending on whether $ is used
+    .filter(
+      key =>
+        !['$value', 'value', '$type', 'type']
+          .filter(key => (uses$ ? key.startsWith('$') : !key.startsWith('$')))
+          .includes(key),
+    )
+    .forEach(key => {
+      copyMeta[key] = token[key];
+    });
+
   const value = uses$ ? token.$value : token.value;
   // the $type and type may both be missing if the $type is coming from an ancestor,
   // however, style-dictionary runs a preprocessing step so missing $type is added from the closest ancestor
@@ -58,6 +73,7 @@ export function expandToken(token: Expandables, isShadow = false): SingleToken<f
       expandedObj[index + 1] = {};
       Object.entries(shadow).forEach(([key, value]) => {
         expandedObj[index + 1][key] = {
+          ...copyMeta,
           [`${uses$ ? '$' : ''}value`]: `${value}`,
           [`${uses$ ? '$' : ''}type`]: getType(key),
         };
@@ -66,6 +82,7 @@ export function expandToken(token: Expandables, isShadow = false): SingleToken<f
   } else {
     Object.entries(value).forEach(([key, value]) => {
       expandedObj[key] = {
+        ...copyMeta,
         [`${uses$ ? '$' : ''}value`]: `${value}`,
         [`${uses$ ? '$' : ''}type`]: getType(key),
       };
