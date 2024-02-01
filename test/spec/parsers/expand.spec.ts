@@ -1,4 +1,5 @@
 import { expect } from '@esm-bundle/chai';
+import { stubMethod, restore } from 'hanbi';
 import { DeepKeyTokenMap, SingleToken } from '@tokens-studio/types';
 import { expandComposites } from '../../../src/parsers/expand-composites.js';
 import { expandablesAsStringsArr } from '../../../src/TransformOptions.js';
@@ -705,31 +706,39 @@ describe('expand', () => {
   });
 
   it(`should throw when token reference in a composite cannot be resolved`, () => {
-    let error;
-    try {
-      expandComposites(
-        {
-          ref: {
-            value: '{typography.foo}',
-            type: 'typography',
-          },
-        } as DeepKeyTokenMap<false>,
-        {
-          expand: {
-            typography: true,
-          },
+    const stub = stubMethod(console, 'error');
+    // let error;
+    // try {
+    expandComposites(
+      {
+        ref: {
+          value: '{typography.foo}',
+          type: 'typography',
         },
-        'foo/bar.json',
-      );
-    } catch (e) {
-      if (e instanceof Error) {
-        error = e.message;
-      }
-    }
-
-    expect(error).to.equal(
-      "Reference doesn't exist: tries to reference typography.foo, which is not defined.",
+      } as DeepKeyTokenMap<false>,
+      {
+        expand: {
+          typography: true,
+        },
+      },
+      'foo/bar.json',
     );
+    // } catch (e) {
+    //   if (e instanceof Error) {
+    //     error = e.message;
+    //   }
+    // }
+
+    restore();
+
+    expect(stub.calls.size).to.equal(1);
+    expect(stub.firstCall?.args[0].message).to.equal(
+      `Reference doesn't exist: tries to reference typography.foo, which is not defined.`,
+    );
+
+    // expect(error).to.equal(
+    //   "Reference doesn't exist: tries to reference typography.foo, which is not defined.",
+    // );
   });
 
   it('should not trip up when the recursed token contains a primitive value', () => {

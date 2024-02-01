@@ -1,4 +1,5 @@
 import { expect } from '@esm-bundle/chai';
+import { stubMethod, restore } from 'hanbi';
 import { DeepKeyTokenMap } from '@tokens-studio/types';
 import { addFontStyles } from '../../../src/parsers/add-font-styles.js';
 
@@ -98,6 +99,7 @@ describe('add font style', () => {
   });
 
   it(`throw when encountering a broken fontWeight reference`, () => {
+    const stub = stubMethod(console, 'error');
     const inputTokens = {
       usesFwRef: {
         value: {
@@ -107,18 +109,23 @@ describe('add font style', () => {
       },
     };
 
-    let error;
-    try {
-      addFontStyles(inputTokens as DeepKeyTokenMap<false>);
-    } catch (e) {
-      if (e instanceof Error) {
-        error = e.message;
-      }
-    }
+    // let error;
+    // try {
+    addFontStyles(inputTokens as DeepKeyTokenMap<false>);
+    // } catch (e) {
+    //   if (e instanceof Error) {
+    //     error = e.message;
+    //   }
+    // }
+    restore();
 
-    expect(error).to.equal(
-      "Reference doesn't exist: tries to reference fwRef, which is not defined.",
+    expect(stub.calls.size).to.equal(1);
+    expect(stub.firstCall?.args[0].message).to.equal(
+      `Reference doesn't exist: tries to reference fwRef, which is not defined.`,
     );
+    // expect(error).to.equal(
+    //   "Reference doesn't exist: tries to reference fwRef, which is not defined.",
+    // );
   });
 
   it(`allows always adding a default fontStyle`, () => {
