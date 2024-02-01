@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.14.1
+
+### Patch Changes
+
+- f5a8b12: Copy metadata from composite type tokens when expanding.
+
 ## 0.14.0
 
 ### Minor Changes
