@@ -12,6 +12,7 @@ const tokensInput = {
         fontWeights: '500',
       },
       type: 'composition',
+      meta: 'foo-comp',
     },
   },
   typography: {
@@ -23,10 +24,12 @@ const tokensInput = {
         fontSize: '26',
       },
       type: 'typography',
+      meta: 'foo-typo',
     },
     ref: {
       value: '{typography.foo}',
       type: 'typography',
+      meta: 'foo-typo-ref',
     },
   },
   border: {
@@ -37,6 +40,7 @@ const tokensInput = {
         borderWidth: '4',
       },
       type: 'border',
+      meta: 'foo-border',
     },
   },
   shadow: {
@@ -50,6 +54,7 @@ const tokensInput = {
         type: 'innerShadow',
       },
       type: 'boxShadow',
+      meta: 'foo-shadow',
     },
     double: {
       value: [
@@ -70,10 +75,12 @@ const tokensInput = {
         },
       ],
       type: 'boxShadow',
+      meta: 'foo-shadow-double',
     },
     ref: {
       value: '{shadow.double}',
       type: 'boxShadow',
+      meta: 'foo-shadow-ref',
     },
   },
 };
@@ -84,14 +91,17 @@ const tokensOutput = {
       fontFamilies: {
         value: '24px',
         type: 'fontFamilies',
+        meta: 'foo-comp',
       },
       fontSizes: {
         value: '96',
         type: 'fontSizes',
+        meta: 'foo-comp',
       },
       fontWeights: {
         value: '500',
         type: 'fontWeights',
+        meta: 'foo-comp',
       },
     },
   },
@@ -100,36 +110,44 @@ const tokensOutput = {
       fontFamily: {
         value: 'Arial',
         type: 'fontFamilies',
+        meta: 'foo-typo',
       },
       fontWeight: {
         value: '500',
         type: 'fontWeights',
+        meta: 'foo-typo',
       },
       lineHeight: {
         value: '1.25',
         type: 'lineHeights',
+        meta: 'foo-typo',
       },
       fontSize: {
         value: '26',
         type: 'fontSizes',
+        meta: 'foo-typo',
       },
     },
     ref: {
       fontFamily: {
         value: 'Arial',
         type: 'fontFamilies',
+        meta: 'foo-typo-ref',
       },
       fontWeight: {
         value: '500',
         type: 'fontWeights',
+        meta: 'foo-typo-ref',
       },
       lineHeight: {
         value: '1.25',
         type: 'lineHeights',
+        meta: 'foo-typo-ref',
       },
       fontSize: {
         value: '26',
         type: 'fontSizes',
+        meta: 'foo-typo-ref',
       },
     },
   },
@@ -138,14 +156,17 @@ const tokensOutput = {
       color: {
         value: '#FFFF00',
         type: 'color',
+        meta: 'foo-border',
       },
       strokeStyle: {
         value: 'solid',
         type: 'strokeStyle',
+        meta: 'foo-border',
       },
       borderWidth: {
         value: '4',
         type: 'borderWidth',
+        meta: 'foo-border',
       },
     },
   },
@@ -154,26 +175,32 @@ const tokensOutput = {
       x: {
         value: '0',
         type: 'dimension',
+        meta: 'foo-shadow',
       },
       y: {
         value: '4',
         type: 'dimension',
+        meta: 'foo-shadow',
       },
       blur: {
         value: '10',
         type: 'dimension',
+        meta: 'foo-shadow',
       },
       spread: {
         value: '0',
         type: 'dimension',
+        meta: 'foo-shadow',
       },
       color: {
         value: 'rgba(0,0,0,0.4)',
         type: 'color',
+        meta: 'foo-shadow',
       },
       type: {
         value: 'innerShadow',
         type: 'other',
+        meta: 'foo-shadow',
       },
     },
     double: {
@@ -181,48 +208,59 @@ const tokensOutput = {
         x: {
           value: '0',
           type: 'dimension',
+          meta: 'foo-shadow-double',
         },
         y: {
           value: '4',
           type: 'dimension',
+          meta: 'foo-shadow-double',
         },
         blur: {
           value: '10',
           type: 'dimension',
+          meta: 'foo-shadow-double',
         },
         spread: {
           value: '0',
           type: 'dimension',
+          meta: 'foo-shadow-double',
         },
         color: {
           value: 'rgba(0,0,0,0.4)',
           type: 'color',
+          meta: 'foo-shadow-double',
         },
         type: {
           value: 'innerShadow',
           type: 'other',
+          meta: 'foo-shadow-double',
         },
       },
       2: {
         x: {
           value: '0',
           type: 'dimension',
+          meta: 'foo-shadow-double',
         },
         y: {
           value: '8',
           type: 'dimension',
+          meta: 'foo-shadow-double',
         },
         blur: {
           value: '12',
           type: 'dimension',
+          meta: 'foo-shadow-double',
         },
         spread: {
           value: '5',
           type: 'dimension',
+          meta: 'foo-shadow-double',
         },
         color: {
           value: 'rgba(0,0,0,0.4)',
           type: 'color',
+          meta: 'foo-shadow-double',
         },
       },
     },
@@ -231,48 +269,59 @@ const tokensOutput = {
         x: {
           value: '0',
           type: 'dimension',
+          meta: 'foo-shadow-ref',
         },
         y: {
           value: '4',
           type: 'dimension',
+          meta: 'foo-shadow-ref',
         },
         blur: {
           value: '10',
           type: 'dimension',
+          meta: 'foo-shadow-ref',
         },
         spread: {
           value: '0',
           type: 'dimension',
+          meta: 'foo-shadow-ref',
         },
         color: {
           value: 'rgba(0,0,0,0.4)',
           type: 'color',
+          meta: 'foo-shadow-ref',
         },
         type: {
           value: 'innerShadow',
           type: 'other',
+          meta: 'foo-shadow-ref',
         },
       },
       2: {
         x: {
           value: '0',
           type: 'dimension',
+          meta: 'foo-shadow-ref',
         },
         y: {
           value: '8',
           type: 'dimension',
+          meta: 'foo-shadow-ref',
         },
         blur: {
           value: '12',
           type: 'dimension',
+          meta: 'foo-shadow-ref',
         },
         spread: {
           value: '5',
           type: 'dimension',
+          meta: 'foo-shadow-ref',
         },
         color: {
           value: 'rgba(0,0,0,0.4)',
           type: 'color',
+          meta: 'foo-shadow-ref',
         },
       },
     },
