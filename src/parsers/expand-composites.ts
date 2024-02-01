@@ -140,10 +140,18 @@ function recurse(
         if (expand) {
           // if token uses a reference, attempt to resolve it
           if (typeof value === 'string' && usesReferences(value)) {
-            let resolved = resolveReferences(
-              value,
-              copy as DesignTokens,
-            ) as SingleToken<false>['value'];
+            let resolved;
+            try {
+              resolved = resolveReferences(
+                value,
+                copy as DesignTokens,
+              ) as SingleToken<false>['value'];
+            } catch (e) {
+              // dont throw fatal, see: https://github.com/tokens-studio/sd-transforms/issues/217
+              // we throw once we only support SD v4, for v3 we need to be more permissive
+              console.error(e);
+            }
+
             if (typeof resolved === 'object') {
               // If every key of the result (object) is a number, the ref value is a multi-value, which means TokenBoxshadowValue[]
               if (Object.keys(resolved).every(key => !isNaN(Number(key)))) {

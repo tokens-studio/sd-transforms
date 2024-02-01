@@ -19,8 +19,16 @@ function recurse(
         continue;
       }
       let fontWeight = value.fontWeight;
+      let resolved;
       if (usesReferences(fontWeight)) {
-        const resolved = resolveReferences(fontWeight, copy);
+        try {
+          resolved = resolveReferences(fontWeight, copy);
+        } catch (e) {
+          // dont throw fatal, see: https://github.com/tokens-studio/sd-transforms/issues/217
+          // we throw once we only support SD v4, for v3 we need to be more permissive
+          console.error(e);
+        }
+
         if (resolved) {
           fontWeight = `${resolved}`;
         }
