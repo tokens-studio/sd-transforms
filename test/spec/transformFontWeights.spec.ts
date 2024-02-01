@@ -24,4 +24,9 @@ describe('transform dimension', () => {
     expect(transformFontWeights('Light normal')).to.equal(`300 normal`);
     expect(transformFontWeights('ExtraBold Italic')).to.equal(`800 italic`);
   });
+
+  it('supports fontWeights with space separators', () => {
+    expect(transformFontWeights('Extra Bold')).to.equal(800);
+    expect(transformFontWeights('Ultra Black Italic')).to.equal(`950 italic`);
+  });
 });

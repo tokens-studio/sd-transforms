@@ -1,5 +1,6 @@
+// https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#common_weight_name_mapping
 export const fontWeightMap = {
-  hairline: 1,
+  hairline: 100,
   thin: 100,
   extralight: 200,
   ultralight: 200,
@@ -18,13 +19,15 @@ export const fontWeightMap = {
   bold: 700,
   dreiviertelfett: 700,
   extrabold: 800,
-  ultabold: 800,
+  ultrabold: 800,
   fett: 800,
   black: 900,
   heavy: 900,
   super: 900,
   extrafett: 900,
-  ultra: 1000,
+  ultra: 950,
+  ultrablack: 950,
+  extrablack: 950,
 };
 
 export const fontStyles = ['italic', 'oblique', 'normal'];
@@ -45,8 +48,9 @@ export function transformFontWeights(
   const match = `${value}`.match(fontWeightReg);
 
   let mapped;
+
   if (match?.groups?.weight) {
-    mapped = fontWeightMap[match?.groups?.weight.toLowerCase()];
+    mapped = fontWeightMap[match?.groups?.weight.replace(/\s/g, '').toLowerCase()];
     if (match.groups.style) {
       mapped = `${mapped} ${match.groups.style.toLowerCase()}`;
     }
