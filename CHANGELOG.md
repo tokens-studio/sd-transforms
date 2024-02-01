@@ -1,5 +1,13 @@
 # @tokens-studio/sd-transforms
 
+## 0.14.2
+
+### Patch Changes
+
+- d2c1ff6: Revert back change that throws fatal error for broken references when expanding tokens or adding fontStyle. To keep compatibility with Style-Dictionary v3.
+  [See the issue describing the problem and necessary workaround for v3](https://github.com/tokens-studio/sd-transforms/issues/217).
+- d2c1ff6: Fix fontWeights transformer to allow spaces within fontWeights.
+
 ## 0.14.1
 
 ### Patch Changes
