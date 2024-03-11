@@ -10,6 +10,7 @@ export const fontWeightMap = {
   normal: 400,
   regular: 400,
   buch: 400,
+  book: 400,
   medium: 500,
   kraeftig: 500,
   kräftig: 500,
