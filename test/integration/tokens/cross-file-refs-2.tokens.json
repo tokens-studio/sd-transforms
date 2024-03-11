@@ -2,5 +2,26 @@
   "weight": {
     "value": "Regular italic",
     "type": "fontWeights"
+  },
+  "testComposite": {
+    "card": {
+      "value": {
+        "color": "#fff",
+        "borderRadius": "18px",
+        "borderColor": "#999"
+      },
+      "type": "composition"
+    }
+  },
+  "testTypography": {
+    "text": {
+      "value": {
+        "fontFamily": "Arial",
+        "fontSize": "25px",
+        "lineHeight": "32px",
+        "fontWeight": "700"
+      },
+      "type": "typography"
+    }
   }
 }

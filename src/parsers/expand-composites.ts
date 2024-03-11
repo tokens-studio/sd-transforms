@@ -31,8 +31,10 @@ const typeMaps = {
   },
 };
 
-function flattenValues<T extends Required<SingleToken<false>>['value']>(val: T): T {
-  return Object.fromEntries(Object.entries(val).map(([k, v]) => [k, v.$value ?? v.value])) as T;
+function flattenValues<T extends Required<SingleToken<false>>['value']>(val: T, uses$: boolean): T {
+  return Object.fromEntries(
+    Object.entries(val).map(([k, v]) => [k, uses$ ? v.$value : v.value]),
+  ) as T;
 }
 
 export function expandToken(token: Expandables, isShadow = false): SingleToken<false> {
@@ -140,12 +142,9 @@ function recurse(
         if (expand) {
           // if token uses a reference, attempt to resolve it
           if (typeof value === 'string' && usesReferences(value)) {
-            let resolved;
+            let resolved: SingleToken<false>['value'];
             try {
-              resolved = resolveReferences(
-                value,
-                copy as DesignTokens,
-              ) as SingleToken<false>['value'];
+              resolved = resolveReferences(value, copy as DesignTokens, { usesDtcg: uses$ });
             } catch (e) {
               // dont throw fatal, see: https://github.com/tokens-studio/sd-transforms/issues/217
               // we throw once we only support SD v4, for v3 we need to be more permissive
@@ -156,10 +155,17 @@ function recurse(
               // If every key of the result (object) is a number, the ref value is a multi-value, which means TokenBoxshadowValue[]
               if (Object.keys(resolved).every(key => !isNaN(Number(key)))) {
                 resolved = (Object.values(resolved) as TokenBoxshadowValue[]).map(part =>
-                  flattenValues(part),
+                  flattenValues(part, uses$),
                 );
-              } else {
-                resolved = flattenValues(resolved);
+              } else if (
+                // We might still need to flatten resolved values to due them resolving to values
+                // that have already been expanded.
+                Object.values(resolved).every(
+                  prop =>
+                    typeof prop === 'object' && Object.hasOwn(prop, uses$ ? '$value' : 'value'),
+                )
+              ) {
+                resolved = flattenValues(resolved, uses$);
               }
             }
 
