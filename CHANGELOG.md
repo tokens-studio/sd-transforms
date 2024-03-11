@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.14.3
+
+### Patch Changes
+
+- 9351782: Fix expand utility with latest style-dictionary prerelease.16, values would end up undefined due to bad reference resolve.
+
 ## 0.14.2
 
 ### Patch Changes
