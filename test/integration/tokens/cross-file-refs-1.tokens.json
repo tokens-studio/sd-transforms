@@ -35,5 +35,17 @@
       "value": "4px",
       "type": "number"
     }
+  },
+  "testComposite": {
+    "fancyCard": {
+      "value": "{testComposite.card}",
+      "type": "composition"
+    }
+  },
+  "testTypography": {
+    "fancyText": {
+      "value": "{testTypography.text}",
+      "type": "typography"
+    }
   }
 }
