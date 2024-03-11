@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.14.4
+
+### Patch Changes
+
+- 41d83fa: Add "book" to named font weights, converted to 400
+
 ## 0.14.3
 
 ### Patch Changes
