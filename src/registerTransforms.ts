@@ -205,17 +205,10 @@ export async function registerTransforms(
     transformer: token => transformColorModifiers(token, transformOpts?.['ts/color/modifiers']),
   });
 
-  const casing = transformOpts?.casing ?? 'camel';
-  const casingTransform = `name/cti/${casing}`;
   sd.registerTransformGroup({
     name: 'tokens-studio',
-    transforms: [
-      ...(transformOpts?.addAttributeCTI === true ? ['attribute/cti'] : []),
-      ...transforms,
-      // by default we go with camel, as having no default will likely give the user
-      // errors straight away. This can be overridden by manually passing an array of transforms
-      // instead of this transformGroup, or by doing a name conversion in your custom format
-      casingTransform,
-    ],
+    // add a default name transform, since this is almost always needed
+    // it's easy to override by users, adding their own "transforms"
+    transforms: [...transforms, 'name/camel'],
   });
 }

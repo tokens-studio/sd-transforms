@@ -707,8 +707,6 @@ describe('expand', () => {
 
   it(`should throw when token reference in a composite cannot be resolved`, () => {
     const stub = stubMethod(console, 'error');
-    // let error;
-    // try {
     expandComposites(
       {
         ref: {
@@ -723,22 +721,13 @@ describe('expand', () => {
       },
       'foo/bar.json',
     );
-    // } catch (e) {
-    //   if (e instanceof Error) {
-    //     error = e.message;
-    //   }
-    // }
 
     restore();
 
     expect(stub.calls.size).to.equal(1);
     expect(stub.firstCall?.args[0].message).to.equal(
-      `Reference doesn't exist: tries to reference typography.foo, which is not defined.`,
+      `tries to reference typography.foo, which is not defined.`,
     );
-
-    // expect(error).to.equal(
-    //   "Reference doesn't exist: tries to reference typography.foo, which is not defined.",
-    // );
   });
 
   it('should not trip up when the recursed token contains a primitive value', () => {

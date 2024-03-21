@@ -45,7 +45,7 @@ Android:
 
 - Transform typography objects to Android Compose shorthand -> `ts/typography/compose/shorthand`
 
-Registers the **generic** and **CSS** transforms, in addition to `name/cti/camel` for naming purposes, as a transform group called `tokens-studio`.
+Registers the **generic** and **CSS** transforms as a transform group called `tokens-studio`.
 
 ## Installation
 
@@ -72,6 +72,7 @@ const sd = StyleDictionary.extend({
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
+      transforms: ['name/kebab'], // <-- add a token name transform for generating token names, default is camel
       buildPath: 'build/css/',
       files: [
         {
@@ -95,12 +96,9 @@ To run it use the following command
 node build-output.js
 ```
 
-> Note: make sure to choose either the full transformGroup, **OR** its separate transforms so you can adjust or add your own.
-> [Combining a transformGroup with a transforms array can give unexpected results](https://github.com/amzn/style-dictionary/issues/813).
+> From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/amzn/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
 
 ### Using the transforms
-
-In your Style-Dictionary config, you can **either** use the `tokens-studio` transformGroup **or** the separate transforms (all of the names of those are listed):
 
 ```json
 {
@@ -108,6 +106,7 @@ In your Style-Dictionary config, you can **either** use the `tokens-studio` tran
   "platforms": {
     "css": {
       "transformGroup": "tokens-studio",
+      "transforms": ["name/kebab"],
       "buildPath": "build/css/",
       "files": [
         {
@@ -117,7 +116,7 @@ In your Style-Dictionary config, you can **either** use the `tokens-studio` tran
       ]
     },
     "css": {
-      "transforms": ["ts/size/px", "ts/opacity"],
+      "transforms": ["ts/size/px", "ts/opacity", "name/kebab"],
       "buildPath": "build/css/",
       "files": [
         {
@@ -148,9 +147,10 @@ StyleDictionary.registerTransform({
 
 ### Custom Transform Group
 
-In Style-Dictionary, [`transformGroup` and `transforms` cannot be combined in a platform inside your config](https://github.com/amzn/style-dictionary/issues/813).
+> From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/amzn/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
 
-Therefore, if you wish to use the transform group, but adjust, add or remove a few transforms, your best option is to create a custom transform group:
+You can create a custom transformGroup that includes the individual transforms from this package.
+If you wish to use the transformGroup, but adjust or remove a few transforms, your best option is to create a custom transform group:
 
 ```js
 const { transforms } = require('@tokens-studio/sd-transforms');
@@ -158,15 +158,12 @@ const StyleDictionary = require('style-dictionary');
 
 // Register custom tokens-studio transform group
 // without 'px' being added to numbers without a unit
-// and also adding 'name/cti/camel' for the token names
+// and also adding 'name/constant' for the token names
 StyleDictionary.registerTransformGroup({
   name: 'custom/tokens-studio',
-  transforms: [...transforms, 'name/cti/camel'].filter(transform => transform !== 'ts/size/px'),
+  transforms: [...transforms, 'name/constant'].filter(transform => transform !== 'ts/size/px'),
 });
 ```
-
-> Note: it is easy to change the casing or to add attributes/cti transform to the group, without needing to create a custom transform group.
-> For this, see section "Options" below for the `casing` and `addAttributeCTI` option.
 
 ### Options
 
@@ -195,9 +192,7 @@ Options:
 | name                          | type                     | required | default         | description                                                                                                                           |
 | ----------------------------- | ------------------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | excludeParentKeys             | boolean                  | ❌       | `false`         | Whether or not to exclude parent keys from your token files                                                                           |
-| addAttributeCTI               | boolean                  | ❌       | `false`         | Whether or not to add `'attribute/cti'` predefined transform to the `tokens-studio` transformGroup                                    |
 | alwaysAddFontStyle            | boolean                  | ❌       | `false`         | Whether or not to always add a 'normal' fontStyle property to typography tokens which do not have explicit fontStyle                  |
-| casing                        | string                   | ❌       | `camel`         | What kind of casing to use for token names. Options: [`camel`, `pascal`, `snake`, `kebab`, `constant`]                                |
 | expand                        | boolean \| ExpandOptions | ❌       | See props below | `false` to not register the parser at all. By default, expands composition tokens. Optionally, border, shadow and typography as well. |
 | expand.composition            | boolean \| ExpandFilter  | ❌       | `true`          | Whether or not to expand compositions. Also allows a filter callback function to conditionally expand per token/filePath              |
 | expand.typography             | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand typography. Also allows a filter callback function to conditionally expand per token/filePath                |
@@ -205,7 +200,6 @@ Options:
 | expand.border                 | boolean \| ExpandFilter  | ❌       | `false`         | Whether or not to expand borders. Also allows a filter callback function to conditionally expand per token/filePath                   |
 | ['ts/color/modifiers']        | ColorModifierOptions     | ❌       | See props below | Color modifier options                                                                                                                |
 | ['ts/color/modifiers'].format | ColorModifierFormat      | ❌       | `undefined`     | Color modifier output format override ('hex' \| 'hsl' \| 'lch' \| 'p3' \| 'srgb'), uses local format or modifier space as default     |
-|                               |
 
 > Note: you can also import and use the `parseTokens` function to run the parsing steps on your tokens object manually.
 > Handy if you have your own parsers set up (e.g. for JS files), and you want the parser-based features like composites-expansion to work there too.
@@ -238,6 +232,7 @@ async function run() {
     platforms: {
       css: {
         transformGroup: 'tokens-studio',
+        transforms: ['name/kebab'],
         files: [
           {
             destination: `vars-${theme.name}.css`,
@@ -368,6 +363,7 @@ async function run() {
     platforms: {
       css: {
         transformGroup: 'tokens-studio',
+        transforms: ['name/kebab'],
         files: [
           {
             destination: `vars-${name}.css`,

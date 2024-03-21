@@ -82,7 +82,18 @@ describe('sd-transforms smoke tests', () => {
   it('allows easily changing the casing', async () => {
     await cleanup(dict);
 
-    dict = await init(cfg, { 'ts/color/modifiers': { format: 'hex' }, casing: 'kebab' });
+    dict = await init(
+      {
+        ...cfg,
+        platforms: {
+          css: {
+            ...cfg.platforms.css,
+            transforms: ['name/kebab'],
+          },
+        },
+      },
+      { 'ts/color/modifiers': { format: 'hex' } },
+    );
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(`:root {
   --sd-dimension-scale: 2;
@@ -125,7 +136,18 @@ describe('sd-transforms smoke tests', () => {
 
   it('allows easily adding attribute/cti transform to tokens-studio group', async () => {
     await cleanup(dict);
-    dict = await init(cfg, { 'ts/color/modifiers': { format: 'hex' }, addAttributeCTI: true });
+    dict = await init(
+      {
+        ...cfg,
+        platforms: {
+          css: {
+            ...cfg.platforms.css,
+            transforms: ['attribute/cti'],
+          },
+        },
+      },
+      { 'ts/color/modifiers': { format: 'hex' } },
+    );
     const enrichedTokens = await dict?.exportPlatform('css'); // platform to parse for is 'css' in this case
     expect(enrichedTokens?.dimension.scale.attributes).to.eql({
       category: 'dimension',
