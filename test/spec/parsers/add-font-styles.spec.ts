@@ -109,23 +109,13 @@ describe('add font style', () => {
       },
     };
 
-    // let error;
-    // try {
     addFontStyles(inputTokens as DeepKeyTokenMap<false>);
-    // } catch (e) {
-    //   if (e instanceof Error) {
-    //     error = e.message;
-    //   }
-    // }
     restore();
 
     expect(stub.calls.size).to.equal(1);
     expect(stub.firstCall?.args[0].message).to.equal(
-      `Reference doesn't exist: tries to reference fwRef, which is not defined.`,
+      `tries to reference fwRef, which is not defined.`,
     );
-    // expect(error).to.equal(
-    //   "Reference doesn't exist: tries to reference fwRef, which is not defined.",
-    // );
   });
 
   it(`allows always adding a default fontStyle`, () => {

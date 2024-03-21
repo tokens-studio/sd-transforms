@@ -12,7 +12,7 @@ const cfg = {
   source: ['test/integration/tokens/output-references.tokens.json'],
   platforms: {
     css: {
-      transforms: ['ts/resolveMath', 'name/cti/kebab'],
+      transforms: ['ts/resolveMath', 'name/kebab'],
       prefix: 'sd',
       buildPath: outputDir,
       files: [

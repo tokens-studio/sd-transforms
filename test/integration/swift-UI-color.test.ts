@@ -30,7 +30,7 @@ const cfg = {
         'ts/color/modifiers',
         'attribute/cti',
         'transitive/color/UIColorSwift',
-        'name/cti/camel',
+        'name/camel',
       ],
       buildPath: outputDir,
       files: [
