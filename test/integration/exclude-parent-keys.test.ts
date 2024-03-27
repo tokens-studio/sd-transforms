@@ -39,7 +39,9 @@ describe('exclude parent keys', () => {
     await init(cfg).catch(e => {
       error = e.message;
     });
-    expect(error).to.include('Problems were found when trying to resolve property references');
+    expect(error).to.equal(
+      '\nReference Errors:\nSome token references (2) could not be found.\nUse log.verbosity "verbose" or use CLI option --verbose for more details.\n',
+    );
   });
 
   it('optionally excludes parent keys', async () => {
