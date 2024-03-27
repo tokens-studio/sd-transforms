@@ -48,7 +48,12 @@ export function modifyColor(
         returnedColor = darken(color, modifier.space, Number(modifier.value));
         break;
       case 'mix':
-        returnedColor = mix(color, Number(modifier.value), new Color(modifier.color));
+        returnedColor = mix(
+          color,
+          modifier.space,
+          Number(modifier.value),
+          new Color(modifier.color),
+        );
         break;
       case 'alpha': {
         returnedColor = transparentize(color, Number(modifier.value));

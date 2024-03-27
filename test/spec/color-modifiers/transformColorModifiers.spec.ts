@@ -96,14 +96,12 @@ describe('transform color modifiers', () => {
       });
 
       // mix black with white, should give a grey
-      expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal('hsl(91.8 0% 46.6%)');
+      expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal('hsl(0 0% 50%)');
       expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal('lch(50 0 0)');
       expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
-        'color(display-p3 0.47 0.47 0.47)',
+        'color(display-p3 0.5 0.5 0.5)',
       );
-      expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal(
-        'rgb(46.6% 46.6% 46.6%)',
-      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal('rgb(50% 50% 50%)');
       // without space, return original
       expect(transformColorModifiers(token(''))).to.equal('#000000');
     });
