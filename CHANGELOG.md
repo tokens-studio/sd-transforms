@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.15.2
+
+### Patch Changes
+
+- 7617f9d: Pass colorspace to mix modifier, to use the correct color space to mix in.
+
 ## 0.15.1
 
 ### Patch Changes
