@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 0.15.1
+
+### Patch Changes
+
+- 000b202: Update to latest style-dictionary pre.22
+
 ## 0.15.0
 
 ### Minor Changes
