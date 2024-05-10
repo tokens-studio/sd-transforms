@@ -76,7 +76,7 @@ export function expandToken(token: Expandables, isShadow = false): SingleToken<f
       Object.entries(shadow).forEach(([key, value]) => {
         expandedObj[index + 1][key] = {
           ...copyMeta,
-          [`${uses$ ? '$' : ''}value`]: `${value}`,
+          [`${uses$ ? '$' : ''}value`]: value,
           [`${uses$ ? '$' : ''}type`]: getType(key),
         };
       });
@@ -85,7 +85,7 @@ export function expandToken(token: Expandables, isShadow = false): SingleToken<f
     Object.entries(value).forEach(([key, value]) => {
       expandedObj[key] = {
         ...copyMeta,
-        [`${uses$ ? '$' : ''}value`]: `${value}`,
+        [`${uses$ ? '$' : ''}value`]: value,
         [`${uses$ ? '$' : ''}type`]: getType(key),
       };
     });

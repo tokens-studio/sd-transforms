@@ -41,7 +41,7 @@ async function before() {
 
 async function after() {
   await cleanup(dict);
-  delete StyleDictionary.transformGroup['custom/tokens-studio'];
+  delete StyleDictionary.hooks.transformGroups['custom/tokens-studio'];
 }
 
 describe('custom transform group', () => {
