@@ -1,5 +1,5 @@
-import type StyleDictionary from 'style-dictionary';
 import type { DesignTokens } from 'style-dictionary/types';
+import StyleDictionary from 'style-dictionary';
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
 import { transformShadowForCSS } from './css/transformShadow.js';
@@ -51,17 +51,9 @@ export async function registerTransforms(
     // expand composition tokens, typography, border, shadow (latter 3 conditionally, as opt-in)
     if (supportsPreprocessors) {
       sd.registerPreprocessor({
-        name: 'sd-transforms-preprocessors',
+        name: 'tokens-studio',
         preprocessor: dictionary => {
           return parseTokens(dictionary, transformOpts) as DesignTokens;
-        },
-      });
-    } else {
-      sd.registerParser({
-        pattern: /\.json$/,
-        parse: ({ filePath, contents }) => {
-          const tokens = JSON.parse(contents);
-          return parseTokens(tokens, transformOpts, filePath) as DesignTokens;
         },
       });
     }
@@ -71,14 +63,14 @@ export async function registerTransforms(
     name: 'ts/descriptionToComment',
     type: 'attribute',
     // in style-dictionary v4.0.0-prerelease.9, $description is converted to comments (createPropertyFormatter)
-    matcher: token => !token.$description && token.description,
-    transformer: token => mapDescriptionToComment(token),
+    filter: token => !token.$description && token.description,
+    transform: token => mapDescriptionToComment(token),
   });
 
   sd.registerTransform({
     name: 'ts/size/px',
     type: 'value',
-    matcher: token => {
+    filter: token => {
       const type = token.$type ?? token.type;
       return (
         typeof type === 'string' &&
@@ -87,42 +79,42 @@ export async function registerTransforms(
         )
       );
     },
-    transformer: token => transformDimension(token.$value ?? token.value),
+    transform: token => transformDimension(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/opacity',
     type: 'value',
-    matcher: token => (token.$type ?? token.type) === 'opacity',
-    transformer: token => transformOpacity(token.$value ?? token.value),
+    filter: token => (token.$type ?? token.type) === 'opacity',
+    transform: token => transformOpacity(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/size/css/letterspacing',
     type: 'value',
-    matcher: token => (token.$type ?? token.type) === 'letterSpacing',
-    transformer: token => transformLetterSpacingForCSS(token.$value ?? token.value),
+    filter: token => (token.$type ?? token.type) === 'letterSpacing',
+    transform: token => transformLetterSpacingForCSS(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/size/lineheight',
     type: 'value',
-    matcher: token => (token.$type ?? token.type) === 'lineHeights',
-    transformer: token => transformLineHeight(token.$value ?? token.value),
+    filter: token => (token.$type ?? token.type) === 'lineHeights',
+    transform: token => transformLineHeight(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/typography/fontWeight',
     type: 'value',
-    matcher: token => (token.$type ?? token.type) === 'fontWeights',
-    transformer: token => transformFontWeights(token.$value ?? token.value),
+    filter: token => (token.$type ?? token.type) === 'fontWeights',
+    transform: token => transformFontWeights(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/typography/css/fontFamily',
     type: 'value',
-    matcher: token => (token.$type ?? token.type) === 'fontFamilies',
-    transformer: token => processFontFamily(token.$value ?? token.value),
+    filter: token => (token.$type ?? token.type) === 'fontFamilies',
+    transform: token => processFontFamily(token.$value ?? token.value),
   });
 
   /**
@@ -140,45 +132,45 @@ export async function registerTransforms(
     name: 'ts/resolveMath',
     type: 'value',
     transitive: true,
-    matcher: token => typeof (token.$value ?? token.value) === 'string',
-    transformer: token => checkAndEvaluateMath(token.$value ?? token.value),
+    filter: token => typeof (token.$value ?? token.value) === 'string',
+    transform: token => checkAndEvaluateMath(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/typography/css/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => (token.$type ?? token.type) === 'typography',
-    transformer: token => transformTypographyForCSS(token.$value ?? token.value),
+    filter: token => (token.$type ?? token.type) === 'typography',
+    transform: token => transformTypographyForCSS(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/typography/compose/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => (token.$type ?? token.type) === 'typography',
-    transformer: token => transformTypographyForCompose(token.$value ?? token.value),
+    filter: token => (token.$type ?? token.type) === 'typography',
+    transform: token => transformTypographyForCompose(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/border/css/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => {
+    filter: token => {
       return (token.$type ?? token.type) === 'border';
     },
-    transformer: token => transformBorderForCSS(token.$value ?? token.value),
+    transform: token => transformBorderForCSS(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/shadow/css/shorthand',
     type: 'value',
     transitive: true,
-    matcher: token => {
+    filter: token => {
       const type = token.$type ?? token.type;
       return typeof type === 'string' && ['boxShadow'].includes(type);
     },
-    transformer: token => {
+    transform: token => {
       const val = token.$value ?? token.value;
       return Array.isArray(val)
         ? val.map(single => transformShadowForCSS(single)).join(', ')
@@ -190,19 +182,19 @@ export async function registerTransforms(
     name: 'ts/color/css/hexrgba',
     type: 'value',
     transitive: true,
-    matcher: token => (token.$type ?? token.type) === 'color',
-    transformer: token => transformHEXRGBaForCSS(token.$value ?? token.value),
+    filter: token => (token.$type ?? token.type) === 'color',
+    transform: token => transformHEXRGBaForCSS(token.$value ?? token.value),
   });
 
   sd.registerTransform({
     name: 'ts/color/modifiers',
     type: 'value',
     transitive: true,
-    matcher: token =>
+    filter: token =>
       (token.$type ?? token.type) === 'color' &&
       token.$extensions &&
       token.$extensions['studio.tokens']?.modify,
-    transformer: token => transformColorModifiers(token, transformOpts?.['ts/color/modifiers']),
+    transform: token => transformColorModifiers(token, transformOpts?.['ts/color/modifiers']),
   });
 
   sd.registerTransformGroup({

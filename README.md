@@ -5,6 +5,7 @@
 ## Table of contents
 
 - [Installation](#installation)
+- [Compatibility](#compatibility)
 - [Getting Started](#usage)
   - [Using the transforms](#using-the-transforms)
   - [Custom Transform Group](#custom-transform-group)
@@ -55,13 +56,31 @@ With [NPM](https://www.npmjs.com/):
 npm install @tokens-studio/sd-transforms
 ```
 
+## Compatibility
+
+This package is to be used in combination with [Style Dictionary](https://github.com/amzn/style-dictionary).
+
+There are some caveats however, with regards to which versions of Style Dictionary are compatible with which versions of this package:
+
+| Style Dictionary                                          | sd-transforms           |
+| --------------------------------------------------------- | ----------------------- |
+| **3.0.0** - **4.0.0**-prerelease.**1**                    | <= **0.12.2**           |
+| **4.0.0**-prerelease.**2** - **4.0.0**-prerelease.**18**  | **0.13.0** - **0.14.4** |
+| **4.0.0**-prerelease.**18** - **4.0.0**-prerelease.**26** | **0.13.0** - **0.15.2** |
+| >= **4.0.0**-prerelease.**27**                            | >= **0.16.0**           |
+
+This may seem a little tedious, but the reason is because `sd-transforms` is still in alpha, and Style Dictionary v4 is still being worked on, iteratively doing lots of breaking changes.
+
+This will be much simpler when Style Dictionary v4 is released, at that point `sd-transforms` v1 will be released and be out of alpha.
+Both APIs will be stable then.
+
 ## Usage
 
 > Note: this library is available both in CJS and ESM
 
 ```js
-const { registerTransforms } = require('@tokens-studio/sd-transforms');
-const StyleDictionary = require('style-dictionary');
+import { registerTransforms } from '@tokens-studio/sd-transforms';
+import StyleDictionary from 'style-dictionary';
 
 // will register them on StyleDictionary object
 // that is installed as a dependency of this package.
@@ -69,9 +88,10 @@ registerTransforms(StyleDictionary);
 
 const sd = StyleDictionary.extend({
   source: ['**/*.json'], // <-- make sure to have this match your token files!!!
+  preprocessors: ['tokens-studio'], // <-- since 0.16.0 this must be explicit
   platforms: {
     css: {
-      transformGroup: 'tokens-studio',
+      transformGroup: 'tokens-studio', // <-- apply the tokens-studio transformGroup to apply all transforms
       transforms: ['name/kebab'], // <-- add a token name transform for generating token names, default is camel
       buildPath: 'build/css/',
       files: [
@@ -98,11 +118,25 @@ node build-output.js
 
 > From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/amzn/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
 
+### Using the preprocessor
+
+If you want to use `excludeParentKeys`, `expand` or allow this package to extract the `fontStyle` from the `fontWeight` e.g. `regular italic`,
+you must add the `'tokens-studio'` preprocessor explicitly in the configuration:
+
+```json
+{
+  "source": ["**/*.tokens.json"],
+  "preprocessors": ["tokens-studio"],
+  "platforms": {}
+}
+```
+
 ### Using the transforms
 
 ```json
 {
   "source": ["**/*.tokens.json"],
+  "preprocessors": ["tokens-studio"],
   "platforms": {
     "css": {
       "transformGroup": "tokens-studio",
@@ -130,18 +164,18 @@ node build-output.js
 ```
 
 More fine-grained control is possible, every transformation is available as a raw JavaScript function
-for you to create your own Style-Dictionary transformer out of.
+for you to create your own Style-Dictionary transform out of.
 
 ```js
-const { transformDimension } = require('@tokens-studio/sd-transforms');
-const StyleDictionary = require('style-dictionary');
+import { transformDimension } from '@tokens-studio/sd-transforms';
+import StyleDictionary from 'style-dictionary';
 
 StyleDictionary.registerTransform({
   name: 'my/size/px',
   type: 'value',
   transitive: true,
-  matcher: token => ['fontSizes', 'dimension', 'borderRadius', 'spacing'].includes(token.type),
-  transformer: token => transformDimension(token.value),
+  filter: token => ['fontSizes', 'dimension', 'borderRadius', 'spacing'].includes(token.type),
+  transform: token => transformDimension(token.value),
 });
 ```
 
@@ -149,12 +183,12 @@ StyleDictionary.registerTransform({
 
 > From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/amzn/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
 
-You can create a custom transformGroup that includes the individual transforms from this package.
-If you wish to use the transformGroup, but adjust or remove a few transforms, your best option is to create a custom transform group:
+You can create a custom `transformGroup` that includes the individual transforms from this package.
+If you wish to use the `transformGroup`, but adjust or remove a few transforms, your best option is to create a custom transform group:
 
 ```js
-const { transforms } = require('@tokens-studio/sd-transforms');
-const StyleDictionary = require('style-dictionary');
+import { transforms } from '@tokens-studio/sd-transforms';
+import StyleDictionary from 'style-dictionary';
 
 // Register custom tokens-studio transform group
 // without 'px' being added to numbers without a unit
@@ -215,9 +249,9 @@ Here's a full example of how you can use this in conjunction with Style Dictiona
 Run this script:
 
 ```cjs
-const { registerTransforms } = require('@tokens-studio/sd-transforms');
-const StyleDictionary = require('style-dictionary');
-const { promises } = require('fs');
+import { registerTransforms } from '@tokens-studio/sd-transforms';
+import StyleDictionary from 'style-dictionary';
+import { promises } from 'fs';
 
 registerTransforms(StyleDictionary, {
   /* options here if needed */
@@ -229,6 +263,7 @@ async function run() {
     source: Object.entries(theme.selectedTokenSets)
       .filter(([, val]) => val !== 'disabled')
       .map(([tokenset]) => `${tokenset}.json`),
+    preprocessors: ['tokens-studio'], // <-- since 0.16.0 this must be explicit
     platforms: {
       css: {
         transformGroup: 'tokens-studio',
@@ -289,8 +324,8 @@ Running `permutateThemes` on these themes will generate 4 theme combinations:
 See details below:
 
 ```js
-const { permutateThemes } = require('@tokens-studio/sd-transforms');
-const fs = require('fs');
+import { permutateThemes } from '@tokens-studio/sd-transforms';
+import fs from 'fs';
 
 /**
  * Input:
@@ -347,9 +382,9 @@ Note that it is a best practice to generate standalone output files for each the
 Full example with multi-dimensional themes:
 
 ```js
-const { registerTransforms, permutateThemes } = require('@tokens-studio/sd-transforms');
-const StyleDictionary = require('style-dictionary');
-const { promises } = require('fs');
+import { registerTransforms, permutateThemes } from '@tokens-studio/sd-transforms';
+import StyleDictionary from 'style-dictionary';
+import { promises } from 'fs';
 
 registerTransforms(StyleDictionary, {
   /* options here if needed */
@@ -360,6 +395,7 @@ async function run() {
   const themes = permutateThemes($themes, { separator: '_' });
   const configs = Object.entries(themes).map(([name, tokensets]) => ({
     source: tokensets.map(tokenset => `${tokenset}.json`),
+    preprocessors: ['tokens-studio'], // <-- since 0.16.0 this must be explicit
     platforms: {
       css: {
         transformGroup: 'tokens-studio',

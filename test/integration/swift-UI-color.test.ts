@@ -13,7 +13,7 @@ StyleDictionary.registerTransform({
   name: 'transitive/color/UIColorSwift',
   type: 'value',
   transitive: true,
-  transformer: token => {
+  transform: token => {
     const { r, g, b, a } = Color(token.value).toRgb();
     const rFixed = (r / 255.0).toFixed(3);
     const gFixed = (g / 255.0).toFixed(3);
