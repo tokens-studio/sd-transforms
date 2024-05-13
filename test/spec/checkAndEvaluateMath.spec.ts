@@ -29,15 +29,11 @@ describe('check and evaluate math', () => {
     // exception for pixels, it strips px, making it 4 * 7em = 28em = 448px, where 4px * 7em would be 4px * 112px = 448px as well
     expect(checkAndEvaluateMath('4px * 7em')).to.equal('28em');
   });
-  // TODO: we can make this smarter in the future. If every piece of the expression shares the same unit,
-  // we can strip the unit, do the calculation, and add back the unit.
-  // However, there's not really a good way to do calculations with mixed units,
-  // e.g. 2em * 4rem is not possible
+
   it('can evaluate math expressions where more than one token has a unit, as long as for each piece of the expression the unit is the same', () => {
     // can resolve them, because all values share the same unit
-    // TODO: implement tests below, failing atm
-    expect(checkAndEvaluateMath('5rem * 4rem / 2rem')).to.equal('10rem'); // current: '5rem * 4rem / 2rem'
-    expect(checkAndEvaluateMath('10vw + 20vw')).to.equal('10vw'); // current: '10vw + 20vw'
+    expect(checkAndEvaluateMath('5px * 4px / 2px')).to.equal('10px');
+    expect(checkAndEvaluateMath('10vw + 20vw')).to.equal('30vw');
 
     // cannot resolve them, because em is dynamic and 20/20px is static value
     expect(checkAndEvaluateMath('2em + 20')).to.equal('2em + 20');
@@ -67,6 +63,10 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath('ceil(roundTo(16/1.2,0)/2)*2')).to.equal(14);
   });
 
+  it('should support expr eval expressions in combination with regular math', () => {
+    expect(checkAndEvaluateMath('roundTo(4 / 7, 1) * 24')).to.equal(14.4);
+  });
+
   it('does not unnecessarily remove wrapped quotes around font-family values', () => {
     expect(checkAndEvaluateMath(`800 italic 16px/1 'Arial Black'`)).to.equal(
       `800 italic 16px/1 'Arial Black'`,
@@ -75,7 +75,7 @@ describe('check and evaluate math', () => {
 
   it('does not unnecessarily change the type of the value', () => {
     expect(checkAndEvaluateMath(11)).to.equal(11);
-    // qchanges to number because the expression is a math expression evaluating to a number result
+    // changes to number because the expression is a math expression evaluating to a number result
     expect(checkAndEvaluateMath('11 * 5')).to.equal(55);
     // keeps it as string because there is no math expression to evaluate, so just keep it as is
     expect(checkAndEvaluateMath('11')).to.equal('11');

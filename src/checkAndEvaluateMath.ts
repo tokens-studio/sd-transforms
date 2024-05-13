@@ -38,6 +38,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
       left === '' && mathChars.includes(right), // tail of expr, right is math char
       right === '' && mathChars.includes(left), // head of expr, left is math char
       tokens.length <= 1, // expr is valid if it's a simple 1 token expression
+      Boolean(tok.match(/\)$/) && mathChars.includes(right)), // end of group ), right is math char
       checkIfInsideGroup(tok, expr), // exprs that aren't math expressions are okay within ( ) groups
     ];
 
@@ -73,44 +74,59 @@ function splitMultiIntoSingleValues(expr: string): string[] {
 }
 
 function parseAndReduce(expr: string): string | boolean | number {
-  // We check for px unit, then remove it
+  let result: string | number = expr;
+
+  let evaluated;
+  // Try to evaluate as expr-eval expression
+  try {
+    evaluated = parser.evaluate(`${result}`);
+    if (typeof evaluated === 'number') {
+      result = evaluated;
+    }
+  } catch (ex) {
+    //
+  }
+
+  // We check for px unit, then remove it, since these are essentially numbers in tokens context
+  // We remember that we had px in there so we can put it back in the end result
   const hasPx = expr.match('px');
-  let unitlessExpr = expr.replace(/px/g, '');
+  const noPixExpr = expr.replace(/px/g, '');
+  const unitRegex = /(\d+\.?\d*)(?<unit>([a-zA-Z]|%)+)/g;
+
+  let matchArr;
+  const foundUnits: Set<string> = new Set();
+  while ((matchArr = unitRegex.exec(noPixExpr)) !== null) {
+    foundUnits.add(matchArr.groups.unit);
+  }
+  // multiple units (besides px) found, cannot parse the expression
+  if (foundUnits.size > 1) {
+    return result;
+  }
+  const resultUnit = Array.from(foundUnits)[0] ?? (hasPx ? 'px' : '');
+
   // Remove it here so we can evaluate expressions like 16px + 24px
-  const calcParsed = parse(unitlessExpr, { allowInlineCommnets: false });
+  const calcParsed = parse(noPixExpr, { allowInlineCommnets: false });
 
   // No expression to evaluate, just return it (in case of number as string e.g. '10')
   if (calcParsed.nodes.length === 1 && calcParsed.nodes[0].type === 'Number') {
-    return expr;
+    return `${result}`;
   }
 
   // Attempt to reduce the math expression
   const reduced = reduceExpression(calcParsed);
-  let unit;
-
   // E.g. if type is Length, like 4 * 7rem would be 28rem
-  if (reduced && reduced.type !== 'Number') {
-    unitlessExpr = `${reduced.value}`.replace(new RegExp(reduced.unit, 'ig'), '');
-    unit = reduced.unit;
+  if (reduced) {
+    result = reduced.value;
   }
 
-  // Try to evaluate expression (minus unit) with expr-eval
-  let evaluated;
-  try {
-    evaluated = parser.evaluate(unitlessExpr);
-    if (typeof evaluated !== 'number') {
-      return expr;
-    }
-  } catch (ex) {
-    return expr;
+  if (typeof result !== 'number') {
+    return result;
   }
 
-  const formatted = Number.parseFloat(evaluated.toFixed(3));
-  // Put back the px unit if needed and if reduced doesn't come with one
-  const formattedUnit = unit ?? (hasPx ? 'px' : '');
-
-  // This ensures stringification is not done when not needed (e.g. type number or boolean kept intact)
-  return formattedUnit ? `${formatted}${formattedUnit}` : formatted;
+  // the outer Number() gets rid of insignificant trailing zeros of decimal numbers
+  const reducedTo3Fixed = Number(Number.parseFloat(`${result}`).toFixed(3));
+  result = resultUnit ? `${reducedTo3Fixed}${resultUnit}` : reducedTo3Fixed;
+  return result;
 }
 
 export function checkAndEvaluateMath(
