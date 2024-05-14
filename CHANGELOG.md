@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 0.16.1
+
+### Patch Changes
+
+- 3ab8d64: Restructure evaluate math util to support expr eval expressions in combination with regular math.
+- 3ab8d64: Allow math expressions where multiple components contain units, as long as they are still computable.
+
 ## 0.16.0
 
 ### Minor Changes
