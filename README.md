@@ -2,6 +2,8 @@
 
 ![NPM version badge](https://img.shields.io/npm/v/@tokens-studio/sd-transforms) ![License badge](https://img.shields.io/github/license/tokens-studio/sd-transforms)
 
+> Note: this README contains examples that assume latest version of this package & v4 style-dictionary latest prerelease.
+
 ## Table of contents
 
 - [Installation](#installation)
@@ -86,8 +88,10 @@ import StyleDictionary from 'style-dictionary';
 // that is installed as a dependency of this package.
 registerTransforms(StyleDictionary);
 
-const sd = StyleDictionary.extend({
-  source: ['**/*.json'], // <-- make sure to have this match your token files!!!
+const sd = new StyleDictionary({
+  // make sure to have source match your token files!
+  // be careful about accidentally matching your package.json or similar files that are not tokens
+  source: ['tokens/**/*.json'],
   preprocessors: ['tokens-studio'], // <-- since 0.16.0 this must be explicit
   platforms: {
     css: {
@@ -104,8 +108,8 @@ const sd = StyleDictionary.extend({
   },
 });
 
-sd.cleanAllPlatforms();
-sd.buildAllPlatforms();
+await sd.cleanAllPlatforms();
+await sd.buildAllPlatforms();
 ```
 
 > You can also import as ES Modules if needed.
@@ -125,7 +129,7 @@ you must add the `'tokens-studio'` preprocessor explicitly in the configuration:
 
 ```json
 {
-  "source": ["**/*.tokens.json"],
+  "source": ["tokens/**/*.json"],
   "preprocessors": ["tokens-studio"],
   "platforms": {}
 }
@@ -135,7 +139,7 @@ you must add the `'tokens-studio'` preprocessor explicitly in the configuration:
 
 ```json
 {
-  "source": ["**/*.tokens.json"],
+  "source": ["tokens/**/*.json"],
   "preprocessors": ["tokens-studio"],
   "platforms": {
     "css": {
@@ -278,11 +282,12 @@ async function run() {
     },
   }));
 
-  configs.forEach(cfg => {
-    const sd = StyleDictionary.extend(cfg);
-    sd.cleanAllPlatforms(); // optionally, cleanup files first..
-    sd.buildAllPlatforms();
-  });
+  async function cleanAndBuild(cfg) {
+    const sd = new StyleDictionary(cfg);
+    await sd.cleanAllPlatforms(); // optionally, cleanup files first..
+    await sd.buildAllPlatforms();
+  }
+  await Promise.all(configs.map(cleanAndBuild));
 }
 
 run();
@@ -410,11 +415,12 @@ async function run() {
     },
   }));
 
-  configs.forEach(cfg => {
-    const sd = StyleDictionary.extend(cfg);
-    sd.cleanAllPlatforms(); // optionally, cleanup files first..
-    sd.buildAllPlatforms();
-  });
+  async function cleanAndBuild(cfg) {
+    const sd = new StyleDictionary(cfg);
+    await sd.cleanAllPlatforms(); // optionally, cleanup files first..
+    await sd.buildAllPlatforms();
+  }
+  await Promise.all(configs.map(cleanAndBuild));
 }
 
 run();
