@@ -16,6 +16,8 @@ describe('map description to comment', () => {
       comment: 'Some description about the token',
     });
 
+    // no longer strips out newlines because style-dictionary can handle those now in comments
+    // only strip out carriage returns / turn single carriage returns into newlines
     expect(
       mapDescriptionToComment({
         type: 'dimension',
@@ -29,7 +31,7 @@ describe('map description to comment', () => {
       description:
         'This is the first line.\nThis is the second line.\rThis is the third line.\r\nThis is the fourth line.',
       comment:
-        'This is the first line. This is the second line. This is the third line. This is the fourth line.',
+        'This is the first line.\nThis is the second line.\nThis is the third line.\nThis is the fourth line.',
     });
   });
 });
