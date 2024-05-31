@@ -32,7 +32,6 @@ export interface ColorModifierOptions {
 
 export interface TransformOptions {
   alwaysAddFontStyle?: boolean;
-  expand?: ExpandOptions | false;
   excludeParentKeys?: boolean;
   ['ts/color/modifiers']?: ColorModifierOptions;
 }
