@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { DeepKeyTokenMap } from '@tokens-studio/types';
-import { alignTypes } from '../../../src/parsers/align-types.js';
+import { alignTypes } from '../../../src/preprocessors/align-types.js';
 
 const tokenObj = {
   foo: {
@@ -15,9 +15,11 @@ const tokenObj = {
       },
     },
     semantic: {
-      lg: {
-        value: '30px',
-        type: 'sizing',
+      sizings: {
+        lg: {
+          value: '30px',
+          type: 'sizing',
+        },
       },
     },
   },
@@ -34,6 +36,17 @@ const tokenObj = {
             type: 'innerShadow',
           },
         ],
+        type: 'boxShadow',
+      },
+      shadowSingle: {
+        value: {
+          x: '5px',
+          y: '0',
+          blur: '10px',
+          spread: '5px',
+          color: '#000000',
+          type: 'innerShadow',
+        },
         type: 'boxShadow',
       },
     },
@@ -53,9 +66,11 @@ const tokenObjAligned = {
       },
     },
     semantic: {
-      lg: {
-        value: '30px',
-        type: 'dimension',
+      sizings: {
+        lg: {
+          value: '30px',
+          type: 'dimension',
+        },
       },
     },
   },
@@ -64,14 +79,25 @@ const tokenObjAligned = {
       shadow: {
         value: [
           {
-            x: '5px',
-            y: '0',
+            offsetX: '5px',
+            offsetY: '0',
             blur: '10px',
             spread: '5px',
             color: '#000000',
             type: 'innerShadow',
           },
         ],
+        type: 'shadow',
+      },
+      shadowSingle: {
+        value: {
+          offsetX: '5px',
+          offsetY: '0',
+          blur: '10px',
+          spread: '5px',
+          color: '#000000',
+          type: 'innerShadow',
+        },
         type: 'shadow',
       },
     },
@@ -91,9 +117,11 @@ const tokenObjDTCG = {
       },
     },
     semantic: {
-      lg: {
-        $value: '30px',
-        $type: 'sizing',
+      sizings: {
+        lg: {
+          $value: '30px',
+          $type: 'sizing',
+        },
       },
     },
   },
@@ -110,6 +138,17 @@ const tokenObjDTCG = {
             type: 'innerShadow',
           },
         ],
+        $type: 'boxShadow',
+      },
+      shadowSingle: {
+        $value: {
+          x: '5px',
+          y: '0',
+          blur: '10px',
+          spread: '5px',
+          color: '#000000',
+          type: 'innerShadow',
+        },
         $type: 'boxShadow',
       },
     },
@@ -129,9 +168,11 @@ const tokenObjAlignedDTCG = {
       },
     },
     semantic: {
-      lg: {
-        $value: '30px',
-        $type: 'dimension',
+      sizings: {
+        lg: {
+          $value: '30px',
+          $type: 'dimension',
+        },
       },
     },
   },
@@ -140,14 +181,25 @@ const tokenObjAlignedDTCG = {
       shadow: {
         $value: [
           {
-            x: '5px',
-            y: '0',
+            offsetX: '5px',
+            offsetY: '0',
             blur: '10px',
             spread: '5px',
             color: '#000000',
             type: 'innerShadow',
           },
         ],
+        $type: 'shadow',
+      },
+      shadowSingle: {
+        $value: {
+          offsetX: '5px',
+          offsetY: '0',
+          blur: '10px',
+          spread: '5px',
+          color: '#000000',
+          type: 'innerShadow',
+        },
         $type: 'shadow',
       },
     },

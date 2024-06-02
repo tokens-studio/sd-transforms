@@ -19,7 +19,7 @@ export async function cleanup(dict?: StyleDictionary) {
     // @ts-expect-error polluting dictionary it on purpose
     dict.cleaned = true;
   }
-  StyleDictionary.hooks.parsers = {};
+  StyleDictionary.hooks.preprocessors = {};
   delete StyleDictionary.hooks.transformGroups['tokens-studio'];
   Object.keys(StyleDictionary.hooks.transforms).forEach(transform => {
     if (transform.startsWith('ts/')) {

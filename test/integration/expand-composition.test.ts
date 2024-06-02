@@ -10,9 +10,12 @@ const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
   source: ['test/integration/tokens/expand-composition.tokens.json'],
+  expand: { include: ['composition'] },
+  preprocessors: ['tokens-studio'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
+      transforms: ['typography/css/shorthand'],
       prefix: 'sd',
       buildPath: outputDir,
       files: [
@@ -45,7 +48,7 @@ describe('expand composition tokens', () => {
     await after();
   });
 
-  it('only expands composition tokens by default', async () => {
+  it('allows expanding composition tokens', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
 
     expect(file).to.include(

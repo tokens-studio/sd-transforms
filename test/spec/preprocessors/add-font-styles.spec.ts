@@ -1,7 +1,7 @@
 import { expect } from '@esm-bundle/chai';
 import { stubMethod, restore } from 'hanbi';
 import { DeepKeyTokenMap } from '@tokens-studio/types';
-import { addFontStyles } from '../../../src/parsers/add-font-styles.js';
+import { addFontStyles } from '../../../src/preprocessors/add-font-styles.js';
 
 const tokensInput = {
   italic: {

@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { DeepKeyTokenMap } from '@tokens-studio/types';
-import { excludeParentKeys } from '../../../src/parsers/exclude-parent-keys.js';
+import { excludeParentKeys } from '../../../src/preprocessors/exclude-parent-keys.js';
 
 const tokenObj = {
   foo: {

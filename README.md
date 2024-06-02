@@ -25,7 +25,7 @@ to work with Design Tokens that are exported from [Tokens Studio](https://tokens
 
 Generic:
 
-- Optionally excludes parent keys from your tokens file, e.g. when using single-file export from Tokens Studio Figma plugin -> parser
+- Optionally excludes parent keys from your tokens file, e.g. when using single-file export from Tokens Studio Figma plugin -> preprocessor
 - Maps token descriptions to comments -> `ts/descriptionToComment`
 - Check and evaluate Math expressions (transitive) -> `ts/resolveMath`
 - Transform dimensions tokens to have `px` as a unit when missing (transitive) -> `ts/size/px`
@@ -225,7 +225,7 @@ Options:
 | ['ts/color/modifiers'].format | ColorModifierFormat  | ❌       | `undefined`     | Color modifier output format override ('hex' \| 'hsl' \| 'lch' \| 'p3' \| 'srgb'), uses local format or modifier space as default |
 
 > Note: you can also import and use the `parseTokens` function to run the parsing steps on your tokens object manually.
-> Handy if you have your own parsers set up (e.g. for JS files), and you want the parser-based features like composites-expansion to work there too.
+> Handy if you have your own preprocessors set up (e.g. for JS files), and you want the preprocessor-based features like composites-expansion to work there too.
 
 ## Theming
 

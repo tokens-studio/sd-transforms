@@ -11,7 +11,7 @@ import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 import { TransformOptions } from './TransformOptions.js';
 import { transformOpacity } from './transformOpacity.js';
-import { parseTokens } from './parsers/parse-tokens.js';
+import { parseTokens } from './preprocessors/parse-tokens.js';
 import { transformShadow } from './css/transformShadow.js';
 
 export const transforms = [
@@ -45,8 +45,7 @@ export async function registerTransforms(
   sd.registerTransform({
     name: 'ts/descriptionToComment',
     type: 'attribute',
-    // in style-dictionary v4.0.0-prerelease.9, $description is converted to comments (createPropertyFormatter)
-    filter: token => !token.$description && token.description,
+    filter: token => token.description,
     transform: token => mapDescriptionToComment(token),
   });
 
@@ -55,9 +54,12 @@ export async function registerTransforms(
     type: 'value',
     filter: token => {
       const type = token.$type ?? token.type;
-      return typeof type === 'string' && ['fontSize', 'dimension'].includes(type);
+      return (
+        typeof type === 'string' &&
+        ['fontSize', 'dimension', 'typography', 'border', 'shadow'].includes(type)
+      );
     },
-    transform: token => transformDimension(token.$value ?? token.value),
+    transform: token => transformDimension(token),
   });
 
   sd.registerTransform({

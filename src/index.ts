@@ -1,9 +1,10 @@
 export { registerTransforms } from './registerTransforms.js';
 export { transforms } from './registerTransforms.js';
 
-export { excludeParentKeys } from './parsers/exclude-parent-keys.js';
-export { addFontStyles } from './parsers/add-font-styles.js';
-export { parseTokens } from './parsers/parse-tokens.js';
+export { addFontStyles } from './preprocessors/add-font-styles.js';
+export { alignTypes, typesMap } from './preprocessors/align-types.js';
+export { excludeParentKeys } from './preprocessors/exclude-parent-keys.js';
+export { parseTokens } from './preprocessors/parse-tokens.js';
 
 export { mapDescriptionToComment } from './mapDescriptionToComment.js';
 export { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
