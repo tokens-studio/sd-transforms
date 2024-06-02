@@ -10,6 +10,8 @@ const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
   source: ['test/integration/tokens/cross-file-refs-*.tokens.json'],
+  expand: true,
+  preprocessors: ['tokens-studio'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
@@ -65,13 +67,14 @@ describe('cross file references', () => {
   --sdTestTypographyTextFontSize: 25px;
   --sdTestTypographyTextLineHeight: 32px;
   --sdTestTypographyTextFontWeight: 700;
-  --sdWeight: 400 italic;
+  --sdWeight: 400;
   --sdTypoAliasFontWeight: 400;
   --sdTypoAliasFontStyle: italic;
   --sdTypo3FontFamily: Inter;
   --sdTypo3FontWeight: 800;
   --sdTypo3LineHeight: 1.5;
   --sdTypo3FontSize: 8px;
+  --sdFontStyle: italic;
 `);
   });
 });
