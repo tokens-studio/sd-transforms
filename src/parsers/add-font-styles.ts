@@ -59,7 +59,6 @@ function recurse(
       const tokenValue = (usesDTCG ? $value : value) as
         | (TokenTypographyValue & { fontStyle: string })
         | SingleFontWeightsToken['value'];
-      if (!tokenValue) return;
 
       if (tokenType === 'typography') {
         const tokenTypographyValue = tokenValue as TokenTypographyValue & { fontStyle: string };

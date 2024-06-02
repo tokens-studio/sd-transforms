@@ -111,6 +111,23 @@ describe('add font style', () => {
     });
   });
 
+  it(`should expand fontweight tokens by default for DTCG formatted tokens`, () => {
+    expect(
+      addFontStyles({
+        fw: {
+          // @ts-expect-error fontWeight (singular vs plural) doesn't exist on the type
+          // but we assume it's already preprocessed and aligned here
+          weight: { $value: 'SemiBold Italic', $type: 'fontWeight' },
+        },
+      }),
+    ).to.eql({
+      fw: {
+        weight: { $value: 'SemiBold', $type: 'fontWeight' },
+        fontStyle: { $value: 'italic', $type: 'fontStyle' },
+      },
+    });
+  });
+
   it(`throw when encountering a broken fontWeight reference`, () => {
     const stub = stubMethod(console, 'error');
     const inputTokens = {
@@ -149,6 +166,56 @@ describe('add font style', () => {
         value: {
           fontWeight: 'Bold',
           fontStyle: 'normal',
+        },
+        type: 'typography',
+      },
+    });
+  });
+
+  it(`allows always adding a default fontStyle for DTCG formatted tokens`, () => {
+    expect(
+      addFontStyles(
+        {
+          foo: {
+            bar: {
+              $value: {
+                fontWeight: 'Bold',
+              },
+              $type: 'typography',
+            },
+          },
+        } as DeepKeyTokenMap<false>,
+        { alwaysAddFontStyle: true },
+      ),
+    ).to.eql({
+      foo: {
+        bar: {
+          $value: {
+            fontWeight: 'Bold',
+            fontStyle: 'normal',
+          },
+          $type: 'typography',
+        },
+      },
+    });
+  });
+
+  it('does not error on value property equaling null', () => {
+    expect(
+      addFontStyles({
+        foo: {
+          value: {
+            fontWeight: 'Bold',
+            type: null,
+          },
+          type: 'typography',
+        },
+      } as DeepKeyTokenMap<false>),
+    ).to.eql({
+      foo: {
+        value: {
+          fontWeight: 'Bold',
+          type: null,
         },
         type: 'typography',
       },
