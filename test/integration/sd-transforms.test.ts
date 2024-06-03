@@ -10,9 +10,16 @@ const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
   source: ['test/integration/tokens/sd-transforms.tokens.json'],
+  preprocessors: ['tokens-studio'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
+      transforms: [
+        'fontFamily/css',
+        'typography/css/shorthand',
+        'border/css/shorthand',
+        'shadow/css/shorthand',
+      ],
       prefix: 'sd',
       buildPath: outputDir,
       files: [
@@ -88,7 +95,7 @@ describe('sd-transforms smoke tests', () => {
         platforms: {
           css: {
             ...cfg.platforms.css,
-            transforms: ['name/kebab'],
+            transforms: [...cfg.platforms.css.transforms, 'name/kebab'],
           },
         },
       },
@@ -142,7 +149,7 @@ describe('sd-transforms smoke tests', () => {
         platforms: {
           css: {
             ...cfg.platforms.css,
-            transforms: ['attribute/cti'],
+            transforms: [...cfg.platforms.css.transforms, 'attribute/cti'],
           },
         },
       },

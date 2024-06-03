@@ -40,5 +40,14 @@ describe('transform line height', () => {
         }),
       ).to.eql({ fontSize: '16px', fontFamily: 'Arial', lineHeight: 1.5 });
     });
+
+    it('should leave typography lineHeight as is if it has already been stringified', () => {
+      expect(
+        transformLineHeight({
+          type: 'typography',
+          value: '300 16px/1 Arial',
+        }),
+      ).to.eql('300 16px/1 Arial');
+    });
   });
 });

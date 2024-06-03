@@ -48,7 +48,7 @@
     "postcss-calc-ast-parser": "^0.1.4"
   },
   "peerDependencies": {
-    "style-dictionary": "^4.0.0-prerelease.32"
+    "style-dictionary": "https://github.com/amzn/style-dictionary.git#exit-pre"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",

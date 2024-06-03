@@ -123,13 +123,44 @@ node build-output.js
 
 ### Using the preprocessor
 
-If you want to use `excludeParentKeys` or allow this package to extract the `fontStyle` from the `fontWeight` e.g. `regular italic`,
-you must add the `'tokens-studio'` preprocessor explicitly in the configuration:
+You must add the `'tokens-studio'` preprocessor explicitly in the configuration:
 
 ```json
 {
   "source": ["tokens/**/*.json"],
   "preprocessors": ["tokens-studio"],
+  "platforms": {}
+}
+```
+
+This allows fontStyles to be extracted when they are embedded in fontWeights, aligns Tokens Studio token types with DTCG token types, and allows excluding parent keys for single-file Tokens Studio exports.
+
+### Using "Expand"
+
+> Expand used to be an sd-transforms exclusive feature but has moved to Style Dictionary itself under a slightly different API.
+> This made sense due to object-value tokens being part of the DTCG spec and no longer a Tokens Studio specific feature.
+
+When using the [expand feature of Style Dictionary](https://v4.styledictionary.com/reference/config/#expand) to expand object-value (composite) tokens,
+you should pass an additional `typesMap` for `boxShadow` tokens, because these are slightly different from the DTCG shadow tokens in that they are called `boxShadow`
+and that their `offsetX` and `offsetY` props are called `x` and `y` respectively.
+
+Due to the Style Dictionary object-value tokens expansion happening before custom preprocessors such as the sd-transforms preprocessor,
+which aligns Tokens Studio token types with DTCG token types, this has to be configured like so:
+
+```json
+{
+  "source": ["tokens/**/*.json"],
+  "preprocessors": ["tokens-studio"],
+  "expand": {
+    "typesMap": {
+      "boxShadow": {
+        "x": "dimension",
+        "y": "dimension",
+        "blur": "dimension",
+        "spread": "dimension"
+      }
+    }
+  },
   "platforms": {}
 }
 ```

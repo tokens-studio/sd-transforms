@@ -16,11 +16,14 @@ export function transformLineHeight(token: DesignToken): DesignToken['value'] {
     return typeof decimal === 'string' || isNaN(decimal) ? `${lineHeight}` : decimal;
   };
 
-  if (type === 'typography' && val.lineHeight !== undefined) {
-    return {
-      ...val,
-      lineHeight: transformLH(val.lineHeight),
-    };
+  if (type === 'typography') {
+    if (val.lineHeight !== undefined) {
+      return {
+        ...val,
+        lineHeight: transformLH(val.lineHeight),
+      };
+    }
+    return val;
   }
   return transformLH(val);
 }
