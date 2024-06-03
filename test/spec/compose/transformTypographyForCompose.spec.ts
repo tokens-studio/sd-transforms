@@ -2,16 +2,18 @@ import { expect } from '@esm-bundle/chai';
 import { transformTypographyForCompose } from '../../../src/compose/transformTypography.js';
 import { runTransformSuite } from '../../suites/transform-suite.spec.js';
 
-runTransformSuite(transformTypographyForCompose as (value: unknown) => unknown);
+runTransformSuite(transformTypographyForCompose as (value: unknown) => unknown, {});
 
 describe('transform typography', () => {
   it('transforms typography object to typography shorthand', () => {
     expect(
       transformTypographyForCompose({
-        fontWeight: '500',
-        fontSize: '20px',
-        lineHeight: '1.5',
-        fontFamily: 'Arial',
+        value: {
+          fontWeight: '500',
+          fontSize: '20px',
+          lineHeight: '1.5',
+          fontFamily: 'Arial',
+        },
       }),
     ).to.equal(`TextStyle(
 500
@@ -24,10 +26,12 @@ Arial
   it('transforms typography object to typography shorthand', () => {
     expect(
       transformTypographyForCompose({
-        fontWeight: 'light',
-        fontSize: '20px',
-        lineHeight: '1.5',
-        fontFamily: 'Arial',
+        value: {
+          fontWeight: 'light',
+          fontSize: '20px',
+          lineHeight: '1.5',
+          fontFamily: 'Arial',
+        },
       }),
     ).to.equal(`TextStyle(
 300
@@ -40,10 +44,7 @@ Arial
   it('transforms ignores unknown properties in typography object and transforms to empty string', () => {
     expect(
       transformTypographyForCompose({
-        fontWeight: 'light',
-        foo: '20px',
-        lineHeight: '1.5',
-        fontFamily: 'Arial',
+        value: { fontWeight: 'light', foo: '20px', lineHeight: '1.5', fontFamily: 'Arial' },
       }),
     ).to.equal(`TextStyle(
 300

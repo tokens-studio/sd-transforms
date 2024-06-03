@@ -2,7 +2,7 @@ import type { DesignTokens } from 'style-dictionary/types';
 import StyleDictionary from 'style-dictionary';
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
-import { transformFontWeights } from './transformFontWeights.js';
+import { transformFontWeight } from './transformFontWeight.js';
 import { transformLetterSpacingForCSS } from './css/transformLetterSpacing.js';
 import { transformLineHeight } from './transformLineHeight.js';
 import { transformTypographyForCompose } from './compose/transformTypography.js';
@@ -16,12 +16,12 @@ import { transformShadow } from './css/transformShadow.js';
 
 export const transforms = [
   'ts/descriptionToComment',
+  'ts/resolveMath',
   'ts/size/px',
   'ts/opacity',
+  'ts/size/css/letterspacing',
   'ts/size/lineheight',
   'ts/typography/fontWeight',
-  'ts/resolveMath',
-  'ts/size/css/letterspacing',
   'ts/shadow/innerShadow',
   'ts/color/css/hexrgba',
   'ts/color/modifiers',
@@ -49,9 +49,32 @@ export async function registerTransforms(
     transform: token => mapDescriptionToComment(token),
   });
 
+  /**
+   * The transforms below are transitive transforms, because their values
+   * can contain references, e.g.:
+   * - rgba({color.r}, {color.g}, 0, 0)
+   * - {dimension.scale} * {spacing.sm}
+   * - { fontSize: "{foo}" }
+   * - { width: "{bar}" }
+   * - { blur: "{qux}" }
+   * or because the modifications have to be done on this specific token,
+   * after resolution, e.g. color modify or resolve math
+   *
+   * Any transforms that may need to occur after resolving of math therefore also
+   * need to be transitive... which means basically every transform we have.
+   */
+  sd.registerTransform({
+    name: 'ts/resolveMath',
+    type: 'value',
+    transitive: true,
+    filter: token => ['string', 'object'].includes(typeof (token.$value ?? token.value)),
+    transform: token => checkAndEvaluateMath(token),
+  });
+
   sd.registerTransform({
     name: 'ts/size/px',
     type: 'value',
+    transitive: true,
     filter: token => {
       const type = token.$type ?? token.type;
       return (
@@ -65,6 +88,7 @@ export async function registerTransforms(
   sd.registerTransform({
     name: 'ts/opacity',
     type: 'value',
+    transitive: true,
     filter: token => (token.$type ?? token.type) === 'opacity',
     transform: token => transformOpacity(token.$value ?? token.value),
   });
@@ -72,8 +96,34 @@ export async function registerTransforms(
   sd.registerTransform({
     name: 'ts/size/css/letterspacing',
     type: 'value',
-    filter: token => (token.$type ?? token.type) === 'letterSpacing',
-    transform: token => transformLetterSpacingForCSS(token.$value ?? token.value),
+    transitive: true,
+    filter: token => {
+      const type = token.$type ?? token.type;
+      return typeof type === 'string' && ['letterSpacing', 'typography'].includes(type);
+    },
+    transform: token => transformLetterSpacingForCSS(token),
+  });
+
+  sd.registerTransform({
+    name: 'ts/size/lineheight',
+    type: 'value',
+    transitive: true,
+    filter: token => {
+      const type = token.$type ?? token.type;
+      return typeof type === 'string' && ['lineHeight', 'typography'].includes(type);
+    },
+    transform: token => transformLineHeight(token),
+  });
+
+  sd.registerTransform({
+    name: 'ts/typography/fontWeight',
+    type: 'value',
+    transitive: true,
+    filter: token => {
+      const type = token.$type ?? token.type;
+      return typeof type === 'string' && ['fontWeight', 'typography'].includes(type);
+    },
+    transform: token => transformFontWeight(token),
   });
 
   sd.registerTransform({
@@ -85,52 +135,22 @@ export async function registerTransforms(
   });
 
   sd.registerTransform({
-    name: 'ts/size/lineheight',
-    type: 'value',
-    filter: token => (token.$type ?? token.type) === 'lineHeight',
-    transform: token => transformLineHeight(token.$value ?? token.value),
-  });
-
-  sd.registerTransform({
-    name: 'ts/typography/fontWeight',
-    type: 'value',
-    filter: token => (token.$type ?? token.type) === 'fontWeight',
-    transform: token => transformFontWeights(token.$value ?? token.value),
-  });
-
-  /**
-   * The transforms below are transitive transforms, because their values
-   * can contain references, e.g.:
-   * - rgba({color.r}, {color.g}, 0, 0)
-   * - {dimension.scale} * {spacing.sm}
-   * - { fontSize: "{foo}" }
-   * - { width: "{bar}" }
-   * - { blur: "{qux}" }
-   * or because the modifications have to be done on this specific token,
-   * after resolution, e.g. color modify
-   */
-  sd.registerTransform({
-    name: 'ts/resolveMath',
-    type: 'value',
-    transitive: true,
-    filter: token => typeof (token.$value ?? token.value) === 'string',
-    transform: token => checkAndEvaluateMath(token.$value ?? token.value),
-  });
-
-  sd.registerTransform({
     name: 'ts/typography/compose/shorthand',
     type: 'value',
     transitive: true,
     filter: token => (token.$type ?? token.type) === 'typography',
-    transform: token => transformTypographyForCompose(token.$value ?? token.value),
+    transform: token => transformTypographyForCompose(token),
   });
 
   sd.registerTransform({
     name: 'ts/color/css/hexrgba',
     type: 'value',
     transitive: true,
-    filter: token => (token.$type ?? token.type) === 'color',
-    transform: token => transformHEXRGBaForCSS(token.$value ?? token.value),
+    filter: token => {
+      const type = token.$type ?? token.type;
+      return typeof type === 'string' && ['color', 'shadow', 'border'].includes(type);
+    },
+    transform: token => transformHEXRGBaForCSS(token),
   });
 
   sd.registerTransform({

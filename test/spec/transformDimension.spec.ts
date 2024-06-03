@@ -72,6 +72,37 @@ describe('transform dimension', () => {
       ).to.eql({ offsetX: '1px', offsetY: '2px', blur: '3px', spread: '4px', color: '#000' });
     });
 
+    it('should add units to multi shadow props', () => {
+      expect(
+        transformDimension({
+          type: 'shadow',
+          value: [
+            {
+              offsetX: '1',
+              offsetY: '2',
+              blur: '3',
+              spread: '4',
+              color: '#000',
+            },
+          ],
+        }),
+      ).to.eql([{ offsetX: '1px', offsetY: '2px', blur: '3px', spread: '4px', color: '#000' }]);
+      expect(
+        transformDimension({
+          $type: 'shadow',
+          $value: [
+            {
+              offsetX: '1',
+              offsetY: '2',
+              blur: '3',
+              spread: '4',
+              color: '#000',
+            },
+          ],
+        }),
+      ).to.eql([{ offsetX: '1px', offsetY: '2px', blur: '3px', spread: '4px', color: '#000' }]);
+    });
+
     it('should add units to border props', () => {
       expect(
         transformDimension({

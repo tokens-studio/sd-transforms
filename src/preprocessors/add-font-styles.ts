@@ -5,7 +5,7 @@ import {
   SingleFontWeightsToken,
 } from '@tokens-studio/types';
 import { usesReferences, resolveReferences } from 'style-dictionary/utils';
-import { fontWeightReg, fontStyles } from '../transformFontWeights.js';
+import { fontWeightReg, fontStyles } from '../transformFontWeight.js';
 import { TransformOptions } from '../TransformOptions.js';
 
 function resolveFontWeight(fontWeight: string, copy: DeepKeyTokenMap<false>) {

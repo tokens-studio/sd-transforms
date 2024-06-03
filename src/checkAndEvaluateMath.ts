@@ -1,3 +1,4 @@
+import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
 import { parse, reduceExpression } from 'postcss-calc-ast-parser';
 
@@ -129,16 +130,56 @@ function parseAndReduce(expr: string): string | boolean | number {
   return result;
 }
 
-export function checkAndEvaluateMath(
-  expr: string | number | boolean | undefined,
-): string | number | boolean | undefined {
-  if (typeof expr !== 'string') {
+export function checkAndEvaluateMath(token: DesignToken): DesignToken['value'] {
+  const expr = token.$value ?? token.value;
+  const type = token.$type ?? token.type;
+
+  if (!['string', 'object'].includes(typeof expr)) {
     return expr;
   }
-  const exprs = splitMultiIntoSingleValues(expr);
-  const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
-  if (reducedExprs.length === 1) {
-    return reducedExprs[0];
+
+  const resolveMath = expr => {
+    if (typeof expr !== 'string') {
+      return expr;
+    }
+    const exprs = splitMultiIntoSingleValues(expr);
+    const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
+    if (reducedExprs.length === 1) {
+      return reducedExprs[0];
+    }
+    return reducedExprs.join(' ');
+  };
+
+  const transformProp = (val, prop) => {
+    val[prop] = resolveMath(val[prop]);
+    return val;
+  };
+
+  let transformed = expr;
+  switch (type) {
+    case 'typography':
+    case 'border': {
+      Object.keys(transformed).forEach(prop => {
+        transformed = transformProp(transformed, prop);
+      });
+      break;
+    }
+    case 'shadow': {
+      const transformShadow = shadowVal => {
+        Object.keys(shadowVal).forEach(prop => {
+          shadowVal = transformProp(shadowVal, prop);
+        });
+        return shadowVal;
+      };
+      if (Array.isArray(transformed)) {
+        transformed = transformed.map(transformShadow);
+      }
+      transformed = transformShadow(transformed);
+      break;
+    }
+    default:
+      transformed = resolveMath(transformed);
   }
-  return reducedExprs.join(' ');
+
+  return transformed;
 }

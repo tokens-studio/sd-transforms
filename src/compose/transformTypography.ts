@@ -1,14 +1,12 @@
-import { transformFontWeights } from '../transformFontWeights.js';
+import { DesignToken } from 'style-dictionary/types';
+import { transformFontWeight } from '../transformFontWeight.js';
 
 /**
  * Helper: Transforms typography object to typography shorthand for Jetpack Compose
  */
-export function transformTypographyForCompose(
-  value: Record<string, string> | undefined,
-): string | undefined {
-  if (value === undefined) {
-    return value;
-  }
+export function transformTypographyForCompose(token: DesignToken): DesignToken['value'] {
+  const val = token.$value ?? token.value;
+  if (val === undefined) return undefined;
 
   /**
    * Mapping between https://docs.tokens.studio/available-tokens/typography-tokens
@@ -31,11 +29,17 @@ export function transformTypographyForCompose(
    *  fontSize = 16.dp
    * )
    */
-  return `${Object.entries(value).reduce(
-    (acc, [propName, val]) =>
+  return `${Object.entries(val).reduce(
+    (acc, [propName, v]) =>
       `${acc}${
         textStylePropertiesMapping[propName]
-          ? `${propName === 'fontWeight' ? transformFontWeights(val) : val}\n`
+          ? `${
+              propName === 'fontWeight'
+                ? transformFontWeight({
+                    value: v,
+                  })
+                : v
+            }\n`
           : ''
       }`,
     'TextStyle(\n',

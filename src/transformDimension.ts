@@ -33,9 +33,16 @@ export function transformDimension(token: DesignToken): DesignToken['value'] {
       break;
     }
     case 'shadow': {
-      ['offsetX', 'offsetY', 'blur', 'spread'].forEach(prop => {
-        transformed = transformProp(transformed, prop);
-      });
+      const transformShadow = shadowVal => {
+        ['offsetX', 'offsetY', 'blur', 'spread'].forEach(prop => {
+          shadowVal = transformProp(shadowVal, prop);
+        });
+        return shadowVal;
+      };
+      if (Array.isArray(transformed)) {
+        transformed = transformed.map(transformShadow);
+      }
+      transformed = transformShadow(transformed);
       break;
     }
     case 'border': {

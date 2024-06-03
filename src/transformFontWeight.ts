@@ -1,3 +1,5 @@
+import { DesignToken } from 'style-dictionary/types';
+
 // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#common_weight_name_mapping
 export const fontWeightMap = {
   hairline: 100,
@@ -40,22 +42,30 @@ export const fontWeightReg = new RegExp(
 /**
  * Helper: Transforms fontweight keynames to fontweight numbers (100, 200, 300 ... 900)
  */
-export function transformFontWeights(
-  value: string | undefined | number,
-): number | string | undefined {
-  if (value === undefined) {
-    return value;
-  }
-  const match = `${value}`.match(fontWeightReg);
+export function transformFontWeight(token: DesignToken): DesignToken['value'] {
+  const val = token.$value ?? token.value;
+  const type = token.$type ?? token.type;
+  if (val === undefined) return undefined;
 
-  let mapped;
+  const transformWeight = weight => {
+    const match = `${weight}`.match(fontWeightReg);
 
-  if (match?.groups?.weight) {
-    mapped = fontWeightMap[match?.groups?.weight.replace(/\s/g, '').toLowerCase()];
-    if (match.groups.style) {
-      mapped = `${mapped} ${match.groups.style.toLowerCase()}`;
+    let mapped;
+    if (match?.groups?.weight) {
+      mapped = fontWeightMap[match?.groups?.weight.replace(/\s/g, '').toLowerCase()];
+      if (match.groups.style) {
+        mapped = `${mapped} ${match.groups.style.toLowerCase()}`;
+      }
     }
-  }
 
-  return mapped ?? value;
+    return mapped ?? weight;
+  };
+
+  if (type === 'typography' && val.fontWeight !== undefined) {
+    return {
+      ...val,
+      fontWeight: transformWeight(val.fontWeight),
+    };
+  }
+  return transformWeight(val);
 }
