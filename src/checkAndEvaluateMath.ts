@@ -159,16 +159,22 @@ export function checkAndEvaluateMath(token: DesignToken): DesignToken['value'] {
   switch (type) {
     case 'typography':
     case 'border': {
-      Object.keys(transformed).forEach(prop => {
-        transformed = transformProp(transformed, prop);
-      });
+      // double check that expr is still an object and not already shorthand transformed to a string
+      if (typeof expr === 'object') {
+        Object.keys(transformed).forEach(prop => {
+          transformed = transformProp(transformed, prop);
+        });
+      }
       break;
     }
     case 'shadow': {
       const transformShadow = shadowVal => {
-        Object.keys(shadowVal).forEach(prop => {
-          shadowVal = transformProp(shadowVal, prop);
-        });
+        // double check that expr is still an object and not already shorthand transformed to a string
+        if (typeof expr === 'object') {
+          Object.keys(shadowVal).forEach(prop => {
+            shadowVal = transformProp(shadowVal, prop);
+          });
+        }
         return shadowVal;
       };
       if (Array.isArray(transformed)) {

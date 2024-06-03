@@ -10,12 +10,21 @@ const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
   source: ['test/integration/tokens/expand-composition.tokens.json'],
-  expand: { include: ['composition'] },
+  expand: {
+    typesMap: {
+      boxShadow: {
+        x: 'dimension',
+        y: 'dimension',
+        blur: 'dimension',
+        spread: 'dimension',
+      },
+    },
+  },
   preprocessors: ['tokens-studio'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
-      transforms: ['typography/css/shorthand'],
+      transforms: ['typography/css/shorthand', 'border/css/shorthand', 'shadow/css/shorthand'],
       prefix: 'sd',
       buildPath: outputDir,
       files: [
@@ -27,12 +36,11 @@ const cfg = {
     },
   },
 };
-let transformOpts = {};
 let dict: StyleDictionary | undefined;
 
 async function before() {
   await cleanup(dict);
-  dict = await init(cfg, transformOpts);
+  dict = await init(cfg);
 }
 
 async function after() {
@@ -48,9 +56,17 @@ describe('expand composition tokens', () => {
     await after();
   });
 
-  it('allows expanding composition tokens', async () => {
-    const file = await promises.readFile(outputFilePath, 'utf-8');
+  it('allows expanding composition tokens only', async () => {
+    await cleanup(dict);
+    dict = await init({
+      ...cfg,
+      expand: {
+        ...cfg.expand,
+        include: ['composition'],
+      },
+    });
 
+    const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
   --sdCompositionSize: 24px;
@@ -61,25 +77,16 @@ describe('expand composition tokens', () => {
   --sdCompositionHeaderFontFamilies: Roboto;
   --sdCompositionHeaderFontSizes: 96px;
   --sdCompositionHeaderFontWeights: 700;
-  --sdTypography: 800 italic 26px/1.25 Arial;
-  --sdFontWeightRef: 800 italic;
+  --sdTypography: italic 800 26px/1.25 Arial;
+  --sdFontWeightRef: 800;
   --sdBorder: 4px solid #FFFF00;
   --sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
   --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
-  --sdRef: 800 italic 26px/1.25 Arial;`,
+  --sdRef: italic 800 26px/1.25 Arial;`,
     );
   });
 
   it('optionally can transform typography, border and shadow tokens', async () => {
-    transformOpts = {
-      expand: {
-        typography: true,
-        border: true,
-        shadow: true,
-      },
-    };
-    await before();
-
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
@@ -101,7 +108,7 @@ describe('expand composition tokens', () => {
   --sdTypographyTextDecoration: none;
   --sdTypographyTextCase: none;
   --sdTypographyFontStyle: italic;
-  --sdFontWeightRef: 800 italic;
+  --sdFontWeightRef: 800;
   --sdBorderColor: #FFFF00;
   --sdBorderWidth: 4px;
   --sdBorderStyle: solid;
@@ -126,13 +133,6 @@ describe('expand composition tokens', () => {
   });
 
   it('handles references and deep references for expandable values', async () => {
-    transformOpts = {
-      expand: {
-        typography: true,
-      },
-    };
-    await before();
-
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
@@ -160,13 +160,6 @@ describe('expand composition tokens', () => {
   });
 
   it('handles references for multi-shadow value', async () => {
-    transformOpts = {
-      expand: {
-        shadow: true,
-      },
-    };
-    await before();
-
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `

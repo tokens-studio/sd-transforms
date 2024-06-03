@@ -53,5 +53,14 @@ describe('transform dimension', () => {
         }),
       ).to.eql({ fontSize: '16px', fontFamily: 'Arial', fontWeight: 300 });
     });
+
+    it('should not attempt to transform typography value that has already been stringified', () => {
+      expect(
+        transformFontWeight({
+          type: 'typography',
+          value: 'italic 400 16px/1 Arial',
+        }),
+      ).to.eql('italic 400 16px/1 Arial');
+    });
   });
 });

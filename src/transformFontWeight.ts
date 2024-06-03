@@ -61,11 +61,14 @@ export function transformFontWeight(token: DesignToken): DesignToken['value'] {
     return mapped ?? weight;
   };
 
-  if (type === 'typography' && val.fontWeight !== undefined) {
-    return {
-      ...val,
-      fontWeight: transformWeight(val.fontWeight),
-    };
+  if (type === 'typography') {
+    if (val.fontWeight !== undefined) {
+      return {
+        ...val,
+        fontWeight: transformWeight(val.fontWeight),
+      };
+    }
+    return val;
   }
   return transformWeight(val);
 }

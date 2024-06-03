@@ -14,11 +14,14 @@ export function transformLetterSpacingForCSS(token: DesignToken): DesignToken['v
     return typeof decimal === 'string' || isNaN(decimal) ? `${letterspacing}` : `${decimal}em`;
   };
 
-  if (type === 'typography' && val.letterSpacing !== undefined) {
-    return {
-      ...val,
-      letterSpacing: transformLetterSpacing(val.letterSpacing),
-    };
+  if (type === 'typography') {
+    if (val.letterSpacing !== undefined) {
+      return {
+        ...val,
+        letterSpacing: transformLetterSpacing(val.letterSpacing),
+      };
+    }
+    return val;
   }
   return transformLetterSpacing(val);
 }

@@ -9,6 +9,9 @@
 - [Installation](#installation)
 - [Compatibility](#compatibility)
 - [Getting Started](#usage)
+  - [Using the preprocessor](#using-the-preprocessor)
+  - [Using Expand](#using-expand)
+  - [Using CSS shorthands & font-family quote wrapper](#using-css-shorthands--font-family-quote-wrapper)
   - [Using the transforms](#using-the-transforms)
   - [Custom Transform Group](#custom-transform-group)
   - [Options](#options)
@@ -38,10 +41,6 @@ CSS:
 
 - Transform letterspacing from `%` to `em` -> `ts/size/css/letterspacing`
 - Transform colors to `rgba()` format -> `ts/color/css/hexrgba`
-- Transform font family into valid CSS, adding single quotes if necessary -> `ts/typography/css/fontFamily`
-- Transform typography objects to CSS shorthand -> `ts/typography/css/shorthand`
-- Transform Tokens Studio shadow objects to CSS shadow shorthand -> `ts/shadow/css/shorthand`
-- Transform border objects to CSS border shorthand -> `ts/border/css/shorthand`
 
 Android:
 
@@ -123,8 +122,7 @@ node build-output.js
 
 ### Using the preprocessor
 
-If you want to use `excludeParentKeys` or allow this package to extract the `fontStyle` from the `fontWeight` e.g. `regular italic`,
-you must add the `'tokens-studio'` preprocessor explicitly in the configuration:
+You must add the `'tokens-studio'` preprocessor explicitly in the configuration:
 
 ```json
 {
@@ -132,6 +130,59 @@ you must add the `'tokens-studio'` preprocessor explicitly in the configuration:
   "preprocessors": ["tokens-studio"],
   "platforms": {}
 }
+```
+
+This allows fontStyles to be extracted when they are embedded in fontWeights, aligns Tokens Studio token types with DTCG token types, and allows excluding parent keys for single-file Tokens Studio exports.
+
+### Using Expand
+
+> Expand used to be an sd-transforms exclusive feature but has moved to Style Dictionary itself under a slightly different API.
+> This made sense due to object-value tokens being part of the DTCG spec and no longer a Tokens Studio specific feature.
+
+When using the [expand feature of Style Dictionary](https://v4.styledictionary.com/reference/config/#expand) to expand object-value (composite) tokens,
+you should pass an additional `typesMap` for `boxShadow` tokens, because these are slightly different from the DTCG shadow tokens in that they are called `boxShadow`
+and that their `offsetX` and `offsetY` props are called `x` and `y` respectively.
+
+Due to the Style Dictionary object-value tokens expansion happening before custom preprocessors such as the sd-transforms preprocessor,
+which aligns Tokens Studio token types with DTCG token types, this has to be configured like so:
+
+### Using CSS shorthands & font-family quote wrapper
+
+This package used to come with CSS shorthand transforms out of the box for `typography`, `border`, `shadow` and `fontFamily` tokens.
+Since these token types have been integrated in the DTCG spec, we have moved those transforms to Style Dictionary and applied them to its `css` transformGroup.
+
+You can use this in multiple ways now:
+
+```json
+{
+  "source": ["tokens/**/*.json"],
+  "preprocessors": ["tokens-studio"],
+  "platforms": {
+    "css": {
+      "transformGroup": "tokens-studio",
+      "transforms": [
+        "typography/css/shorthand",
+        "border/css/shorthand",
+        "shadow/css/shorthand",
+        "fontFamily/css"
+      ]
+    }
+  }
+}
+```
+
+or by registering a custom transformGroup that combines them:
+
+```js
+import StyleDictionary from 'style-dictionary';
+import { transforms, registerTransforms } from '@tokens-studio/sd-transforms';
+
+registerTransforms(StyleDictionary);
+
+StyleDictionary.registerTransformGroup({
+  name: 'tokens-studio-css',
+  transforms: [...transforms, ...StyleDictionary.hooks.transformGroups.css],
+});
 ```
 
 ### Using the transforms

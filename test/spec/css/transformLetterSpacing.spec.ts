@@ -42,5 +42,14 @@ describe('transform letter spacing', () => {
         }),
       ).to.eql({ fontSize: '16px', fontFamily: 'Arial', letterSpacing: '1.5em' });
     });
+
+    it('should not attempt to transform typography value that has already been stringified', () => {
+      expect(
+        transformLetterSpacingForCSS({
+          type: 'typography',
+          value: 'italic 400 16px/1 Arial',
+        }),
+      ).to.eql('italic 400 16px/1 Arial');
+    });
   });
 });

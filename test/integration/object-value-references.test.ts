@@ -10,9 +10,11 @@ const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
   source: ['test/integration/tokens/object-value-references.tokens.json'],
+  preprocessors: ['tokens-studio'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
+      transforms: ['typography/css/shorthand', 'border/css/shorthand', 'shadow/css/shorthand'],
       prefix: 'sd',
       buildPath: outputDir,
       files: [
@@ -41,9 +43,9 @@ describe('typography references', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
-  --sdBefore: 400 italic 36px/1 'Aria Sans';
-  --sdFontHeadingXxl: 400 italic 36px/1 'Aria Sans';
-  --sdAfter: 400 italic 36px/1 'Aria Sans';`,
+  --sdBefore: italic 400 36px/1 'Aria Sans';
+  --sdFontHeadingXxl: italic 400 36px/1 'Aria Sans';
+  --sdAfter: italic 400 36px/1 'Aria Sans';`,
     );
   });
 

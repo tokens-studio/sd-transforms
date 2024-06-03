@@ -10,9 +10,11 @@ const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
   source: ['test/integration/tokens/w3c-spec-compliance.tokens.json'],
+  preprocessors: ['tokens-studio'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
+      transforms: ['typography/css/shorthand', 'border/css/shorthand', 'shadow/css/shorthand'],
       prefix: 'sd',
       buildPath: outputDir,
       files: [
