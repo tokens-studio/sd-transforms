@@ -1,6 +1,7 @@
 import type { DesignTokens } from 'style-dictionary/types';
 import StyleDictionary from 'style-dictionary';
-import { transformDimension } from './transformDimension.js';
+import { transformPx } from './transformPx.js';
+import { transformRem } from './transformRem.js';
 import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
 import { transformFontWeight } from './transformFontWeight.js';
 import { transformLetterSpacingForCSS } from './css/transformLetterSpacing.js';
@@ -82,7 +83,21 @@ export async function registerTransforms(
         ['fontSize', 'dimension', 'typography', 'border', 'shadow'].includes(type)
       );
     },
-    transform: token => transformDimension(token),
+    transform: token => transformPx(token),
+  });
+
+  sd.registerTransform({
+    name: 'ts/size/rem',
+    type: 'value',
+    filter: token => {
+      const type = token.$type ?? token.type;
+      return (
+        typeof type === 'string' &&
+        ['fontSize', 'dimension', 'typography', 'border', 'shadow'].includes(type)
+      );
+    },
+    transform: token =>
+      transformRem(token.$value ?? token.value, transformOpts?.['ts/size/rem']?.baseFontSize),
   });
 
   sd.registerTransform({

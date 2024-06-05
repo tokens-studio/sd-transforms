@@ -8,7 +8,8 @@ export { parseTokens } from './preprocessors/parse-tokens.js';
 
 export { mapDescriptionToComment } from './mapDescriptionToComment.js';
 export { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
-export { transformDimension } from './transformDimension.js';
+export { transformPx } from './transformPx.js';
+export { transformRem } from './transformRem.js';
 export { transformFontWeight } from './transformFontWeight.js';
 export { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 export { transformLineHeight } from './transformLineHeight.js';

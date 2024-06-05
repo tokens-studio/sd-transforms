@@ -30,8 +30,13 @@ export interface ColorModifierOptions {
   format: ColorModifierFormat;
 }
 
+export interface SizeModifierOptions {
+  baseFontSize: number;
+}
+
 export interface TransformOptions {
   alwaysAddFontStyle?: boolean;
   excludeParentKeys?: boolean;
   ['ts/color/modifiers']?: ColorModifierOptions;
+  ['ts/size/rem']?: SizeModifierOptions;
 }

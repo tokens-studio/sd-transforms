@@ -2,7 +2,8 @@
 
 ![NPM version badge](https://img.shields.io/npm/v/@tokens-studio/sd-transforms) ![License badge](https://img.shields.io/github/license/tokens-studio/sd-transforms)
 
-> Note: this README contains examples that assume latest version of this package & v4 style-dictionary latest prerelease.
+> [!NOTE]
+> This README contains examples that assume latest version of this package & v4 style-dictionary latest prerelease.
 
 ## Table of contents
 
@@ -21,6 +22,7 @@
 - [Transforms](#transforms)
 - [Troubleshooting](#not-sure-how-to-fix-your-issue)
 
+> [!WARNING]
 > This library is currently in beta.
 
 This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
@@ -32,10 +34,14 @@ Generic:
 - Maps token descriptions to comments -> `ts/descriptionToComment`
 - Check and evaluate Math expressions (transitive) -> `ts/resolveMath`
 - Transform dimensions tokens to have `px` as a unit when missing (transitive) -> `ts/size/px`
+- Transform and scale dimensions tokens to have `rem` as a unit when missing (transitive) -> `ts/size/rem`
 - Transform opacity from `%` to number between `0` and `1` -> `ts/opacity`
 - Transform lineheight from `%` to unitless (150% -> 1.5) -> `ts/size/lineheight`
 - Transform fontweight from keynames to fontweight numbers (100, 200, 300 ... 900) -> `ts/typography/fontWeight`
 - Transform color modifiers from Tokens Studio to color values -> `ts/color/modifiers`
+
+> [!NOTE]
+> The `ts/size/rem` transform is not included in `token-studio` transform group by default.
 
 CSS:
 
@@ -76,7 +82,8 @@ Both APIs will be stable then.
 
 ## Usage
 
-> Note: this library is available both in CJS and ESM
+> [!NOTE]
+> This library is available both in CJS and ESM
 
 ```js
 import { registerTransforms } from '@tokens-studio/sd-transforms';
@@ -118,6 +125,7 @@ To run it use the following command
 node build-output.js
 ```
 
+> [!NOTE]
 > From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/amzn/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
 
 ### Using the preprocessor
@@ -221,7 +229,7 @@ More fine-grained control is possible, every transformation is available as a ra
 for you to create your own Style-Dictionary transform out of.
 
 ```js
-import { transformDimension } from '@tokens-studio/sd-transforms';
+import { transformPx } from '@tokens-studio/sd-transforms';
 import StyleDictionary from 'style-dictionary';
 
 StyleDictionary.registerTransform({
@@ -229,12 +237,13 @@ StyleDictionary.registerTransform({
   type: 'value',
   transitive: true,
   filter: token => ['fontSizes', 'dimension', 'borderRadius', 'spacing'].includes(token.type),
-  transform: token => transformDimension(token.value),
+  transform: token => transformPx(token.value),
 });
 ```
 
 ### Custom Transform Group
 
+> [!NOTE]
 > From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/amzn/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
 
 You can create a custom `transformGroup` that includes the individual transforms from this package.
@@ -244,12 +253,13 @@ If you wish to use the `transformGroup`, but adjust or remove a few transforms, 
 import { transforms } from '@tokens-studio/sd-transforms';
 import StyleDictionary from 'style-dictionary';
 
-// Register custom tokens-studio transform group
-// without 'px' being added to numbers without a unit
-// and also adding 'name/constant' for the token names
+// Register custom tokens-studio transform group but using 'rem' for dimension
+// units instead of 'px', also adding 'name/constant' for the token names
 StyleDictionary.registerTransformGroup({
   name: 'custom/tokens-studio',
-  transforms: [...transforms, 'name/constant'].filter(transform => transform !== 'ts/size/px'),
+  transforms: [...transforms, 'ts/size/rem', 'name/constant'].filter(
+    transform => transform !== 'ts/size/px',
+  ),
 });
 ```
 
@@ -274,8 +284,11 @@ Options:
 | alwaysAddFontStyle            | boolean              | ❌       | `false`         | Whether or not to always add a 'normal' fontStyle property to typography tokens which do not have explicit fontStyle              |
 | ['ts/color/modifiers']        | ColorModifierOptions | ❌       | See props below | Color modifier options                                                                                                            |
 | ['ts/color/modifiers'].format | ColorModifierFormat  | ❌       | `undefined`     | Color modifier output format override ('hex' \| 'hsl' \| 'lch' \| 'p3' \| 'srgb'), uses local format or modifier space as default |
+| ['ts/size/rem']               | SizeModifierOptions  | ❌       | See props below | Size modifier options                                                                                                             |
+| ['ts/size/rem'].baseFontSize  | number               | ❌       | `16`            | Base font size to scale unitless values to `rem`                                                                                  |
 
-> Note: you can also import and use the `parseTokens` function to run the parsing steps on your tokens object manually.
+> [!NOTE]
+> You can also import and use the `parseTokens` function to run the parsing steps on your tokens object manually.
 > Handy if you have your own preprocessors set up (e.g. for JS files), and you want the preprocessor-based features like composites-expansion to work there too.
 
 ## Theming
@@ -537,7 +550,7 @@ This transform checks and evaluates math expressions
 
 This transform adds `px` as a unit when dimension-like tokens do not have a unit.
 
-**matches**: `token.type` is one of `['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension']`
+**matches**: `token.type` is one of `['fontSize', 'dimension', 'typography', 'border', 'shadow']`
 
 #### before
 
@@ -557,6 +570,37 @@ This transform adds `px` as a unit when dimension-like tokens do not have a unit
   "token": {
     "type": "dimension",
     "value": "4px"
+  }
+}
+```
+
+### ts/size/rem
+
+> [!NOTE]
+> This transform is not included in `token-studio` transform group by default.
+
+This transform scales values to `rem` when dimension-like tokens do not have a unit.
+
+**matches**: `token.type` is one of `['fontSize', 'dimension', 'typography', 'border', 'shadow']`
+
+#### before
+
+```json
+{
+  "token": {
+    "type": "dimension",
+    "value": 16
+  }
+}
+```
+
+#### after
+
+```json
+{
+  "token": {
+    "type": "dimension",
+    "value": "1rem"
   }
 }
 ```

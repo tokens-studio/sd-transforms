@@ -1,19 +1,18 @@
 import { DesignToken } from 'style-dictionary/types';
 
-function _transformDimension(dim: string | number): string {
-  // Check if the value is numeric with isNaN, this supports string values as well
-  // Check if value is not empty string, since this is also not considered "NaN"
-  // Check if the value, when parsed (since it can also be number), does not equal 0
+function _transformRem(dim: string | number, baseFontSize = 16): string {
   if (!isNaN(dim as number) && dim !== '' && parseFloat(dim as string) !== 0) {
-    return `${dim}px`;
+    const parsedValue = parseFloat(`${dim}`);
+    return `${parsedValue / baseFontSize}rem`;
   }
+
   return `${dim}`;
 }
 
 /**
  * Helper: Transforms dimensions to px
  */
-export function transformDimension(token: DesignToken): DesignToken['value'] {
+export function transformRem(token: DesignToken, baseFontSize?: number): DesignToken['value'] {
   const val = token.$value ?? token.value;
   const type = token.$type ?? token.type;
 
@@ -21,7 +20,7 @@ export function transformDimension(token: DesignToken): DesignToken['value'] {
 
   const transformProp = (val, prop) => {
     if (val[prop] !== undefined) {
-      val[prop] = _transformDimension(val[prop]);
+      val[prop] = _transformRem(val[prop], baseFontSize);
     }
     return val;
   };
@@ -50,7 +49,7 @@ export function transformDimension(token: DesignToken): DesignToken['value'] {
       break;
     }
     default:
-      transformed = _transformDimension(val);
+      transformed = _transformRem(val, baseFontSize);
   }
 
   return transformed;
