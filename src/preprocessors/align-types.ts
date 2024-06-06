@@ -1,6 +1,9 @@
 import { DeepKeyTokenMap, SingleToken } from '@tokens-studio/types';
 
-export const typesMap = {
+// TODO: composition tokens props also need the same types alignments..
+// nested composition tokens are out of scope.
+
+const typesMap = {
   fontFamilies: 'fontFamily',
   fontWeights: 'fontWeight',
   fontSizes: 'fontSize',

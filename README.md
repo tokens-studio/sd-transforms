@@ -18,8 +18,6 @@
 - [Transforms](#transforms)
 - [Troubleshooting](#not-sure-how-to-fix-your-issue)
 
-> This library is currently in beta.
-
 This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
 to work with Design Tokens that are exported from [Tokens Studio](https://tokens.studio/):
 
@@ -141,28 +139,30 @@ This allows fontStyles to be extracted when they are embedded in fontWeights, al
 > This made sense due to object-value tokens being part of the DTCG spec and no longer a Tokens Studio specific feature.
 
 When using the [expand feature of Style Dictionary](https://v4.styledictionary.com/reference/config/#expand) to expand object-value (composite) tokens,
-you should pass an additional `typesMap` for `boxShadow` tokens, because these are slightly different from the DTCG shadow tokens in that they are called `boxShadow`
-and that their `offsetX` and `offsetY` props are called `x` and `y` respectively.
+you should pass our additional `expandTypesMap` for Tokens Studio tokens, because these are slightly different from the DTCG tokens:
+
+- shadow tokens are called `boxShadow` and their `offsetX` and `offsetY` props are called `x` and `y` respectively.
+- typography tokens have some additional properties in Tokens Studio:
+  - `paragraphSpacing` -> dimension
+  - `paragraphIndent` -> dimension
+  - `textDecoration` -> other
+  - `textCase` -> other
 
 Due to the Style Dictionary object-value tokens expansion happening before custom preprocessors such as the sd-transforms preprocessor,
 which aligns Tokens Studio token types with DTCG token types, this has to be configured like so:
 
-```json
-{
-  "source": ["tokens/**/*.json"],
-  "preprocessors": ["tokens-studio"],
-  "expand": {
-    "typesMap": {
-      "boxShadow": {
-        "x": "dimension",
-        "y": "dimension",
-        "blur": "dimension",
-        "spread": "dimension"
-      }
-    }
+```js
+import StyleDictionary from 'style-dictionary';
+import { expandTypesMap } from '@tokens-studio/sd-transforms';
+
+const sd = new StyleDictionary({
+  source: ['tokens/**/*.json'],
+  preprocessors: ['tokens-studio'],
+  expand: {
+    typesMap: expandTypesMap,
   },
-  "platforms": {}
-}
+  platforms: {},
+});
 ```
 
 ### Using the transforms
@@ -183,13 +183,13 @@ which aligns Tokens Studio token types with DTCG token types, this has to be con
         }
       ]
     },
-    "css": {
+    "scss": {
       "transforms": ["ts/size/px", "ts/opacity", "name/kebab"],
-      "buildPath": "build/css/",
+      "buildPath": "build/scss/",
       "files": [
         {
-          "destination": "variables.css",
-          "format": "css/variables"
+          "destination": "variables.scss",
+          "format": "scss/variables"
         }
       ]
     }
