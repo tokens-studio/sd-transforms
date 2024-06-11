@@ -11,7 +11,7 @@ export function transformLineHeight(token: DesignToken): DesignToken['value'] {
   const type = token.$type ?? token.type;
   if (val === undefined) return undefined;
 
-  const transformLH = lineHeight => {
+  const transformLH = (lineHeight: number | string) => {
     const decimal = percentageToDecimal(lineHeight);
     return typeof decimal === 'string' || isNaN(decimal) ? `${lineHeight}` : decimal;
   };

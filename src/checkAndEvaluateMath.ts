@@ -1,6 +1,6 @@
 import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
-import { parse, reduceExpression } from 'postcss-calc-ast-parser';
+import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
 
 const mathChars = ['+', '-', '*', '/'];
 
@@ -74,7 +74,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
   return [expr];
 }
 
-function parseAndReduce(expr: string): string | boolean | number {
+function parseAndReduce(expr: string): string | number {
   let result: string | number = expr;
 
   let evaluated;
@@ -97,7 +97,9 @@ function parseAndReduce(expr: string): string | boolean | number {
   let matchArr;
   const foundUnits: Set<string> = new Set();
   while ((matchArr = unitRegex.exec(noPixExpr)) !== null) {
-    foundUnits.add(matchArr.groups.unit);
+    if (matchArr?.groups) {
+      foundUnits.add(matchArr.groups.unit);
+    }
   }
   // multiple units (besides px) found, cannot parse the expression
   if (foundUnits.size > 1) {
@@ -138,7 +140,7 @@ export function checkAndEvaluateMath(token: DesignToken): DesignToken['value'] {
     return expr;
   }
 
-  const resolveMath = expr => {
+  const resolveMath = (expr: number | string) => {
     if (typeof expr !== 'string') {
       return expr;
     }
@@ -150,7 +152,7 @@ export function checkAndEvaluateMath(token: DesignToken): DesignToken['value'] {
     return reducedExprs.join(' ');
   };
 
-  const transformProp = (val, prop) => {
+  const transformProp = (val: Record<string, number | string>, prop: string) => {
     val[prop] = resolveMath(val[prop]);
     return val;
   };
@@ -159,6 +161,7 @@ export function checkAndEvaluateMath(token: DesignToken): DesignToken['value'] {
   switch (type) {
     case 'typography':
     case 'border': {
+      transformed = transformed as Record<string, number | string>;
       // double check that expr is still an object and not already shorthand transformed to a string
       if (typeof expr === 'object') {
         Object.keys(transformed).forEach(prop => {
@@ -168,7 +171,10 @@ export function checkAndEvaluateMath(token: DesignToken): DesignToken['value'] {
       break;
     }
     case 'shadow': {
-      const transformShadow = shadowVal => {
+      transformed = transformed as
+        | Record<string, number | string>
+        | Record<string, number | string>[];
+      const transformShadow = (shadowVal: Record<string, number | string>) => {
         // double check that expr is still an object and not already shorthand transformed to a string
         if (typeof expr === 'object') {
           Object.keys(shadowVal).forEach(prop => {

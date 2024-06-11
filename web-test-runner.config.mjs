@@ -1,9 +1,5 @@
 import { playwrightLauncher } from '@web/test-runner-playwright';
 import { esbuildPlugin } from '@web/dev-server-esbuild';
-import { fromRollup } from '@web/dev-server-rollup';
-import commonjsRollup from '@rollup/plugin-commonjs';
-
-const commonjs = fromRollup(commonjsRollup);
 
 export default {
   nodeResolve: true,
@@ -19,8 +15,5 @@ export default {
     },
   },
   browsers: [playwrightLauncher({ product: 'chromium' })],
-  plugins: [
-    commonjs({ requireReturnsDefault: 'preferred' }),
-    esbuildPlugin({ ts: true, target: 'auto' }),
-  ],
+  plugins: [esbuildPlugin({ ts: true, target: 'auto' })],
 };

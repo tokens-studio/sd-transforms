@@ -1,5 +1,6 @@
 import { DeepKeyTokenMap } from '@tokens-studio/types';
-import deepmerge from 'deepmerge';
+// @ts-expect-error untyped library...
+import deepmerge from '@bundled-es-modules/deepmerge';
 import { TransformOptions } from '../TransformOptions.js';
 
 export function excludeParentKeys(

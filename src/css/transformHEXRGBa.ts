@@ -11,7 +11,7 @@ export function transformHEXRGBaForCSS(token: DesignToken): DesignToken['value']
   const type = token.$type ?? token.type;
   if (val === undefined) return undefined;
 
-  const transformHEXRGBa = val => {
+  const transformHEXRGBa = (val: string) => {
     const regex = /rgba\(\s*(?<hex>#.+?)\s*,\s*(?<alpha>\d*(\.\d*|%)*)\s*\)/g;
     return val.replace(regex, (match, hex, alpha) => {
       try {
@@ -24,7 +24,7 @@ export function transformHEXRGBaForCSS(token: DesignToken): DesignToken['value']
     });
   };
 
-  const transformProp = (val, prop) => {
+  const transformProp = (val: Record<string, string>, prop: string) => {
     if (val[prop] !== undefined) {
       val[prop] = transformHEXRGBa(val[prop]);
     }
@@ -36,6 +36,9 @@ export function transformHEXRGBaForCSS(token: DesignToken): DesignToken['value']
   switch (type) {
     case 'border':
     case 'shadow': {
+      transformed = transformed as
+        | Record<string, number | string>
+        | Record<string, number | string>[];
       if (Array.isArray(transformed)) {
         transformed = transformed.map(item => transformProp(item, 'color'));
       } else {

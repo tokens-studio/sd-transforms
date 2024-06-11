@@ -14,12 +14,17 @@ function _transformDimension(dim: string | number): string {
  * Helper: Transforms dimensions to px
  */
 export function transformDimension(token: DesignToken): DesignToken['value'] {
-  const val = token.$value ?? token.value;
+  const val = (token.$value ?? token.value) as
+    | Record<string, number | string>
+    | Record<string, number | string>[]
+    | number
+    | string;
+
   const type = token.$type ?? token.type;
 
   if (val === undefined) return undefined;
 
-  const transformProp = (val, prop) => {
+  const transformProp = (val: Record<string, number | string>, prop: string) => {
     if (val[prop] !== undefined) {
       val[prop] = _transformDimension(val[prop]);
     }
@@ -27,13 +32,18 @@ export function transformDimension(token: DesignToken): DesignToken['value'] {
   };
 
   let transformed = val;
+
   switch (type) {
     case 'typography': {
+      transformed = transformed as Record<string, number | string>;
       transformed = transformProp(transformed, 'fontSize');
       break;
     }
     case 'shadow': {
-      const transformShadow = shadowVal => {
+      transformed = transformed as
+        | Record<string, number | string>
+        | Record<string, number | string>[];
+      const transformShadow = (shadowVal: Record<string, number | string>) => {
         ['offsetX', 'offsetY', 'blur', 'spread'].forEach(prop => {
           shadowVal = transformProp(shadowVal, prop);
         });
@@ -41,16 +51,19 @@ export function transformDimension(token: DesignToken): DesignToken['value'] {
       };
       if (Array.isArray(transformed)) {
         transformed = transformed.map(transformShadow);
+      } else {
+        transformed = transformShadow(transformed);
       }
-      transformed = transformShadow(transformed);
       break;
     }
     case 'border': {
+      transformed = transformed as Record<string, number | string>;
       transformed = transformProp(transformed, 'width');
       break;
     }
     default:
-      transformed = _transformDimension(val);
+      transformed = transformed as number | string;
+      transformed = _transformDimension(transformed);
   }
 
   return transformed;

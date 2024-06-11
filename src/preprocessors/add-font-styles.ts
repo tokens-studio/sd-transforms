@@ -47,15 +47,18 @@ function recurse(
   refCopy: DeepKeyTokenMap<false>,
   alwaysAddFontStyle = false,
 ) {
-  Object.keys(slice).forEach(key => {
+  (Object.keys(slice) as (keyof typeof slice)[]).forEach(key => {
+    const potentiallyToken = slice[key];
     const isToken =
-      (Object.hasOwn(slice[key], '$type') && Object.hasOwn(slice[key], '$value')) ||
-      (Object.hasOwn(slice[key], 'type') && Object.hasOwn(slice[key], 'value'));
+      typeof potentiallyToken === 'object' &&
+      ((Object.hasOwn(potentiallyToken, '$type') && Object.hasOwn(potentiallyToken, '$value')) ||
+        (Object.hasOwn(potentiallyToken, 'type') && Object.hasOwn(potentiallyToken, 'value')));
 
     if (isToken) {
-      const usesDTCG = Object.hasOwn(slice[key], '$value');
-      const { value, $value, type, $type } = slice[key];
-      const tokenType = usesDTCG ? $type : type;
+      const token = potentiallyToken as SingleToken<false>;
+      const usesDTCG = Object.hasOwn(token, '$value');
+      const { value, $value, type, $type } = token;
+      const tokenType = (usesDTCG ? $type : type) as string;
       const tokenValue = (usesDTCG ? $value : value) as
         | (TokenTypographyValue & { fontStyle: string })
         | SingleFontWeightsToken['value'];
@@ -76,17 +79,21 @@ function recurse(
         const { weight, style } = splitWeightStyle(fontWeight, alwaysAddFontStyle);
 
         // since tokenFontWeightsValue is a primitive (string), we have to permutate the change directly
-        slice[key][`${usesDTCG ? '$' : ''}value`] = weight;
+        token[`${usesDTCG ? '$' : ''}value`] = weight;
         if (style) {
-          slice[`fontStyle`] = {
-            ...slice[key],
+          (slice as DeepKeyTokenMap<false>)[`fontStyle`] = {
+            ...token,
             [`${usesDTCG ? '$' : ''}type`]: 'fontStyle',
             [`${usesDTCG ? '$' : ''}value`]: style,
           };
         }
       }
-    } else if (typeof slice[key] === 'object') {
-      recurse(slice[key], refCopy, alwaysAddFontStyle);
+    } else if (typeof potentiallyToken === 'object') {
+      recurse(
+        potentiallyToken as DeepKeyTokenMap<false> | SingleToken<false>,
+        refCopy,
+        alwaysAddFontStyle,
+      );
     }
   });
 }

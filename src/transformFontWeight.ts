@@ -47,12 +47,15 @@ export function transformFontWeight(token: DesignToken): DesignToken['value'] {
   const type = token.$type ?? token.type;
   if (val === undefined) return undefined;
 
-  const transformWeight = weight => {
+  const transformWeight = (weight: number | string) => {
     const match = `${weight}`.match(fontWeightReg);
 
     let mapped;
     if (match?.groups?.weight) {
-      mapped = fontWeightMap[match?.groups?.weight.replace(/\s/g, '').toLowerCase()];
+      mapped =
+        fontWeightMap[
+          match?.groups?.weight.replace(/\s/g, '').toLowerCase() as keyof typeof fontWeightMap
+        ];
       if (match.groups.style) {
         mapped = `${mapped} ${match.groups.style.toLowerCase()}`;
       }

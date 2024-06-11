@@ -75,7 +75,8 @@ Both APIs will be stable then.
 
 ## Usage
 
-> Note: this library is available both in CJS and ESM
+> [!NOTE]
+> This library is only available in ESM
 
 ```js
 import { registerTransforms } from '@tokens-studio/sd-transforms';
@@ -215,6 +216,7 @@ StyleDictionary.registerTransform({
 
 ### Custom Transform Group
 
+> [!NOTE]
 > From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/amzn/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
 
 You can create a custom `transformGroup` that includes the individual transforms from this package.
@@ -255,7 +257,8 @@ Options:
 | ['ts/color/modifiers']        | ColorModifierOptions | ❌       | See props below | Color modifier options                                                                                                            |
 | ['ts/color/modifiers'].format | ColorModifierFormat  | ❌       | `undefined`     | Color modifier output format override ('hex' \| 'hsl' \| 'lch' \| 'p3' \| 'srgb'), uses local format or modifier space as default |
 
-> Note: you can also import and use the `parseTokens` function to run the parsing steps on your tokens object manually.
+> [!NOTE]
+> You can also import and use the `parseTokens` function to run the parsing steps on your tokens object manually.
 > Handy if you have your own preprocessors set up (e.g. for JS files), and you want the preprocessor-based features like composites-expansion to work there too.
 
 ## Theming

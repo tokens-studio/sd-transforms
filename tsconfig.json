@@ -10,10 +10,11 @@
     "alwaysStrict": true,
     "types": ["node", "mocha"],
     "esModuleInterop": true,
-    "noImplicitAny": false,
-    "outDir": "dist/src",
+    "noImplicitAny": true,
+    "outDir": "dist",
     "declaration": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true
   },
   "include": ["**/*.ts", "**/*.d.ts"],
   "exclude": ["node_modules", "**/coverage/*"]

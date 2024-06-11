@@ -13,7 +13,7 @@ function mapThemesToSetsObject(themes: ThemeObject[]) {
 export function permutateThemes(themes: ThemeObject[], { separator = '-' } = {} as Options) {
   if (themes.some(theme => theme.group)) {
     // Sort themes by groups
-    const groups = {};
+    const groups: Record<string, ThemeObject[]> = {};
     themes.forEach(theme => {
       if (theme.group) {
         groups[theme.group] = [...(groups[theme.group] ?? []), theme];

@@ -1,7 +1,7 @@
-import { SingleBoxShadowToken } from '@tokens-studio/types';
+import { SingleBoxShadowToken, BoxShadowTypes } from '@tokens-studio/types';
 
 export function transformShadow(value: SingleBoxShadowToken['value']) {
-  const alignShadowType = val => {
+  const alignShadowType = (val: string) => {
     return val === 'innerShadow' || val === 'inset' ? 'inset' : undefined;
   };
 
@@ -13,8 +13,7 @@ export function transformShadow(value: SingleBoxShadowToken['value']) {
   }
 
   if (typeof value === 'object') {
-    // @ts-expect-error we're converting to a value that isn't recognized by BoxShadowTypes enum, can't union enums either :(
-    value.type = alignShadowType(value.type);
+    value.type = alignShadowType(value.type) as BoxShadowTypes;
   }
   return value;
 }

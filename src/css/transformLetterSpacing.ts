@@ -9,7 +9,7 @@ export function transformLetterSpacingForCSS(token: DesignToken): DesignToken['v
   const type = token.$type ?? token.type;
   if (val === undefined) return undefined;
 
-  const transformLetterSpacing = letterspacing => {
+  const transformLetterSpacing = (letterspacing: string | number) => {
     const decimal = percentageToDecimal(letterspacing);
     return typeof decimal === 'string' || isNaN(decimal) ? `${letterspacing}` : `${decimal}em`;
   };

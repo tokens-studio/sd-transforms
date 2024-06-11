@@ -12,11 +12,9 @@ export async function init(cfg: Config, transformOpts = {}) {
   return dict;
 }
 
-export async function cleanup(dict?: StyleDictionary) {
-  // @ts-expect-error polluting dictionary it on purpose
+export async function cleanup(dict?: StyleDictionary & { cleaned?: boolean }) {
   if (dict && !dict.cleaned) {
     await dict.cleanAllPlatforms();
-    // @ts-expect-error polluting dictionary it on purpose
     dict.cleaned = true;
   }
   StyleDictionary.hooks.preprocessors = {};

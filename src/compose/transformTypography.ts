@@ -32,7 +32,7 @@ export function transformTypographyForCompose(token: DesignToken): DesignToken['
   return `${Object.entries(val).reduce(
     (acc, [propName, v]) =>
       `${acc}${
-        textStylePropertiesMapping[propName]
+        textStylePropertiesMapping[propName as keyof typeof textStylePropertiesMapping]
           ? `${
               propName === 'fontWeight'
                 ? transformFontWeight({
