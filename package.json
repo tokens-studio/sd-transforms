@@ -42,7 +42,7 @@
     "is-mergeable-object": "^1.1.1"
   },
   "peerDependencies": {
-    "style-dictionary": "^4.0.0-prerelease.37"
+    "style-dictionary": "^4.0.0"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",

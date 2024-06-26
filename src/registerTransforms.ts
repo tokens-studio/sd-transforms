@@ -1,4 +1,4 @@
-import type { DesignTokens } from 'style-dictionary/types';
+import type { PreprocessedTokens } from 'style-dictionary/types';
 import StyleDictionary from 'style-dictionary';
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
@@ -38,7 +38,7 @@ export async function registerTransforms(
   sd.registerPreprocessor({
     name: 'tokens-studio',
     preprocessor: dictionary => {
-      return parseTokens(dictionary, transformOpts) as DesignTokens;
+      return parseTokens(dictionary, transformOpts) as PreprocessedTokens;
     },
   });
 
