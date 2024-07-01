@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.0.1
+
+### Patch Changes
+
+- 6c7b2ff: Fix tsconfig to exclude test files and ensure dist folder structure is correct.
+
 ## 1.0.0
 
 ### Major Changes
