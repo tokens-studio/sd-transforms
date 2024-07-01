@@ -1,5 +1,40 @@
 # @tokens-studio/sd-transforms
 
+## 1.0.0
+
+### Major Changes
+
+- 67edf4b: BREAKING: `descriptionToComment` transform no longer removes newlines, just turns carriage returns into newlines. Style Dictionary now handles comments with newlines properly in its createPropertyFormatter utility.
+- 67edf4b: BREAKING: Remove `expand` option, composite/object-value tokens must be expanded by using [Style Dictionary Expand](https://v4.styledictionary.com/reference/config/#expand).
+- 67edf4b: BREAKING: remove CommonJS entrypoint and tools/scripts required to dual publish. Now that Style Dictionary v4 is ESM-only, this library will follow suit.
+- 67edf4b: BREAKING: `transformFontWeights` has been renamed to `transformFontWeight` for consistency.
+
+  Apply transforms to object-value (composite) token types:
+
+  - HEXRGBa transform applies to border and shadow colors
+  - Px dimension transform applies to border, typography and shadow dimensions
+  - Letterspacing, lineheights and fontweights transforms apply to these respective typography properties
+  - Resolve math transform applies to all properties of border, typography and shadow tokens
+
+  This also means that all transforms except for description to comment mapping are now transitive transforms, since the math resolve transform must be transitive and all other transforms must apply after the math one.
+
+- 67edf4b: BREAKING: remove CSS shorthand transforms for border, typography and shadow. Use the Style Dictionary transforms instead: https://styledictionary.com/reference/hooks/transforms/predefined/#bordercssshorthand.
+
+  Note that if you're not disabling the `withSDBuiltins` option, the `tokens-studio` transformGroup will include the ones in the `css` built-in transformGroup, so you might not notice the fact that they are moved.
+
+- 67edf4b: - BREAKING: Compatible with Style Dictionary >= v4.0.0. Not compatible with anything below that SD version.
+
+  - BREAKING: `registerTransforms` function has been renamed to `register`.
+  - BREAKING: `transforms` array has been refactored to `getTransforms()`, which is a function you should call. Optionally pass in the new platform option as parameter `{ platform: 'css' /* or 'compose' */}`
+  - BREAKING: By default, registered `tokens-studio` transformGroup will include the platform's Style Dictionary built-in transforms. E.g. if you're registering for platform `css` it will include the `css` transformGroup transforms from Style Dictionary, appended to the Tokens Studio specific transforms. This behavior can be disabled by passing `{ withSDBuiltins: false }`.
+  - Allow passing platform to the `register()` call: `register(SD, { platform: 'compose' })`. Default value is `'css'`. This means your `tokens-studio` group will be registered for that specific platform.
+  - Allow passing `name` to the `register()` call to configure the transformGroup name: `register(SD, { name: 'tokens-studio-css' })`. Default value is `tokens-studio`.
+
+### Minor Changes
+
+- 67edf4b: Adjust add-font-styles parser to also run on tokens of type fontWeight, to create a sibling token for the fontStyle if it is included in the fontWeight token.
+- 67edf4b: Add an adjust-types preprocessor utility that aligns the Tokens Studio types / object-value props with the DTCG ones.
+
 ## 0.16.1
 
 ### Patch Changes
