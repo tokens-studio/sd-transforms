@@ -1,9 +1,9 @@
 import type { Config } from 'style-dictionary/types';
 import StyleDictionary from 'style-dictionary';
-import { registerTransforms } from '../../src/registerTransforms.js';
+import { register } from '../../src/register.js';
 
 export async function init(cfg: Config, transformOpts = {}) {
-  registerTransforms(StyleDictionary, transformOpts);
+  register(StyleDictionary, transformOpts);
   const dict = new StyleDictionary({
     ...cfg,
     preprocessors: ['tokens-studio', ...(cfg.preprocessors ?? [])],

@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { transformTypographyForCompose } from '../../../src/compose/transformTypography.js';
 import { runTransformSuite } from '../../suites/transform-suite.spec.js';
 

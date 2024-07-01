@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { mapDescriptionToComment } from '../../src/mapDescriptionToComment.js';
 
 describe('map description to comment', () => {

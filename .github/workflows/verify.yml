@@ -24,7 +24,7 @@ jobs:
         run: npm run lint
 
       - name: Install chromium
-        run: npx playwright install-deps chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Unit tests
         run: npm run test:unit

@@ -1,5 +1,5 @@
 import StyleDictionary from 'style-dictionary';
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, init } from './utils.js';
@@ -32,7 +32,7 @@ describe('typography references', () => {
     if (dict) {
       cleanup(dict);
     }
-    dict = await init(cfg);
+    dict = await init(cfg, { withSDBuiltins: false });
   });
 
   afterEach(async () => {

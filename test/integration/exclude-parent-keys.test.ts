@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, init } from './utils.js';
@@ -47,6 +47,7 @@ describe('exclude parent keys', () => {
   it('optionally excludes parent keys', async () => {
     transformOpts = {
       excludeParentKeys: true,
+      withSDBuiltins: false,
     };
     await init(cfg, transformOpts);
     await cleanup();

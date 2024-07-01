@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, init } from './utils.js';
@@ -32,7 +32,7 @@ let dict: StyleDictionary | undefined;
 describe('cross file references', () => {
   beforeEach(async () => {
     cleanup(dict);
-    dict = await init(cfg, { expand: { typography: true } });
+    dict = await init(cfg, { withSDBuiltins: false, expand: { typography: true } });
   });
 
   afterEach(async () => {

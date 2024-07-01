@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { transformHEXRGBaForCSS } from '../../../src/css/transformHEXRGBa.js';
 import { runTransformSuite } from '../../suites/transform-suite.spec.js';
 

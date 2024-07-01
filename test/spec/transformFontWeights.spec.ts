@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { transformFontWeight, fontWeightMap } from '../../src/transformFontWeight.js';
 import { runTransformSuite } from '../suites/transform-suite.spec.js';
 

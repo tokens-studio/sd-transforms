@@ -13,6 +13,7 @@ export default {
       functions: 100,
       lines: 100,
     },
+    exclude: ['test/**/*', 'node_modules/**/*'],
   },
   browsers: [playwrightLauncher({ product: 'chromium' })],
   plugins: [esbuildPlugin({ ts: true, target: 'auto' })],

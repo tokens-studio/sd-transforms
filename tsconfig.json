@@ -13,8 +13,7 @@
     "noImplicitAny": true,
     "outDir": "dist",
     "declaration": true,
-    "skipLibCheck": true,
-    "noEmit": true
+    "skipLibCheck": true
   },
   "include": ["**/*.ts", "**/*.d.ts"],
   "exclude": ["node_modules", "**/coverage/*"]

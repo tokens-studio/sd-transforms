@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { transformDimension } from '../../src/transformDimension.js';
 import { runTransformSuite } from '../suites/transform-suite.spec.js';
 

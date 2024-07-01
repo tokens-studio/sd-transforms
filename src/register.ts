@@ -14,27 +14,32 @@ import { transformOpacity } from './transformOpacity.js';
 import { parseTokens } from './preprocessors/parse-tokens.js';
 import { transformShadow } from './css/transformShadow.js';
 
-export const transforms = [
-  'ts/descriptionToComment',
-  'ts/resolveMath',
-  'ts/size/px',
-  'ts/opacity',
-  'ts/size/css/letterspacing',
-  'ts/size/lineheight',
-  'ts/typography/fontWeight',
-  'ts/shadow/innerShadow',
-  'ts/color/css/hexrgba',
-  'ts/color/modifiers',
-];
+export const getTransforms = (transformOpts?: TransformOptions) => {
+  const agnosticTransforms = [
+    'ts/descriptionToComment',
+    'ts/resolveMath',
+    'ts/size/px',
+    'ts/opacity',
+    'ts/size/lineheight',
+    'ts/typography/fontWeight',
+    'ts/color/modifiers',
+  ];
+
+  const platformTransforms = {
+    css: ['ts/color/css/hexrgba', 'ts/size/css/letterspacing', 'ts/shadow/innerShadow'],
+    compose: ['ts/typography/compose/shorthand'],
+  };
+
+  const platform = transformOpts?.platform ?? 'css';
+
+  return [...agnosticTransforms, ...(platformTransforms[platform] ?? [])];
+};
 
 /**
  * typecasting since this will need to work in browser environment, so we cannot
  * import style-dictionary as it depends on nodejs env
  */
-export async function registerTransforms(
-  sd: typeof StyleDictionary,
-  transformOpts?: TransformOptions,
-) {
+export async function register(sd: typeof StyleDictionary, transformOpts?: TransformOptions) {
   sd.registerPreprocessor({
     name: 'tokens-studio',
     preprocessor: dictionary => {
@@ -164,10 +169,19 @@ export async function registerTransforms(
     transform: token => transformColorModifiers(token, transformOpts?.['ts/color/modifiers']),
   });
 
+  const includeBuiltinGroup = transformOpts?.withSDBuiltins ?? true;
+  // append `?? []` on the line below once we add more platforms which SD may not have a builtin transformGroup for
+  const builtinTransforms = sd.hooks.transformGroups[transformOpts?.platform ?? 'css'];
+
   sd.registerTransformGroup({
-    name: 'tokens-studio',
+    name: transformOpts?.name ?? 'tokens-studio',
     // add a default name transform, since this is almost always needed
     // it's easy to override by users, adding their own "transforms"
-    transforms: [...transforms, 'name/camel'],
+    transforms: [
+      ...getTransforms(transformOpts),
+      // append the built-in style-dictionary transformGroup's transforms
+      ...(includeBuiltinGroup ? builtinTransforms : []),
+      'name/camel',
+    ],
   });
 }

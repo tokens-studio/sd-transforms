@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, init } from './utils.js';
@@ -37,7 +37,7 @@ let dict: StyleDictionary | undefined;
 describe('w3c spec compliance smoke test', () => {
   beforeEach(async () => {
     cleanup(dict);
-    dict = await init(cfg, { 'ts/color/modifiers': { format: 'hex' } });
+    dict = await init(cfg, { withSDBuiltins: false, 'ts/color/modifiers': { format: 'hex' } });
   });
 
   afterEach(async () => {

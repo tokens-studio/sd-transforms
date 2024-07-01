@@ -1,4 +1,4 @@
-export { registerTransforms, transforms } from './registerTransforms.js';
+export { register, getTransforms } from './register.js';
 
 export { addFontStyles } from './preprocessors/add-font-styles.js';
 export { alignTypes } from './preprocessors/align-types.js';

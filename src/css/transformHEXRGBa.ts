@@ -1,4 +1,4 @@
-import { parseToRgba } from 'color2k';
+import Color from 'colorjs.io';
 import { DesignToken } from 'style-dictionary/types';
 
 /**
@@ -15,8 +15,8 @@ export function transformHEXRGBaForCSS(token: DesignToken): DesignToken['value']
     const regex = /rgba\(\s*(?<hex>#.+?)\s*,\s*(?<alpha>\d*(\.\d*|%)*)\s*\)/g;
     return val.replace(regex, (match, hex, alpha) => {
       try {
-        const [r, g, b] = parseToRgba(hex);
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        const [r, g, b] = new Color(hex).srgb;
+        return `rgba(${r * 255}, ${g * 255}, ${b * 255}, ${alpha})`;
       } catch (e) {
         console.warn(`Tried parsing "${hex}" as a hex value, but failed.`);
         return match;

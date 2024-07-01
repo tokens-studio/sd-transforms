@@ -1,8 +1,9 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, init } from './utils.js';
+import { expandTypesMap } from '../../src/index.js';
 
 const outputDir = 'test/integration/tokens/';
 const outputFileName = 'vars.css';
@@ -11,20 +12,12 @@ const outputFilePath = path.resolve(outputDir, outputFileName);
 const cfg = {
   source: ['test/integration/tokens/expand-composition.tokens.json'],
   expand: {
-    typesMap: {
-      boxShadow: {
-        x: 'dimension',
-        y: 'dimension',
-        blur: 'dimension',
-        spread: 'dimension',
-      },
-    },
+    typesMap: expandTypesMap,
   },
   preprocessors: ['tokens-studio'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
-      transforms: ['typography/css/shorthand', 'border/css/shorthand', 'shadow/css/shorthand'],
       prefix: 'sd',
       buildPath: outputDir,
       files: [
@@ -40,7 +33,7 @@ let dict: StyleDictionary | undefined;
 
 async function before() {
   await cleanup(dict);
-  dict = await init(cfg);
+  dict = await init(cfg, { withSDBuiltins: true });
 }
 
 async function after() {
@@ -58,13 +51,16 @@ describe('expand composition tokens', () => {
 
   it('allows expanding composition tokens only', async () => {
     await cleanup(dict);
-    dict = await init({
-      ...cfg,
-      expand: {
-        ...cfg.expand,
-        include: ['composition'],
+    dict = await init(
+      {
+        ...cfg,
+        expand: {
+          ...cfg.expand,
+          include: ['composition'],
+        },
       },
-    });
+      { withSDBuiltins: true },
+    );
 
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
@@ -102,33 +98,33 @@ describe('expand composition tokens', () => {
   --sdTypographyFontWeight: 800;
   --sdTypographyLineHeight: 1.25;
   --sdTypographyFontSize: 26px;
-  --sdTypographyLetterSpacing: 0;
-  --sdTypographyParagraphSpacing: 0;
-  --sdTypographyParagraphIndent: 0;
+  --sdTypographyLetterSpacing: 0rem;
+  --sdTypographyParagraphSpacing: 0rem;
+  --sdTypographyParagraphIndent: 0rem;
   --sdTypographyTextDecoration: none;
   --sdTypographyTextCase: none;
   --sdTypographyFontStyle: italic;
   --sdFontWeightRef: 800;
-  --sdBorderColor: #FFFF00;
+  --sdBorderColor: #ffff00;
   --sdBorderWidth: 4px;
   --sdBorderStyle: solid;
-  --sdShadowSingleX: 0;
+  --sdShadowSingleX: 0rem;
   --sdShadowSingleY: 4px;
   --sdShadowSingleBlur: 10px;
-  --sdShadowSingleSpread: 0;
-  --sdShadowSingleColor: rgba(0,0,0,0.4);
+  --sdShadowSingleSpread: 0rem;
+  --sdShadowSingleColor: rgba(0, 0, 0, 0.4);
   --sdShadowSingleType: innerShadow;
-  --sdShadowDouble1X: 0;
+  --sdShadowDouble1X: 0rem;
   --sdShadowDouble1Y: 4px;
   --sdShadowDouble1Blur: 10px;
-  --sdShadowDouble1Spread: 0;
-  --sdShadowDouble1Color: rgba(0,0,0,0.4);
+  --sdShadowDouble1Spread: 0rem;
+  --sdShadowDouble1Color: rgba(0, 0, 0, 0.4);
   --sdShadowDouble1Type: innerShadow;
-  --sdShadowDouble2X: 0;
+  --sdShadowDouble2X: 0rem;
   --sdShadowDouble2Y: 8px;
   --sdShadowDouble2Blur: 12px;
   --sdShadowDouble2Spread: 5px;
-  --sdShadowDouble2Color: rgba(0,0,0,0.4);`,
+  --sdShadowDouble2Color: rgba(0, 0, 0, 0.4);`,
     );
   });
 
@@ -140,9 +136,9 @@ describe('expand composition tokens', () => {
   --sdRefFontWeight: 800;
   --sdRefLineHeight: 1.25;
   --sdRefFontSize: 26px;
-  --sdRefLetterSpacing: 0;
-  --sdRefParagraphSpacing: 0;
-  --sdRefParagraphIndent: 0;
+  --sdRefLetterSpacing: 0rem;
+  --sdRefParagraphSpacing: 0rem;
+  --sdRefParagraphIndent: 0rem;
   --sdRefTextDecoration: none;
   --sdRefTextCase: none;
   --sdRefFontStyle: italic;
@@ -150,9 +146,9 @@ describe('expand composition tokens', () => {
   --sdDeepRefFontWeight: 800;
   --sdDeepRefLineHeight: 1.25;
   --sdDeepRefFontSize: 26px;
-  --sdDeepRefLetterSpacing: 0;
-  --sdDeepRefParagraphSpacing: 0;
-  --sdDeepRefParagraphIndent: 0;
+  --sdDeepRefLetterSpacing: 0rem;
+  --sdDeepRefParagraphSpacing: 0rem;
+  --sdDeepRefParagraphIndent: 0rem;
   --sdDeepRefTextDecoration: none;
   --sdDeepRefTextCase: none;
   --sdDeepRefFontStyle: italic;`,
@@ -163,17 +159,17 @@ describe('expand composition tokens', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
-  --sdDeepRefShadowMulti1X: 0;
+  --sdDeepRefShadowMulti1X: 0rem;
   --sdDeepRefShadowMulti1Y: 4px;
   --sdDeepRefShadowMulti1Blur: 10px;
-  --sdDeepRefShadowMulti1Spread: 0;
-  --sdDeepRefShadowMulti1Color: rgba(0,0,0,0.4);
+  --sdDeepRefShadowMulti1Spread: 0rem;
+  --sdDeepRefShadowMulti1Color: rgba(0, 0, 0, 0.4);
   --sdDeepRefShadowMulti1Type: innerShadow;
-  --sdDeepRefShadowMulti2X: 0;
+  --sdDeepRefShadowMulti2X: 0rem;
   --sdDeepRefShadowMulti2Y: 8px;
   --sdDeepRefShadowMulti2Blur: 12px;
   --sdDeepRefShadowMulti2Spread: 5px;
-  --sdDeepRefShadowMulti2Color: rgba(0,0,0,0.4)`,
+  --sdDeepRefShadowMulti2Color: rgba(0, 0, 0, 0.4)`,
     );
   });
 });

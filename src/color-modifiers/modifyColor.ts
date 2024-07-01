@@ -74,6 +74,7 @@ export function modifyColor(
         returnedColor = returnedColor.to(modifier.format);
       }
     }
+
     return returnedColor.toString({
       inGamut: true,
       precision: 3,

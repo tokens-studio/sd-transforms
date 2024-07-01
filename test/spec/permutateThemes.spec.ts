@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { TokenSetStatus } from '@tokens-studio/types';
 import { permutateThemes } from '../../src/permutateThemes.js';
 

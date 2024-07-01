@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { DeepKeyTokenMap } from '@tokens-studio/types';
 import { alignTypes } from '../../../src/preprocessors/align-types.js';
 

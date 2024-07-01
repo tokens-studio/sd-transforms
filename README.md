@@ -36,10 +36,7 @@ CSS:
 
 - Transform letterspacing from `%` to `em` -> `ts/size/css/letterspacing`
 - Transform colors to `rgba()` format -> `ts/color/css/hexrgba`
-- Transform font family into valid CSS, adding single quotes if necessary -> `ts/typography/css/fontFamily`
-- Transform typography objects to CSS shorthand -> `ts/typography/css/shorthand`
-- Transform Tokens Studio shadow objects to CSS shadow shorthand -> `ts/shadow/css/shorthand`
-- Transform border objects to CSS border shorthand -> `ts/border/css/shorthand`
+- Transform shadow "type" property "innerShadow" to "inset" -> `ts/shadow/innerShadow`
 
 Android:
 
@@ -67,11 +64,9 @@ There are some caveats however, with regards to which versions of Style Dictiona
 | **4.0.0**-prerelease.**2** - **4.0.0**-prerelease.**18**  | **0.13.0** - **0.14.4** |
 | **4.0.0**-prerelease.**18** - **4.0.0**-prerelease.**26** | **0.13.0** - **0.15.2** |
 | >= **4.0.0**-prerelease.**27**                            | >= **0.16.0**           |
+| >= **4.0.0**                                              | >= **1.0.0**            |
 
-This may seem a little tedious, but the reason is because `sd-transforms` is still in alpha, and Style Dictionary v4 is still being worked on, iteratively doing lots of breaking changes.
-
-This will be much simpler when Style Dictionary v4 is released, at that point `sd-transforms` v1 will be released and be out of alpha.
-Both APIs will be stable then.
+Now that Style Dictionary v4 is released, and `sd-transforms` v1 is released and out of alpha state,both APIs are stable and the recommendation is to use these.
 
 ## Usage
 
@@ -79,12 +74,12 @@ Both APIs will be stable then.
 > This library is only available in ESM
 
 ```js
-import { registerTransforms } from '@tokens-studio/sd-transforms';
+import { register } from '@tokens-studio/sd-transforms';
 import StyleDictionary from 'style-dictionary';
 
 // will register them on StyleDictionary object
 // that is installed as a dependency of this package.
-registerTransforms(StyleDictionary);
+register(StyleDictionary);
 
 const sd = new StyleDictionary({
   // make sure to have source match your token files!
@@ -110,15 +105,11 @@ await sd.cleanAllPlatforms();
 await sd.buildAllPlatforms();
 ```
 
-> You can also import as ES Modules if needed.
-
 To run it use the following command
 
 ```sh
 node build-output.js
 ```
-
-> From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/amzn/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
 
 ### Using the preprocessor
 
@@ -132,7 +123,7 @@ You must add the `'tokens-studio'` preprocessor explicitly in the configuration:
 }
 ```
 
-This allows fontStyles to be extracted when they are embedded in fontWeights, aligns Tokens Studio token types with DTCG token types, and allows excluding parent keys for single-file Tokens Studio exports.
+This allows `fontStyles` to be extracted when they are embedded in `fontWeights`, aligns Tokens Studio token types with DTCG token types, and allows excluding parent keys for single-file Tokens Studio exports.
 
 ### Using "Expand"
 
@@ -223,7 +214,7 @@ You can create a custom `transformGroup` that includes the individual transforms
 If you wish to use the `transformGroup`, but adjust or remove a few transforms, your best option is to create a custom transform group:
 
 ```js
-import { transforms } from '@tokens-studio/sd-transforms';
+import { getTransforms } from '@tokens-studio/sd-transforms';
 import StyleDictionary from 'style-dictionary';
 
 // Register custom tokens-studio transform group
@@ -231,17 +222,24 @@ import StyleDictionary from 'style-dictionary';
 // and also adding 'name/constant' for the token names
 StyleDictionary.registerTransformGroup({
   name: 'custom/tokens-studio',
-  transforms: [...transforms, 'name/constant'].filter(transform => transform !== 'ts/size/px'),
+  // default value for platform is css, specifies which Tokens Studio transforms for which platform to grab
+  transforms: [...getTransforms({ platform: 'css' }), 'name/constant'].filter(
+    transform => transform !== 'ts/size/px',
+  ),
 });
 ```
 
+> Note that you can also manually grab some of the SD built-in transforms by using `StyleDictionary.hooks.transformGroups` or `StyleDictionary.hooks.transforms`
+
 ### Options
 
-You can pass options to the `registerTransforms` function.
+You can pass options to the `register` function.
 
 ```js
-registerTransforms(StyleDictionary, {
+register(StyleDictionary, {
   excludeParentKeys: true,
+  platform: 'css',
+  name: 'tokens-studio',
   'ts/color/modifiers': {
     format: 'hex',
   },
@@ -250,12 +248,15 @@ registerTransforms(StyleDictionary, {
 
 Options:
 
-| name                          | type                 | required | default         | description                                                                                                                       |
-| ----------------------------- | -------------------- | -------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| excludeParentKeys             | boolean              | ❌       | `false`         | Whether or not to exclude parent keys from your token files                                                                       |
-| alwaysAddFontStyle            | boolean              | ❌       | `false`         | Whether or not to always add a 'normal' fontStyle property to typography tokens which do not have explicit fontStyle              |
-| ['ts/color/modifiers']        | ColorModifierOptions | ❌       | See props below | Color modifier options                                                                                                            |
-| ['ts/color/modifiers'].format | ColorModifierFormat  | ❌       | `undefined`     | Color modifier output format override ('hex' \| 'hsl' \| 'lch' \| 'p3' \| 'srgb'), uses local format or modifier space as default |
+| name                          | type                 | required | default         | description                                                                                                                                      |
+| ----------------------------- | -------------------- | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| excludeParentKeys             | boolean              | ❌       | `false`         | Whether or not to exclude parent keys from your token files                                                                                      |
+| platform                      | `'css'\|'compose'`   | ❌       | `css`           | Which platform to use the transforms for.                                                                                                        |
+| name                          | string               | ❌       | `tokens-studio` | Under which name to register the `transformGroup`                                                                                                |
+| withSDBuiltins                | boolean              | ❌       | `true`          | Whether to append the Style Dictionary built-in `transformGroup` transforms for the configured platform into the `tokens-studio` transformGroup. |
+| alwaysAddFontStyle            | boolean              | ❌       | `false`         | Whether or not to always add a 'normal' fontStyle property to typography tokens which do not have explicit fontStyle                             |
+| ['ts/color/modifiers']        | ColorModifierOptions | ❌       | See props below | Color modifier options                                                                                                                           |
+| ['ts/color/modifiers'].format | ColorModifierFormat  | ❌       | `undefined`     | Color modifier output format override ('hex' \| 'hsl' \| 'lch' \| 'p3' \| 'srgb'), uses local format or modifier space as default                |
 
 > [!NOTE]
 > You can also import and use the `parseTokens` function to run the parsing steps on your tokens object manually.
@@ -272,11 +273,11 @@ Here's a full example of how you can use this in conjunction with Style Dictiona
 Run this script:
 
 ```cjs
-import { registerTransforms } from '@tokens-studio/sd-transforms';
+import { register } from '@tokens-studio/sd-transforms';
 import StyleDictionary from 'style-dictionary';
 import { promises } from 'fs';
 
-registerTransforms(StyleDictionary, {
+register(StyleDictionary, {
   /* options here if needed */
 });
 
@@ -406,11 +407,11 @@ Note that it is a best practice to generate standalone output files for each the
 Full example with multi-dimensional themes:
 
 ```js
-import { registerTransforms, permutateThemes } from '@tokens-studio/sd-transforms';
+import { register, permutateThemes } from '@tokens-studio/sd-transforms';
 import StyleDictionary from 'style-dictionary';
 import { promises } from 'fs';
 
-registerTransforms(StyleDictionary, {
+register(StyleDictionary, {
   /* options here if needed */
 });
 
@@ -746,51 +747,24 @@ This transforms color token values with Figma's "hex code RGBA" into actual `rgb
 }
 ```
 
-### ts/typography/css/fontFamily
+### ts/shadow/innerShadow
 
-This transforms font-family token values into valid CSS, adding single quotes if necessary.
+This transforms shadow tokens to ensure that the `type` property gets converted from `innerShadow` to `inset` (CSS compatible).
 
-**matches**: `token.type` is `'fontFamilies'`
-
-#### before
-
-```json
-{
-  "token": {
-    "type": "fontFamilies",
-    "value": "Arial Black, Times New Roman, Foo, sans-serif"
-  }
-}
-```
-
-#### after
-
-```json
-{
-  "token": {
-    "type": "fontFamilies",
-    "value": "'Arial Black', 'Times New Roman', Foo, sans-serif"
-  }
-}
-```
-
-### ts/typography/css/shorthand
-
-This transforms typography tokens into a valid CSS shorthand
-
-**matches**: `token.type` is `'typography'`
+**matches**: `token.type` is `'shadow'`
 
 #### before
 
 ```json
 {
   "token": {
-    "type": "typography",
+    "type": "color",
     "value": {
-      "fontWeight": "500",
-      "fontSize": "20px",
-      "lineHeight": "1.5",
-      "fontFamily": "Arial"
+      "offsetX": "0",
+      "offsetY": "4px",
+      "blur": "10px",
+      "color": "#000",
+      "type": "innerShadow"
     }
   }
 }
@@ -801,71 +775,14 @@ This transforms typography tokens into a valid CSS shorthand
 ```json
 {
   "token": {
-    "value": "500 20px/1.5 Arial"
-  }
-}
-```
-
-### ts/shadow/css/shorthand
-
-This transforms shadow tokens into a valid CSS shadow shorthand
-
-**matches**: `token.type` is `'boxShadow'`
-
-#### before
-
-```json
-{
-  "token": {
-    "type": "boxShadow",
+    "type": "color",
     "value": {
-      "x": "5px",
-      "y": "3px",
-      "blur": "6px",
-      "spread": "2px",
-      "color": "#000000"
+      "offsetX": "0",
+      "offsetY": "4px",
+      "blur": "10px",
+      "color": "#000",
+      "type": "inset"
     }
-  }
-}
-```
-
-#### after
-
-```json
-{
-  "token": {
-    "value": "5px 3px 6px 2px #000000"
-  }
-}
-```
-
-### ts/border/css/shorthand
-
-This transforms border tokens into a valid CSS border shorthand
-
-**matches**: `token.type` is `'border'`
-
-#### before
-
-```json
-{
-  "token": {
-    "type": "border",
-    "value": {
-      "width": "5",
-      "style": "dashed",
-      "color": "rgba(#000000, 1)"
-    }
-  }
-}
-```
-
-#### after
-
-```json
-{
-  "token": {
-    "value": "5px dashed rgba(0, 0, 0, 1)"
   }
 }
 ```

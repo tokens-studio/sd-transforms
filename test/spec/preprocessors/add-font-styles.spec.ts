@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { stubMethod, restore } from 'hanbi';
 import { DeepKeyTokenMap } from '@tokens-studio/types';
 import { addFontStyles } from '../../../src/preprocessors/add-font-styles.js';

@@ -5,6 +5,9 @@ export interface ColorModifierOptions {
 }
 
 export interface TransformOptions {
+  platform?: 'css' | 'compose';
+  name?: string;
+  withSDBuiltins?: boolean;
   alwaysAddFontStyle?: boolean;
   excludeParentKeys?: boolean;
   ['ts/color/modifiers']?: ColorModifierOptions;
