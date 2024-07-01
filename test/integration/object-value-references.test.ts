@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, init } from './utils.js';
@@ -10,6 +10,7 @@ const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
   source: ['test/integration/tokens/object-value-references.tokens.json'],
+  preprocessors: ['tokens-studio'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
@@ -41,9 +42,9 @@ describe('typography references', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
-  --sdBefore: 400 italic 36px/1 'Aria Sans';
-  --sdFontHeadingXxl: 400 italic 36px/1 'Aria Sans';
-  --sdAfter: 400 italic 36px/1 'Aria Sans';`,
+  --sdBefore: italic 400 36px/1 'Aria Sans';
+  --sdFontHeadingXxl: italic 400 36px/1 'Aria Sans';
+  --sdAfter: italic 400 36px/1 'Aria Sans';`,
     );
   });
 

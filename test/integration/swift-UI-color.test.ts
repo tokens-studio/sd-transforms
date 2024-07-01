@@ -1,5 +1,5 @@
 import StyleDictionary from 'style-dictionary';
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import Color from 'tinycolor2';
 import { promises } from 'node:fs';
 import path from 'node:path';

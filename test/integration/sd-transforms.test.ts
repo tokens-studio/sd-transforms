@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, init } from './utils.js';
@@ -10,6 +10,7 @@ const outputFilePath = path.resolve(outputDir, outputFileName);
 
 const cfg = {
   source: ['test/integration/tokens/sd-transforms.tokens.json'],
+  preprocessors: ['tokens-studio'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',
@@ -53,7 +54,7 @@ describe('sd-transforms smoke tests', () => {
   --sdSpacingMultiValue: 8px 64px; /* You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
   --sdColorsBlack: #000000;
   --sdColorsWhite: #ffffff;
-  --sdColorsBlue: #0000FF;
+  --sdColorsBlue: #0000ff;
   --sdColorsBlueAlpha: rgba(0, 0, 255, 50%);
   --sdColorsRed400: #f67474;
   --sdColorsRed500: #f56565;
@@ -74,7 +75,7 @@ describe('sd-transforms smoke tests', () => {
   --sdShadow: inset 0 4px 10px 0 rgba(0,0,0,0.4);
   --sdBorderWidth: 5px;
   --sdBorder: 5px solid #000000;
-  --sdColor: #FF00FF;
+  --sdColor: #ff00ff;
   --sdUsesColor: rgba(255, 0, 255, 1);
 }`);
   });
@@ -108,7 +109,7 @@ describe('sd-transforms smoke tests', () => {
   --sd-spacing-multi-value: 8px 64px; /* You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
   --sd-colors-black: #000000;
   --sd-colors-white: #ffffff;
-  --sd-colors-blue: #0000FF;
+  --sd-colors-blue: #0000ff;
   --sd-colors-blue-alpha: rgba(0, 0, 255, 50%);
   --sd-colors-red-400: #f67474;
   --sd-colors-red-500: #f56565;
@@ -129,7 +130,7 @@ describe('sd-transforms smoke tests', () => {
   --sd-shadow: inset 0 4px 10px 0 rgba(0,0,0,0.4);
   --sd-border-width: 5px;
   --sd-border: 5px solid #000000;
-  --sd-color: #FF00FF;
+  --sd-color: #ff00ff;
   --sd-uses-color: rgba(255, 0, 255, 1);
 }`);
   });

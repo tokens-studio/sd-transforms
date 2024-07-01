@@ -10,8 +10,8 @@
     "alwaysStrict": true,
     "types": ["node", "mocha"],
     "esModuleInterop": true,
-    "noImplicitAny": false,
-    "outDir": "dist/src",
+    "noImplicitAny": true,
+    "outDir": "dist",
     "declaration": true,
     "skipLibCheck": true
   },

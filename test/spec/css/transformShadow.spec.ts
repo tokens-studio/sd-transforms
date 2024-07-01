@@ -1,58 +1,110 @@
-import { expect } from '@esm-bundle/chai';
-import { transformShadowForCSS } from '../../../src/css/transformShadow.js';
+import { expect } from 'chai';
+import { transformShadow } from '../../../src/css/transformShadow.js';
 import { runTransformSuite } from '../../suites/transform-suite.spec.js';
 
-runTransformSuite(transformShadowForCSS as (value: unknown) => unknown);
+runTransformSuite(transformShadow as (value: unknown) => unknown);
 
-describe('transform shadow', () => {
-  it('transforms boxShadow object to shadow shorthand', () => {
+describe('transformShadow', () => {
+  it('transforms shadow innerShadow type to inset', () => {
     expect(
-      transformShadowForCSS({
-        x: '5px',
-        y: '3px',
-        blur: '6px',
-        spread: '2px',
-        color: '#000000',
-      }),
-    ).to.equal('5px 3px 6px 2px #000000');
-  });
-
-  it('transforms innerShadow boxShadow object to shadow shorthand', () => {
-    expect(
-      transformShadowForCSS({
-        x: '5px',
-        y: '3px',
-        blur: '6px',
-        spread: '2px',
-        color: '#000000',
+      // @ts-expect-error type prop gets transformed
+      transformShadow({
+        x: '0',
+        y: '4px',
+        blur: '10px',
+        spread: '0',
+        color: 'rgba(0,0,0,0.4)',
         type: 'innerShadow',
       }),
-    ).to.equal('inset 5px 3px 6px 2px #000000');
-  });
+    ).to.eql({
+      x: '0',
+      y: '4px',
+      blur: '10px',
+      spread: '0',
+      color: 'rgba(0,0,0,0.4)',
+      type: 'inset',
+    });
 
-  it('keeps string value shadows as is, e.g. if already transformed', () => {
-    expect(transformShadowForCSS('5px 3px 6px 2px #000000')).to.equal('5px 3px 6px 2px #000000');
-  });
-
-  it('transforms dimensions and hexrgba colors', () => {
     expect(
-      transformShadowForCSS({
-        x: '5',
-        y: '3',
-        blur: '6',
-        spread: '2',
-        color: 'rgba(#000000, 1)',
+      // @ts-expect-error type prop gets transformed
+      transformShadow({
+        x: '0',
+        y: '4px',
+        blur: '10px',
+        spread: '0',
+        color: 'rgba(0,0,0,0.4)',
+        type: 'inset',
       }),
-    ).to.equal('5px 3px 6px 2px rgba(0, 0, 0, 1)');
+    ).to.eql({
+      x: '0',
+      y: '4px',
+      blur: '10px',
+      spread: '0',
+      color: 'rgba(0,0,0,0.4)',
+      type: 'inset',
+    });
   });
 
-  it('provides empty string or 0 for missing properties', () => {
-    expect(transformShadowForCSS({})).to.equal('0 0 0 rgba(0, 0, 0, 1)');
+  it('transforms shadow array value innerShadow type to inset', () => {
+    expect(
+      transformShadow([
+        {
+          x: '0',
+          y: '4px',
+          blur: '10px',
+          spread: '0',
+          color: 'rgba(0,0,0,0.4)',
+          // @ts-expect-error type prop gets transformed
+          type: 'innerShadow',
+        },
+        {
+          x: '2',
+          y: '8',
+          blur: '12px',
+          spread: '0',
+          color: 'rgba(0,0,0,0.4)',
+          // @ts-expect-error type prop gets transformed
+          type: 'inset',
+        },
+      ]),
+    ).to.eql([
+      {
+        x: '0',
+        y: '4px',
+        blur: '10px',
+        spread: '0',
+        color: 'rgba(0,0,0,0.4)',
+        type: 'inset',
+      },
+      {
+        x: '2',
+        y: '8',
+        blur: '12px',
+        spread: '0',
+        color: 'rgba(0,0,0,0.4)',
+        type: 'inset',
+      },
+    ]);
+  });
 
-    expect(transformShadowForCSS({ x: '5', y: '' })).to.equal('5px 0 0 rgba(0, 0, 0, 1)');
-
-    expect(transformShadowForCSS({ spread: '5', color: 'rgba(#000000, 0.5)' })).to.equal(
-      '0 0 0 5px rgba(0, 0, 0, 0.5)',
-    );
+  it('transforms shadow invalid type value to undefined', () => {
+    expect(
+      // @ts-expect-error type prop gets transformed
+      transformShadow({
+        x: '0',
+        y: '4px',
+        blur: '10px',
+        spread: '0',
+        color: 'rgba(0,0,0,0.4)',
+        type: 'foo',
+      }),
+    ).to.eql({
+      x: '0',
+      y: '4px',
+      blur: '10px',
+      spread: '0',
+      color: 'rgba(0,0,0,0.4)',
+      type: undefined,
+    });
   });
 });

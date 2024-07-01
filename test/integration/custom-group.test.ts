@@ -1,6 +1,6 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 import StyleDictionary from 'style-dictionary';
-import { transforms, registerTransforms } from '../../src/index.js';
+import { getTransforms, register } from '../../src/index.js';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup } from './utils.js';
@@ -29,11 +29,11 @@ let dict: StyleDictionary | undefined;
 
 async function before() {
   cleanup(dict);
-  registerTransforms(StyleDictionary);
+  register(StyleDictionary);
   StyleDictionary.registerTransformGroup({
     name: 'custom/tokens-studio',
     // remove 'px' appending transform to unitless values
-    transforms: transforms.filter(transform => transform !== 'ts/size/px'),
+    transforms: getTransforms().filter(transform => transform !== 'ts/size/px'),
   });
   dict = new StyleDictionary(cfg);
   await dict?.buildAllPlatforms();

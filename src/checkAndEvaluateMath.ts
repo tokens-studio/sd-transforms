@@ -1,5 +1,6 @@
+import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
-import { parse, reduceExpression } from 'postcss-calc-ast-parser';
+import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
 
 const mathChars = ['+', '-', '*', '/'];
 
@@ -73,7 +74,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
   return [expr];
 }
 
-function parseAndReduce(expr: string): string | boolean | number {
+function parseAndReduce(expr: string): string | number {
   let result: string | number = expr;
 
   let evaluated;
@@ -96,7 +97,9 @@ function parseAndReduce(expr: string): string | boolean | number {
   let matchArr;
   const foundUnits: Set<string> = new Set();
   while ((matchArr = unitRegex.exec(noPixExpr)) !== null) {
-    foundUnits.add(matchArr.groups.unit);
+    if (matchArr?.groups) {
+      foundUnits.add(matchArr.groups.unit);
+    }
   }
   // multiple units (besides px) found, cannot parse the expression
   if (foundUnits.size > 1) {
@@ -129,16 +132,66 @@ function parseAndReduce(expr: string): string | boolean | number {
   return result;
 }
 
-export function checkAndEvaluateMath(
-  expr: string | number | boolean | undefined,
-): string | number | boolean | undefined {
-  if (typeof expr !== 'string') {
+export function checkAndEvaluateMath(token: DesignToken): DesignToken['value'] {
+  const expr = token.$value ?? token.value;
+  const type = token.$type ?? token.type;
+
+  if (!['string', 'object'].includes(typeof expr)) {
     return expr;
   }
-  const exprs = splitMultiIntoSingleValues(expr);
-  const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
-  if (reducedExprs.length === 1) {
-    return reducedExprs[0];
+
+  const resolveMath = (expr: number | string) => {
+    if (typeof expr !== 'string') {
+      return expr;
+    }
+    const exprs = splitMultiIntoSingleValues(expr);
+    const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
+    if (reducedExprs.length === 1) {
+      return reducedExprs[0];
+    }
+    return reducedExprs.join(' ');
+  };
+
+  const transformProp = (val: Record<string, number | string>, prop: string) => {
+    val[prop] = resolveMath(val[prop]);
+    return val;
+  };
+
+  let transformed = expr;
+  switch (type) {
+    case 'typography':
+    case 'border': {
+      transformed = transformed as Record<string, number | string>;
+      // double check that expr is still an object and not already shorthand transformed to a string
+      if (typeof expr === 'object') {
+        Object.keys(transformed).forEach(prop => {
+          transformed = transformProp(transformed, prop);
+        });
+      }
+      break;
+    }
+    case 'shadow': {
+      transformed = transformed as
+        | Record<string, number | string>
+        | Record<string, number | string>[];
+      const transformShadow = (shadowVal: Record<string, number | string>) => {
+        // double check that expr is still an object and not already shorthand transformed to a string
+        if (typeof expr === 'object') {
+          Object.keys(shadowVal).forEach(prop => {
+            shadowVal = transformProp(shadowVal, prop);
+          });
+        }
+        return shadowVal;
+      };
+      if (Array.isArray(transformed)) {
+        transformed = transformed.map(transformShadow);
+      }
+      transformed = transformShadow(transformed);
+      break;
+    }
+    default:
+      transformed = resolveMath(transformed);
   }
-  return reducedExprs.join(' ');
+
+  return transformed;
 }
