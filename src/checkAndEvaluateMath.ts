@@ -2,6 +2,7 @@ import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
 import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
 
+const defaultFractionDigits = 4;
 const mathChars = ['+', '-', '*', '/'];
 
 const parser = new Parser();
@@ -74,7 +75,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
   return [expr];
 }
 
-function parseAndReduce(expr: string): string | number {
+function parseAndReduce(expr: string, fractionDigits = defaultFractionDigits): string | number {
   let result: string | number = expr;
 
   let evaluated;
@@ -127,12 +128,15 @@ function parseAndReduce(expr: string): string | number {
   }
 
   // the outer Number() gets rid of insignificant trailing zeros of decimal numbers
-  const reducedTo3Fixed = Number(Number.parseFloat(`${result}`).toFixed(3));
-  result = resultUnit ? `${reducedTo3Fixed}${resultUnit}` : reducedTo3Fixed;
+  const reducedToFixed = Number(Number.parseFloat(`${result}`).toFixed(fractionDigits));
+  result = resultUnit ? `${reducedToFixed}${resultUnit}` : reducedToFixed;
   return result;
 }
 
-export function checkAndEvaluateMath(token: DesignToken): DesignToken['value'] {
+export function checkAndEvaluateMath(
+  token: DesignToken,
+  fractionDigits?: number,
+): DesignToken['value'] {
   const expr = token.$value ?? token.value;
   const type = token.$type ?? token.type;
 
@@ -145,7 +149,7 @@ export function checkAndEvaluateMath(token: DesignToken): DesignToken['value'] {
       return expr;
     }
     const exprs = splitMultiIntoSingleValues(expr);
-    const reducedExprs = exprs.map(_expr => parseAndReduce(_expr));
+    const reducedExprs = exprs.map(_expr => parseAndReduce(_expr, fractionDigits));
     if (reducedExprs.length === 1) {
       return reducedExprs[0];
     }

@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import { checkAndEvaluateMath } from '../../src/checkAndEvaluateMath.js';
 import { runTransformSuite } from '../suites/transform-suite.spec.js';
+import { cleanup, init } from '../integration/utils.js';
+import { TransformedToken } from 'style-dictionary/types';
 
 runTransformSuite(checkAndEvaluateMath as (value: unknown) => unknown, {});
 
@@ -15,7 +17,7 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath({ value: '4 * 7rem', type: 'dimension' })).to.equal('28rem');
     expect(
       checkAndEvaluateMath({ value: '(15 + 20 - 17 * 8 / 3) * 7px', type: 'dimension' }),
-    ).to.equal('-72.333px');
+    ).to.equal('-72.3333px');
   });
 
   it('supports expression of type number', () => {
@@ -108,6 +110,38 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath({ value: `dd/MM/yyyy 'om' HH:mm`, type: 'date' })).to.equal(
       `dd/MM/yyyy 'om' HH:mm`,
     );
+  });
+
+  it('allows a `mathFractionDigits` option to control the rounding of values in math', async () => {
+    const dict = await init({
+      tokens: {
+        foo: {
+          value: '5',
+          type: 'dimension',
+        },
+        bar: {
+          value: '{foo} / 16',
+          type: 'dimension',
+        },
+      },
+      platforms: {
+        css: {
+          transformGroup: 'tokens-studio',
+          options: {
+            mathFractionDigits: 3,
+          },
+          files: [
+            {
+              format: 'css/variables',
+              destination: 'foo.css',
+            },
+          ],
+        },
+      },
+    });
+    const enrichedTokens = await dict?.exportPlatform('css'); // platform to parse for is 'css' in this case
+    cleanup(dict);
+    expect((enrichedTokens?.bar as TransformedToken).value).to.eql('0.313px');
   });
 
   it('supports boolean values', () => {
