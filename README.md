@@ -487,6 +487,26 @@ This transform checks and evaluates math expressions
 
 **matches**: All tokens that have string values.
 
+You can adjust to how many decimals the result should be rounded using `PlatformConfig.mathFractionDigits`:
+
+```json
+{
+  "source": ["tokens.json"],
+  "platforms": {
+    "css": {
+      "mathFractionDigits": 3,
+      "transformGroup": "tokens-studio",
+      "files": [
+        {
+          "format": "css/variables",
+          "destination": "output.css"
+        }
+      ]
+    }
+  }
+}
+```
+
 #### before
 
 ```json

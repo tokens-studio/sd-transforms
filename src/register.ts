@@ -73,7 +73,7 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
     type: 'value',
     transitive: true,
     filter: token => ['string', 'object'].includes(typeof (token.$value ?? token.value)),
-    transform: token => checkAndEvaluateMath(token),
+    transform: (token, config) => checkAndEvaluateMath(token, config.options?.mathFractionDigits),
   });
 
   sd.registerTransform({
