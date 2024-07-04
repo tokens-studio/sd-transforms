@@ -243,4 +243,43 @@ describe('add font style', () => {
       },
     });
   });
+
+  it('handlestinvalid fontweight structures e.g. mixing token group / token, also handles DTCG format', () => {
+    // @ts-expect-error aligned types already here
+    const tokens = {
+      foo: {
+        $type: 'fontWeight',
+        $value: '700',
+        bar: {
+          $type: 'fontWeight',
+          $value: '800',
+        },
+      },
+      thing: {
+        $type: 'typography',
+        $value: {
+          fontWeight: '{foo}',
+        },
+      },
+    } as DeepKeyTokenMap<false>;
+
+    const processed = addFontStyles(tokens);
+
+    expect(processed).to.eql({
+      foo: {
+        $type: 'fontWeight',
+        $value: '700',
+        bar: {
+          $type: 'fontWeight',
+          $value: '800',
+        },
+      },
+      thing: {
+        $type: 'typography',
+        $value: {
+          fontWeight: '700',
+        },
+      },
+    });
+  });
 });

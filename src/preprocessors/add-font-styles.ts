@@ -8,11 +8,11 @@ import { usesReferences, resolveReferences } from 'style-dictionary/utils';
 import { fontWeightReg, fontStyles } from '../transformFontWeight.js';
 import { TransformOptions } from '../TransformOptions.js';
 
-function resolveFontWeight(fontWeight: string, copy: DeepKeyTokenMap<false>) {
+function resolveFontWeight(fontWeight: string, copy: DeepKeyTokenMap<false>, usesDtcg: boolean) {
   let resolved = fontWeight;
   if (usesReferences(fontWeight)) {
     try {
-      resolved = `${resolveReferences(fontWeight, copy)}`;
+      resolved = `${resolveReferences(fontWeight, copy, { usesDtcg })}`;
     } catch (e) {
       // dont throw fatal, see: https://github.com/tokens-studio/sd-transforms/issues/217
       // we throw once we only support SD v4, for v3 we need to be more permissive
@@ -56,17 +56,21 @@ function recurse(
 
     if (isToken) {
       const token = potentiallyToken as SingleToken<false>;
-      const usesDTCG = Object.hasOwn(token, '$value');
+      const usesDtcg = Object.hasOwn(token, '$value');
       const { value, $value, type, $type } = token;
-      const tokenType = (usesDTCG ? $type : type) as string;
-      const tokenValue = (usesDTCG ? $value : value) as
+      const tokenType = (usesDtcg ? $type : type) as string;
+      const tokenValue = (usesDtcg ? $value : value) as
         | (TokenTypographyValue & { fontStyle: string })
         | SingleFontWeightsToken['value'];
 
       if (tokenType === 'typography') {
         const tokenTypographyValue = tokenValue as TokenTypographyValue & { fontStyle: string };
         if (tokenTypographyValue.fontWeight === undefined) return;
-        const fontWeight = resolveFontWeight(`${tokenTypographyValue.fontWeight}`, refCopy);
+        const fontWeight = resolveFontWeight(
+          `${tokenTypographyValue.fontWeight}`,
+          refCopy,
+          usesDtcg,
+        );
         const { weight, style } = splitWeightStyle(fontWeight, alwaysAddFontStyle);
 
         tokenTypographyValue.fontWeight = weight;
@@ -75,16 +79,16 @@ function recurse(
         }
       } else if (tokenType === 'fontWeight') {
         const tokenFontWeightsValue = tokenValue as SingleFontWeightsToken['value'];
-        const fontWeight = resolveFontWeight(`${tokenFontWeightsValue}`, refCopy);
+        const fontWeight = resolveFontWeight(`${tokenFontWeightsValue}`, refCopy, usesDtcg);
         const { weight, style } = splitWeightStyle(fontWeight, alwaysAddFontStyle);
 
         // since tokenFontWeightsValue is a primitive (string), we have to permutate the change directly
-        token[`${usesDTCG ? '$' : ''}value`] = weight;
+        token[`${usesDtcg ? '$' : ''}value`] = weight;
         if (style) {
           (slice as DeepKeyTokenMap<false>)[`fontStyle`] = {
             ...token,
-            [`${usesDTCG ? '$' : ''}type`]: 'fontStyle',
-            [`${usesDTCG ? '$' : ''}value`]: style,
+            [`${usesDtcg ? '$' : ''}type`]: 'fontStyle',
+            [`${usesDtcg ? '$' : ''}value`]: style,
           };
         }
       }
