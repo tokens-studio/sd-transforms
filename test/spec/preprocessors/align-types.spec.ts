@@ -12,6 +12,12 @@ const tokenObj = {
       weight: {
         value: 400,
         type: 'fontWeights',
+        $extensions: {
+          'studio.tokens': {
+            modify: undefined,
+          },
+          'foo.bar': { some: 'metadata' },
+        },
       },
     },
     semantic: {
@@ -19,6 +25,9 @@ const tokenObj = {
         lg: {
           value: '30px',
           type: 'sizing',
+          $extensions: {
+            'foo.bar': { some: 'metadata' },
+          },
         },
       },
     },
@@ -63,6 +72,13 @@ const tokenObjAligned = {
       weight: {
         value: 400,
         type: 'fontWeight',
+        $extensions: {
+          'studio.tokens': {
+            modify: undefined,
+            originalType: 'fontWeights',
+          },
+          'foo.bar': { some: 'metadata' },
+        },
       },
     },
     semantic: {
@@ -70,6 +86,12 @@ const tokenObjAligned = {
         lg: {
           value: '30px',
           type: 'dimension',
+          $extensions: {
+            'studio.tokens': {
+              originalType: 'sizing',
+            },
+            'foo.bar': { some: 'metadata' },
+          },
         },
       },
     },
@@ -88,6 +110,11 @@ const tokenObjAligned = {
           },
         ],
         type: 'shadow',
+        $extensions: {
+          'studio.tokens': {
+            originalType: 'boxShadow',
+          },
+        },
       },
       shadowSingle: {
         value: {
@@ -99,6 +126,11 @@ const tokenObjAligned = {
           type: 'innerShadow',
         },
         type: 'shadow',
+        $extensions: {
+          'studio.tokens': {
+            originalType: 'boxShadow',
+          },
+        },
       },
     },
   },
@@ -114,6 +146,12 @@ const tokenObjDTCG = {
       weight: {
         $value: 400,
         $type: 'fontWeights',
+        $extensions: {
+          'studio.tokens': {
+            modify: undefined,
+          },
+          'foo.bar': { some: 'metadata' },
+        },
       },
     },
     semantic: {
@@ -121,6 +159,9 @@ const tokenObjDTCG = {
         lg: {
           $value: '30px',
           $type: 'sizing',
+          $extensions: {
+            'foo.bar': { some: 'metadata' },
+          },
         },
       },
     },
@@ -165,6 +206,13 @@ const tokenObjAlignedDTCG = {
       weight: {
         $value: 400,
         $type: 'fontWeight',
+        $extensions: {
+          'studio.tokens': {
+            modify: undefined,
+            originalType: 'fontWeights',
+          },
+          'foo.bar': { some: 'metadata' },
+        },
       },
     },
     semantic: {
@@ -172,6 +220,12 @@ const tokenObjAlignedDTCG = {
         lg: {
           $value: '30px',
           $type: 'dimension',
+          $extensions: {
+            'studio.tokens': {
+              originalType: 'sizing',
+            },
+            'foo.bar': { some: 'metadata' },
+          },
         },
       },
     },
@@ -190,6 +244,11 @@ const tokenObjAlignedDTCG = {
           },
         ],
         $type: 'shadow',
+        $extensions: {
+          'studio.tokens': {
+            originalType: 'boxShadow',
+          },
+        },
       },
       shadowSingle: {
         $value: {
@@ -201,6 +260,11 @@ const tokenObjAlignedDTCG = {
           type: 'innerShadow',
         },
         $type: 'shadow',
+        $extensions: {
+          'studio.tokens': {
+            originalType: 'boxShadow',
+          },
+        },
       },
     },
   },

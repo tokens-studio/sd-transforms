@@ -8,7 +8,9 @@
 
 - [Installation](#installation)
 - [Compatibility](#compatibility)
-- [Getting Started](#usage)
+- [Usage](#usage)
+  - [Using the preprocessor](#using-the-preprocessor)
+  - [Using expand](#using-expand)
   - [Using the transforms](#using-the-transforms)
   - [Custom Transform Group](#custom-transform-group)
   - [Options](#options)
@@ -124,6 +126,11 @@ You must add the `'tokens-studio'` preprocessor explicitly in the configuration:
 ```
 
 This allows `fontStyles` to be extracted when they are embedded in `fontWeights`, aligns Tokens Studio token types with DTCG token types, and allows excluding parent keys for single-file Tokens Studio exports.
+
+> [!TIP]
+> The align types part of the preprocessor aligns Tokens Studio token types to DTCG token types.
+> The original Tokens Studio type in this scenario will be stored at `$extensions['studio.tokens'].originalType` if this happens.
+> This allows you to use the original type e.g. for token filtering/matching for your custom transforms.
 
 ### Using "Expand"
 
@@ -541,7 +548,7 @@ You can adjust to how many decimals the result should be rounded using `Platform
 
 This transform adds `px` as a unit when dimension-like tokens do not have a unit.
 
-**matches**: `token.type` is one of `['sizing', 'spacing', 'borderRadius', 'borderWidth', 'fontSizes', 'dimension']`
+**matches**: `token.type` is one of `['fontSize', 'dimension', 'border', 'typography', 'shadow']`
 
 #### before
 
@@ -597,7 +604,7 @@ This transforms opacity token values declared with `%` into a number between `0`
 
 This transforms line-height token values declared with `%` into a unitless value.
 
-**matches**: `token.type` is `'lineHeights'`
+**matches**: `token.type` is `'lineHeight'` or `token.type` is `'typography'`
 
 #### before
 
@@ -625,7 +632,7 @@ This transforms line-height token values declared with `%` into a unitless value
 
 This transforms fontweight from keynames to fontweight numbers.
 
-**matches**: `token.type` is `'fontWeights'`
+**matches**: `token.type` is `'fontWeight'` or `token.type` is `'typography'`
 
 #### before
 
@@ -715,7 +722,7 @@ This transforms color modifiers from Tokens Studio to color values.
 
 This transforms letter-spacing token values declared with `%` to a value with `em`.
 
-**matches**: `token.type` is `'letterSpacing'`
+**matches**: `token.$extensions['studio.tokens'].originalType` is `'letterSpacing'` or `token.type` is `'typography'`
 
 #### before
 
