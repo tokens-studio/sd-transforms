@@ -127,9 +127,7 @@ describe('check and evaluate math', () => {
       platforms: {
         css: {
           transformGroup: 'tokens-studio',
-          options: {
-            mathFractionDigits: 3,
-          },
+          mathFractionDigits: 3,
           files: [
             {
               format: 'css/variables',
