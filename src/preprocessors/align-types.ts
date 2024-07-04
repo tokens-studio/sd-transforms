@@ -14,6 +14,10 @@ const typesMap = {
   spacing: 'dimension',
   sizing: 'dimension',
   borderRadius: 'dimension',
+  borderWidth: 'dimension',
+  letterSpacing: 'dimension',
+  paragraphSpacing: 'dimension',
+  paragraphIndent: 'dimension',
   text: 'content',
 } as Partial<Record<valueOfTokenTypes, string>>;
 
