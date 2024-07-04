@@ -104,7 +104,11 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
     transitive: true,
     filter: token => {
       const type = token.$type ?? token.type;
-      return typeof type === 'string' && ['letterSpacing', 'typography'].includes(type);
+      const originalType = token.$extensions?.['studio.tokens']?.originalType;
+      return (
+        typeof type === 'string' &&
+        (['letterSpacing', 'typography'].includes(type) || originalType === 'letterSpacing')
+      );
     },
     transform: token => transformLetterSpacingForCSS(token),
   });

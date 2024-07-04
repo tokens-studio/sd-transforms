@@ -14,6 +14,10 @@ const typesMap = {
   spacing: 'dimension',
   sizing: 'dimension',
   borderRadius: 'dimension',
+  borderWidth: 'dimension',
+  letterSpacing: 'dimension',
+  paragraphSpacing: 'dimension',
+  paragraphIndent: 'dimension',
   text: 'content',
 } as Partial<Record<valueOfTokenTypes, string>>;
 
@@ -31,11 +35,24 @@ function recurse(slice: DeepKeyTokenMap<false> | SingleToken<false>) {
   if (isToken) {
     const { $value, value, type, $type } = slice;
     const usesDTCG = Object.hasOwn(slice, '$value');
-    const t = (usesDTCG ? $type : type) as string;
+    const t = (usesDTCG ? $type : type) as valueOfTokenTypes;
     const v = usesDTCG ? $value : value;
     const tProp = `${usesDTCG ? '$' : ''}type` as '$type' | 'type';
     const newT = (typesMap[t as keyof typeof typesMap] ?? t) as valueOfTokenTypes;
-    (slice[tProp] as valueOfTokenTypes) = newT;
+    const k = 'studio.tokens' as keyof typeof slice.$extensions;
+
+    if (newT !== t) {
+      // replace the type with new type
+      (slice[tProp] as valueOfTokenTypes) = newT;
+      // store the original type as metadata
+      slice.$extensions = {
+        ...slice.$extensions,
+        [k]: {
+          ...(slice.$extensions?.[k] ?? {}),
+          originalType: t as TokenTypes,
+        },
+      };
+    }
 
     // now also check propsMap if we need to map some props
     if (typeof v === 'object') {
