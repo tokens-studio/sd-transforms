@@ -74,7 +74,8 @@ describe('expand composition tokens', () => {
   --sdCompositionHeaderFontSizes: 96px;
   --sdCompositionHeaderFontWeights: 700;
   --sdTypography: italic 800 26px/1.25 Arial;
-  --sdFontWeightRef: 800;
+  --sdFontWeightRefWeight: 800;
+  --sdFontWeightRefStyle: italic;
   --sdBorder: 4px solid #FFFF00;
   --sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
   --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
@@ -95,7 +96,8 @@ describe('expand composition tokens', () => {
   --sdCompositionHeaderFontSizes: 96px;
   --sdCompositionHeaderFontWeights: 700;
   --sdTypographyFontFamily: Arial;
-  --sdTypographyFontWeight: 800;
+  --sdTypographyFontWeightWeight: 800;
+  --sdTypographyFontWeightStyle: italic;
   --sdTypographyLineHeight: 1.25;
   --sdTypographyFontSize: 26px;
   --sdTypographyLetterSpacing: 0rem;
@@ -104,7 +106,8 @@ describe('expand composition tokens', () => {
   --sdTypographyTextDecoration: none;
   --sdTypographyTextCase: none;
   --sdTypographyFontStyle: italic;
-  --sdFontWeightRef: 800;
+  --sdFontWeightRefWeight: 800;
+  --sdFontWeightRefStyle: italic;
   --sdBorderColor: #ffff00;
   --sdBorderWidth: 4px;
   --sdBorderStyle: solid;

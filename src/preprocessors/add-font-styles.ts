@@ -66,15 +66,15 @@ function recurse(
       if (tokenType === 'typography') {
         const tokenTypographyValue = tokenValue as TokenTypographyValue & { fontStyle: string };
         if (tokenTypographyValue.fontWeight === undefined) return;
+
         const fontWeight = resolveFontWeight(
           `${tokenTypographyValue.fontWeight}`,
           refCopy,
           usesDtcg,
         );
         const { weight, style } = splitWeightStyle(fontWeight, alwaysAddFontStyle);
-
-        tokenTypographyValue.fontWeight = weight;
         if (style) {
+          tokenTypographyValue.fontWeight = weight;
           tokenTypographyValue.fontStyle = style;
         }
       } else if (tokenType === 'fontWeight') {
@@ -82,13 +82,19 @@ function recurse(
         const fontWeight = resolveFontWeight(`${tokenFontWeightsValue}`, refCopy, usesDtcg);
         const { weight, style } = splitWeightStyle(fontWeight, alwaysAddFontStyle);
 
-        // since tokenFontWeightsValue is a primitive (string), we have to permutate the change directly
-        token[`${usesDtcg ? '$' : ''}value`] = weight;
         if (style) {
-          (slice as DeepKeyTokenMap<false>)[`fontStyle`] = {
-            ...token,
-            [`${usesDtcg ? '$' : ''}type`]: 'fontStyle',
-            [`${usesDtcg ? '$' : ''}value`]: style,
+          // since tokenFontWeightsValue is a primitive (string), we have to permutate the change directly
+          (slice[key] as DeepKeyTokenMap<false>) = {
+            weight: {
+              ...token,
+              [`${usesDtcg ? '$' : ''}type`]: 'fontWeight',
+              [`${usesDtcg ? '$' : ''}value`]: weight,
+            },
+            style: {
+              ...token,
+              [`${usesDtcg ? '$' : ''}type`]: 'fontStyle',
+              [`${usesDtcg ? '$' : ''}value`]: style,
+            },
           };
         }
       }

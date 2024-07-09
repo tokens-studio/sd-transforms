@@ -42,8 +42,8 @@ describe('cross file references', () => {
   it('supports cross file references e.g. expanding typography', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(`
-  --sdTypoFontWeight: 400;
-  --sdTypoFontStyle: italic;
+  --sdTypoFontWeightWeight: 400;
+  --sdTypoFontWeightStyle: italic;
   --sdPrimaryFont: Inter;
   --sdFontWeight: 800;
   --sdLineHeight: 1.5;
@@ -67,14 +67,14 @@ describe('cross file references', () => {
   --sdTestTypographyTextFontSize: 25px;
   --sdTestTypographyTextLineHeight: 32px;
   --sdTestTypographyTextFontWeight: 700;
-  --sdWeight: 400;
-  --sdTypoAliasFontWeight: 400;
-  --sdTypoAliasFontStyle: italic;
+  --sdWeightWeight: 400;
+  --sdWeightStyle: italic;
+  --sdTypoAliasFontWeightWeight: 400;
+  --sdTypoAliasFontWeightStyle: italic;
   --sdTypo3FontFamily: Inter;
   --sdTypo3FontWeight: 800;
   --sdTypo3LineHeight: 1.5;
   --sdTypo3FontSize: 8px;
-  --sdFontStyle: italic;
 `);
   });
 });

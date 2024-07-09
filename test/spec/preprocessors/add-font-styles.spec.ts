@@ -106,8 +106,13 @@ describe('add font style', () => {
         fw: { value: 'SemiBold Italic', type: 'fontWeight' },
       }),
     ).to.eql({
-      fw: { value: 'SemiBold', type: 'fontWeight' },
-      fontStyle: { value: 'italic', type: 'fontStyle' },
+      fw: {
+        weight: {
+          value: 'SemiBold',
+          type: 'fontWeight',
+        },
+        style: { value: 'italic', type: 'fontStyle' },
+      },
     });
   });
 
@@ -122,8 +127,10 @@ describe('add font style', () => {
       }),
     ).to.eql({
       fw: {
-        weight: { $value: 'SemiBold', $type: 'fontWeight' },
-        fontStyle: { $value: 'italic', $type: 'fontStyle' },
+        weight: {
+          weight: { $value: 'SemiBold', $type: 'fontWeight' },
+          style: { $value: 'italic', $type: 'fontStyle' },
+        },
       },
     });
   });
@@ -244,7 +251,7 @@ describe('add font style', () => {
     });
   });
 
-  it('handlestinvalid fontweight structures e.g. mixing token group / token, also handles DTCG format', () => {
+  it('handles invalid fontweight structures e.g. mixing token group / token, also handles DTCG format', () => {
     // @ts-expect-error aligned types already here
     const tokens = {
       foo: {
@@ -277,7 +284,7 @@ describe('add font style', () => {
       thing: {
         $type: 'typography',
         $value: {
-          fontWeight: '700',
+          fontWeight: '{foo}',
         },
       },
     });

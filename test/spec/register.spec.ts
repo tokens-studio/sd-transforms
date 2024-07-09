@@ -178,7 +178,7 @@ const tokens = {
     },
     type: 'typography',
   },
-  'shadow-blur': {
+  blur: {
     value: '10',
     type: 'sizing',
   },
@@ -187,7 +187,7 @@ const tokens = {
       {
         x: '0',
         y: '4',
-        blur: '{shadow-blur}',
+        blur: '{blur}',
         spread: '0',
         color: 'rgba(0,0,0,0.4)',
         type: 'innerShadow',
@@ -337,7 +337,7 @@ describe('register', () => {
   --fontSizesH6: 16px;
   --fontSizesBody: 16px;
   --heading6: 700 16px/1 'Arial Black', 'Suisse Int\\'l', sans-serif;
-  --shadowBlur: 10px;
+  --blur: 10px;
   --shadow: inset 0 4px 10px 0 rgba(0,0,0,0.4);
   --borderWidth: 5px;
   --border: 5px solid #000000;
@@ -352,7 +352,7 @@ describe('register', () => {
       tokens,
       preprocessors: ['tokens-studio'],
       expand: {
-        include: ['border', 'boxShadow'],
+        include: ['border', 'shadow'],
       },
       platforms: {
         compose: {
@@ -386,6 +386,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.*
 
 object bar {
+  val blur = 10px
   val borderColor = #000000
   val borderStyle = solid
   val borderWidth = 5px
@@ -423,12 +424,11 @@ Arial Black, Suisse Int'l, sans-serif
   val lineHeightsHeading = 1.1
   val opacity = 0.25
   val shadowBlur = 10px
-  val shadowBlur = 10px
   val shadowColor = rgba(0,0,0,0.4)
+  val shadowOffsetX = 0
+  val shadowOffsetY = 4px
   val shadowSpread = 0
   val shadowType = innerShadow
-  val shadowX = 0
-  val shadowY = 4
   /** You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
   val spacingMultiValue = 8px 64px
   val spacingSm = 8px
