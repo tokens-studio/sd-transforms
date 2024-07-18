@@ -31,6 +31,10 @@ export const expandTypesMap = {
     paragraphIndent: 'dimension',
     textDecoration: 'other',
     textCase: 'other',
+    // even though this type does not yet exist in DTCG, it really should, since lineHeights can be both dimension or number
+    lineHeight: 'lineHeight',
+    // same as lineHeight except for fontWeight: recognized fontWeight keys (e.g. "regular") should be recognized as well as numbers
+    fontWeight: 'fontWeight',
   },
   /**
    * boxShadow/x/y are not shadow/offsetX/offsetY here because the SD expand on global level

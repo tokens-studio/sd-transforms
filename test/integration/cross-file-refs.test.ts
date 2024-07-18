@@ -32,7 +32,10 @@ let dict: StyleDictionary | undefined;
 describe('cross file references', () => {
   beforeEach(async () => {
     cleanup(dict);
-    dict = await init(cfg, { withSDBuiltins: false, expand: { typography: true } });
+    dict = await init(cfg, {
+      withSDBuiltins: false,
+      expand: { typography: true },
+    });
   });
 
   afterEach(async () => {
@@ -42,8 +45,8 @@ describe('cross file references', () => {
   it('supports cross file references e.g. expanding typography', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(`
-  --sdTypoFontWeightWeight: 400;
-  --sdTypoFontWeightStyle: italic;
+  --sdTypoFontWeight: 400;
+  --sdTypoFontStyle: italic;
   --sdPrimaryFont: Inter;
   --sdFontWeight: 800;
   --sdLineHeight: 1.5;
@@ -69,8 +72,8 @@ describe('cross file references', () => {
   --sdTestTypographyTextFontWeight: 700;
   --sdWeightWeight: 400;
   --sdWeightStyle: italic;
-  --sdTypoAliasFontWeightWeight: 400;
-  --sdTypoAliasFontWeightStyle: italic;
+  --sdTypoAliasFontWeight: 400;
+  --sdTypoAliasFontStyle: italic;
   --sdTypo3FontFamily: Inter;
   --sdTypo3FontWeight: 800;
   --sdTypo3LineHeight: 1.5;

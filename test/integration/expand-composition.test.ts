@@ -70,9 +70,9 @@ describe('expand composition tokens', () => {
   --sdCompositionFontSize: 96px;
   --sdCompositionFontFamily: Roboto;
   --sdCompositionFontWeight: 700;
-  --sdCompositionHeaderFontFamilies: Roboto;
-  --sdCompositionHeaderFontSizes: 96px;
-  --sdCompositionHeaderFontWeights: 700;
+  --sdCompositionHeaderFontFamily: Roboto;
+  --sdCompositionHeaderFontSize: 96px;
+  --sdCompositionHeaderFontWeight: 700;
   --sdTypography: italic 800 26px/1.25 Arial;
   --sdFontWeightRefWeight: 800;
   --sdFontWeightRefStyle: italic;
@@ -92,12 +92,11 @@ describe('expand composition tokens', () => {
   --sdCompositionFontSize: 96px;
   --sdCompositionFontFamily: Roboto;
   --sdCompositionFontWeight: 700;
-  --sdCompositionHeaderFontFamilies: Roboto;
-  --sdCompositionHeaderFontSizes: 96px;
-  --sdCompositionHeaderFontWeights: 700;
+  --sdCompositionHeaderFontFamily: Roboto;
+  --sdCompositionHeaderFontSize: 96px;
+  --sdCompositionHeaderFontWeight: 700;
   --sdTypographyFontFamily: Arial;
-  --sdTypographyFontWeightWeight: 800;
-  --sdTypographyFontWeightStyle: italic;
+  --sdTypographyFontWeight: 800;
   --sdTypographyLineHeight: 1.25;
   --sdTypographyFontSize: 26px;
   --sdTypographyLetterSpacing: 0rem;
@@ -111,23 +110,23 @@ describe('expand composition tokens', () => {
   --sdBorderColor: #ffff00;
   --sdBorderWidth: 4px;
   --sdBorderStyle: solid;
-  --sdShadowSingleX: 0rem;
-  --sdShadowSingleY: 4px;
   --sdShadowSingleBlur: 10px;
   --sdShadowSingleSpread: 0rem;
   --sdShadowSingleColor: rgba(0, 0, 0, 0.4);
   --sdShadowSingleType: innerShadow;
-  --sdShadowDouble1X: 0rem;
-  --sdShadowDouble1Y: 4px;
+  --sdShadowSingleOffsetX: 0rem;
+  --sdShadowSingleOffsetY: 4px;
   --sdShadowDouble1Blur: 10px;
   --sdShadowDouble1Spread: 0rem;
   --sdShadowDouble1Color: rgba(0, 0, 0, 0.4);
   --sdShadowDouble1Type: innerShadow;
-  --sdShadowDouble2X: 0rem;
-  --sdShadowDouble2Y: 8px;
+  --sdShadowDouble1OffsetX: 0rem;
+  --sdShadowDouble1OffsetY: 4px;
   --sdShadowDouble2Blur: 12px;
   --sdShadowDouble2Spread: 5px;
-  --sdShadowDouble2Color: rgba(0, 0, 0, 0.4);`,
+  --sdShadowDouble2Color: rgba(0, 0, 0, 0.4);
+  --sdShadowDouble2OffsetX: 0rem;
+  --sdShadowDouble2OffsetY: 8px;`,
     );
   });
 
@@ -162,17 +161,17 @@ describe('expand composition tokens', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     expect(file).to.include(
       `
-  --sdDeepRefShadowMulti1X: 0rem;
-  --sdDeepRefShadowMulti1Y: 4px;
   --sdDeepRefShadowMulti1Blur: 10px;
   --sdDeepRefShadowMulti1Spread: 0rem;
   --sdDeepRefShadowMulti1Color: rgba(0, 0, 0, 0.4);
   --sdDeepRefShadowMulti1Type: innerShadow;
-  --sdDeepRefShadowMulti2X: 0rem;
-  --sdDeepRefShadowMulti2Y: 8px;
+  --sdDeepRefShadowMulti1OffsetX: 0rem;
+  --sdDeepRefShadowMulti1OffsetY: 4px;
   --sdDeepRefShadowMulti2Blur: 12px;
   --sdDeepRefShadowMulti2Spread: 5px;
-  --sdDeepRefShadowMulti2Color: rgba(0, 0, 0, 0.4)`,
+  --sdDeepRefShadowMulti2Color: rgba(0, 0, 0, 0.4);
+  --sdDeepRefShadowMulti2OffsetX: 0rem;
+  --sdDeepRefShadowMulti2OffsetY: 8px;`,
     );
   });
 });
