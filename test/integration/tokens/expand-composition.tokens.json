@@ -22,9 +22,9 @@
     },
     "header": {
       "value": {
-        "fontFamilies": "{composition.fontFamily}",
-        "fontSizes": "96",
-        "fontWeights": "{composition.fontWeight}"
+        "fontFamily": "{composition.fontFamily}",
+        "fontSize": "96",
+        "fontWeight": "{composition.fontWeight}"
       },
       "type": "composition"
     }

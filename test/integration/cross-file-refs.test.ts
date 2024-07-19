@@ -32,7 +32,10 @@ let dict: StyleDictionary | undefined;
 describe('cross file references', () => {
   beforeEach(async () => {
     cleanup(dict);
-    dict = await init(cfg, { withSDBuiltins: false, expand: { typography: true } });
+    dict = await init(cfg, {
+      withSDBuiltins: false,
+      expand: { typography: true },
+    });
   });
 
   afterEach(async () => {
@@ -67,14 +70,14 @@ describe('cross file references', () => {
   --sdTestTypographyTextFontSize: 25px;
   --sdTestTypographyTextLineHeight: 32px;
   --sdTestTypographyTextFontWeight: 700;
-  --sdWeight: 400;
+  --sdWeightWeight: 400;
+  --sdWeightStyle: italic;
   --sdTypoAliasFontWeight: 400;
   --sdTypoAliasFontStyle: italic;
   --sdTypo3FontFamily: Inter;
   --sdTypo3FontWeight: 800;
   --sdTypo3LineHeight: 1.5;
   --sdTypo3FontSize: 8px;
-  --sdFontStyle: italic;
 `);
   });
 });

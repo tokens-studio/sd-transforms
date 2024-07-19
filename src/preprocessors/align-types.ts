@@ -1,4 +1,5 @@
 import { DeepKeyTokenMap, SingleToken, TokenTypes } from '@tokens-studio/types';
+import { typeDtcgDelegate } from 'style-dictionary/utils';
 
 // TODO: composition tokens props also need the same types alignments..
 // nested composition tokens are out of scope.
@@ -86,7 +87,8 @@ function recurse(slice: DeepKeyTokenMap<false> | SingleToken<false>) {
 }
 
 export function alignTypes(dictionary: DeepKeyTokenMap<false>): DeepKeyTokenMap<false> {
-  const copy = structuredClone(dictionary);
+  // pre-emptively type dtcg delegate because otherwise we cannot align types properly here
+  const copy = typeDtcgDelegate(structuredClone(dictionary));
   recurse(copy);
   return copy;
 }
