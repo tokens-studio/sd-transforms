@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.0
+
+### Minor Changes
+
+- ff31df8: Add lineHeight and fontWeight types to the expandTypesMap. Even though DTCG spec does not yet recognize them, they really are special types and marking them as such enables transforms to target them specifically.
+- ff31df8: Properly split fontWeight tokens that contain fontStyle into the parent group. For typography tokens this was correct but for fontWeight tokens, collision could occur between the token and its sibling tokens.
+
 ## 1.1.0
 
 ### Minor Changes
