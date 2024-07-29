@@ -179,6 +179,27 @@ describe('add font style', () => {
     });
   });
 
+  it(`does not affect fontWeight tokens with alwaysAddFontStyle option`, () => {
+    expect(
+      addFontStyles(
+        // @ts-expect-error fontWeight (singular vs plural) doesn't exist on the type
+        // but we assume it's already preprocessed and aligned here
+        {
+          foo: {
+            value: 'Bold',
+            type: 'fontWeight',
+          },
+        } as DeepKeyTokenMap<false>,
+        { alwaysAddFontStyle: true },
+      ),
+    ).to.eql({
+      foo: {
+        value: 'Bold',
+        type: 'fontWeight',
+      },
+    });
+  });
+
   it(`allows always adding a default fontStyle for DTCG formatted tokens`, () => {
     expect(
       addFontStyles(

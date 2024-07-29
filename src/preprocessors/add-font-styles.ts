@@ -80,7 +80,8 @@ function recurse(
       } else if (tokenType === 'fontWeight') {
         const tokenFontWeightsValue = tokenValue as SingleFontWeightsToken['value'];
         const fontWeight = resolveFontWeight(`${tokenFontWeightsValue}`, refCopy, usesDtcg);
-        const { weight, style } = splitWeightStyle(fontWeight, alwaysAddFontStyle);
+        // alwaysAddFontStyle should only apply to typography tokens, so we pass `false` here
+        const { weight, style } = splitWeightStyle(fontWeight, false);
 
         if (style) {
           // since tokenFontWeightsValue is a primitive (string), we have to permutate the change directly
