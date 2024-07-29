@@ -1,5 +1,14 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.1
+
+### Patch Changes
+
+- c6c9223: Add composition to expandTypesMap.
+- 19f4530: Fix alwaysAddFontStyle option to not apply to tokens of type fontWeight(s), only meant for typography tokens.
+- 32c2d13: textCase and textDecoration types should be kept, instead of changing to "other". This should help with transforms targeting those tokens, whereas "other" is not a useful type conversion whatsoever.
+- 3a044ed: Remove the boxShadow expandTypesMap, this is no longer needed since SD 4.0.1 as it runs user defined preprocessors before expanding tokens.
+
 ## 1.2.0
 
 ### Minor Changes
