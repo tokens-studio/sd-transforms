@@ -36,14 +36,4 @@ export const expandTypesMap = {
     // same as lineHeight except for fontWeight: recognized fontWeight keys (e.g. "regular") should be recognized as well as numbers
     fontWeight: 'fontWeight',
   },
-  /**
-   * boxShadow/x/y are not shadow/offsetX/offsetY here because the SD expand on global level
-   * happens before these types are aligned in sd-transforms preprocessor
-   */
-  boxShadow: {
-    x: 'dimension',
-    y: 'dimension',
-    blur: 'dimension',
-    spread: 'dimension',
-  },
 };
