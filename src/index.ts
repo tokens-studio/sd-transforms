@@ -34,4 +34,15 @@ export const expandTypesMap = {
     // for fontWeight: recognized fontWeight keys (e.g. "regular")
     // for lineHeight: lineHeights can be both dimension or number
   },
+  composition: {
+    boxShadow: 'shadow',
+    spacing: 'dimension',
+    sizing: 'dimension',
+    borderRadius: 'dimension',
+    borderWidth: 'dimension',
+    letterSpacing: 'dimension',
+    paragraphSpacing: 'dimension',
+    paragraphIndent: 'dimension',
+    text: 'content',
+  },
 };
