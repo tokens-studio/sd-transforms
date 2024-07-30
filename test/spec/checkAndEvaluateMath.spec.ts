@@ -86,6 +86,27 @@ describe('check and evaluate math', () => {
     ).to.equal(14);
   });
 
+  it('supports expr-eval expressions with units', () => {
+    expect(checkAndEvaluateMath({ value: 'roundTo(4px / 7, 1)', type: 'dimension' })).to.equal(
+      '0.6px',
+    );
+    expect(
+      checkAndEvaluateMath({ value: '8 * 14px roundTo(4 / 7px, 1)', type: 'dimension' }),
+    ).to.equal('112px 0.6px');
+    expect(
+      checkAndEvaluateMath({ value: 'roundTo(4px / 7px, 1) 8 * 14px', type: 'dimension' }),
+    ).to.equal('0.6px 112px');
+    expect(
+      checkAndEvaluateMath({
+        value: 'min(10px, 24px, 5px, 12px, 6px) 8 * 14px',
+        type: 'dimension',
+      }),
+    ).to.equal('5px 112px');
+    expect(
+      checkAndEvaluateMath({ value: 'ceil(roundTo(16px/1.2,0)/2)*2', type: 'dimension' }),
+    ).to.equal('14px');
+  });
+
   it('should support expr eval expressions in combination with regular math', () => {
     expect(checkAndEvaluateMath({ value: 'roundTo(4 / 7, 1) * 24', type: 'dimension' })).to.equal(
       14.4,
