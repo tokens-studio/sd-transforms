@@ -78,15 +78,9 @@ function splitMultiIntoSingleValues(expr: string): string[] {
 function parseAndReduce(expr: string, fractionDigits = defaultFractionDigits): string | number {
   let result: string | number = expr;
 
-  let evaluated;
-  // Try to evaluate as expr-eval expression
-  try {
-    evaluated = parser.evaluate(`${result}`);
-    if (typeof evaluated === 'number') {
-      result = evaluated;
-    }
-  } catch (ex) {
-    //
+  // Check if expression is already a number
+  if (!isNaN(Number(result))) {
+    return result;
   }
 
   // We check for px unit, then remove it, since these are essentially numbers in tokens context
@@ -108,22 +102,37 @@ function parseAndReduce(expr: string, fractionDigits = defaultFractionDigits): s
   }
   const resultUnit = Array.from(foundUnits)[0] ?? (hasPx ? 'px' : '');
 
-  // Remove it here so we can evaluate expressions like 16px + 24px
-  const calcParsed = parse(noPixExpr, { allowInlineCommnets: false });
-
-  // No expression to evaluate, just return it (in case of number as string e.g. '10')
-  if (calcParsed.nodes.length === 1 && calcParsed.nodes[0].type === 'Number') {
-    return `${result}`;
-  }
-
-  // Attempt to reduce the math expression
-  const reduced = reduceExpression(calcParsed);
-  // E.g. if type is Length, like 4 * 7rem would be 28rem
-  if (reduced) {
-    result = reduced.value;
+  if (!isNaN(Number(noPixExpr))) {
+    result = Number(noPixExpr);
   }
 
   if (typeof result !== 'number') {
+    // Try to evaluate as expr-eval expression
+    let evaluated;
+    try {
+      evaluated = parser.evaluate(`${noPixExpr}`);
+      if (typeof evaluated === 'number') {
+        result = evaluated;
+      }
+    } catch (ex) {
+      // no-op
+    }
+  }
+
+  if (typeof result !== 'number') {
+    // Try to evaluate as postcss-calc-ast-parser expression
+    const calcParsed = parse(noPixExpr, { allowInlineCommnets: false });
+
+    // Attempt to reduce the math expression
+    const reduced = reduceExpression(calcParsed);
+    // E.g. if type is Length, like 4 * 7rem would be 28rem
+    if (reduced) {
+      result = reduced.value;
+    }
+  }
+
+  if (typeof result !== 'number') {
+    // parsing failed, return the original expression
     return result;
   }
 
