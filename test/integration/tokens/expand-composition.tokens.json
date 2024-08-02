@@ -33,9 +33,9 @@
     "value": {
       "fontFamily": "Arial",
       "fontWeight": "{fontWeightRef}",
-      "lineHeight": "1.25",
+      "lineHeight": "125%",
       "fontSize": "26",
-      "letterSpacing": "0",
+      "letterSpacing": "125%",
       "paragraphSpacing": "0",
       "paragraphIndent": "0",
       "textDecoration": "none",
