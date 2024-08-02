@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.2
+
+### Patch Changes
+
+- 0dea2af: fix: evaluate math expressions with units
+- 4fe336f: Override lineHeight expandTypesMap from SD. Add letterSpacing override. This is needed for our lineHeight and letterSpacing transforms to apply.
+
 ## 1.2.1
 
 ### Patch Changes
