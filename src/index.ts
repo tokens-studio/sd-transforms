@@ -33,6 +33,14 @@ export const expandTypesMap = {
     // because no DTCG type that currently exists provides a good match.
     // for fontWeight: recognized fontWeight keys (e.g. "regular")
     // for lineHeight: lineHeights can be both dimension or number
+
+    // overrides https://github.com/amzn/style-dictionary/blob/main/lib/utils/expandObjectTokens.js#L54-L55
+    // so that our lineHeight and letterSpacing transforms can still apply
+    lineHeight: 'lineHeight',
+
+    // this one can be removed once we can rely on preExpand meta:
+    // https://github.com/amzn/style-dictionary/pull/1269
+    letterSpacing: 'letterSpacing',
   },
   composition: {
     boxShadow: 'shadow',

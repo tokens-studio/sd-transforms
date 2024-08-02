@@ -99,7 +99,7 @@ describe('expand composition tokens', () => {
   --sdTypographyFontWeight: 800;
   --sdTypographyLineHeight: 1.25;
   --sdTypographyFontSize: 26px;
-  --sdTypographyLetterSpacing: 0rem;
+  --sdTypographyLetterSpacing: 1.25em;
   --sdTypographyParagraphSpacing: 0rem;
   --sdTypographyParagraphIndent: 0rem;
   --sdTypographyTextDecoration: none;
@@ -138,7 +138,7 @@ describe('expand composition tokens', () => {
   --sdRefFontWeight: 800;
   --sdRefLineHeight: 1.25;
   --sdRefFontSize: 26px;
-  --sdRefLetterSpacing: 0rem;
+  --sdRefLetterSpacing: 1.25em;
   --sdRefParagraphSpacing: 0rem;
   --sdRefParagraphIndent: 0rem;
   --sdRefTextDecoration: none;
@@ -148,7 +148,7 @@ describe('expand composition tokens', () => {
   --sdDeepRefFontWeight: 800;
   --sdDeepRefLineHeight: 1.25;
   --sdDeepRefFontSize: 26px;
-  --sdDeepRefLetterSpacing: 0rem;
+  --sdDeepRefLetterSpacing: 1.25em;
   --sdDeepRefParagraphSpacing: 0rem;
   --sdDeepRefParagraphIndent: 0rem;
   --sdDeepRefTextDecoration: none;
