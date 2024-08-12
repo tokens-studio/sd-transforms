@@ -120,8 +120,17 @@ function parseAndReduce(expr: string, fractionDigits = defaultFractionDigits): s
   }
 
   if (typeof result !== 'number') {
+    let exprToParse = noPixExpr;
+    // math operators, excluding *
+    // (** or ^ exponent would theoretically be fine, but postcss-calc-ast-parser does not support it
+    const operatorsRegex = /[/+%-]/g;
+    // if we only have * operator, we can consider expression as unitless and compute it that way
+    // we already know we dont have mixed units from (foundUnits.size > 1) guard above
+    if (!exprToParse.match(operatorsRegex)) {
+      exprToParse = exprToParse.replace(new RegExp(resultUnit, 'g'), '');
+    }
     // Try to evaluate as postcss-calc-ast-parser expression
-    const calcParsed = parse(noPixExpr, { allowInlineCommnets: false });
+    const calcParsed = parse(exprToParse, { allowInlineCommnets: false });
 
     // Attempt to reduce the math expression
     const reduced = reduceExpression(calcParsed);

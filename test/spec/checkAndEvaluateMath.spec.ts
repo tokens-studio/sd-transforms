@@ -29,13 +29,21 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath({ value: '4 * 7px * 8px', type: 'dimension' })).to.equal('224px');
   });
 
-  it('cannot evaluate math expressions where more than one token has a unit, when unit is not px', () => {
-    expect(checkAndEvaluateMath({ value: '4em * 7em', type: 'dimension' })).to.equal('4em * 7em');
-    expect(checkAndEvaluateMath({ value: '4 * 7em * 8em', type: 'dimension' })).to.equal(
-      '4 * 7em * 8em',
-    );
-    // exception for pixels, it strips px, making it 4 * 7em = 28em = 448px, where 4px * 7em would be 4px * 112px = 448px as well
+  it('can evaluate math expressions where more than one token has a unit, assuming no mixed units are used', () => {
+    expect(checkAndEvaluateMath({ value: '4em + 7em', type: 'dimension' })).to.equal('11em');
+    expect(checkAndEvaluateMath({ value: '4 + 7rem', type: 'dimension' })).to.equal('4 + 7rem');
+    expect(checkAndEvaluateMath({ value: '4em + 7rem', type: 'dimension' })).to.equal('4em + 7rem');
+  });
+
+  it('can evaluate mixed units if operators are exclusively multiplication and the mix is px or unitless', () => {
+    expect(checkAndEvaluateMath({ value: '4 * 7em * 8em', type: 'dimension' })).to.equal('224em');
     expect(checkAndEvaluateMath({ value: '4px * 7em', type: 'dimension' })).to.equal('28em');
+    // 50em would be incorrect when dividing, as em grows, result should shrink, but doesn't
+    expect(checkAndEvaluateMath({ value: '1000 / 20em', type: 'dimension' })).to.equal(
+      '1000 / 20em',
+    );
+    // cannot be expressed/resolved without knowing the value of em
+    expect(checkAndEvaluateMath({ value: '4px + 7em', type: 'dimension' })).to.equal('4px + 7em');
   });
 
   it('can evaluate math expressions where more than one token has a unit, as long as for each piece of the expression the unit is the same', () => {
