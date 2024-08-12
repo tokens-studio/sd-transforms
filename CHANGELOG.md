@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.3
+
+### Patch Changes
+
+- 1085fe8: Improve math compute utility to better deal with mixed units computations. Expand on tests.
+
 ## 1.2.2
 
 ### Patch Changes
