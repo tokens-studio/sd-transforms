@@ -10,5 +10,6 @@ export interface TransformOptions {
   withSDBuiltins?: boolean;
   alwaysAddFontStyle?: boolean;
   excludeParentKeys?: boolean;
+  mathFractionDigits?: number;
   ['ts/color/modifiers']?: ColorModifierOptions;
 }

@@ -1,8 +1,9 @@
 import type { Config } from 'style-dictionary/types';
 import StyleDictionary from 'style-dictionary';
 import { register } from '../../src/register.js';
+import { TransformOptions } from '../../src/TransformOptions.js';
 
-export async function init(cfg: Config, transformOpts = {}) {
+export async function init(cfg: Config, transformOpts: TransformOptions = {}) {
   register(StyleDictionary, transformOpts);
   const dict = new StyleDictionary({
     ...cfg,
