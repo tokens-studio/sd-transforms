@@ -34,7 +34,6 @@ describe('cross file references', () => {
     cleanup(dict);
     dict = await init(cfg, {
       withSDBuiltins: false,
-      expand: { typography: true },
     });
   });
 
