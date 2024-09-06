@@ -17,6 +17,11 @@ describe('transform line height', () => {
     expect(transformLineHeight({ value: 'not-a-float%' })).to.equal('not-a-float%');
   });
 
+  it('keeps number values as is', () => {
+    expect(transformLineHeight({ value: 1 })).to.equal(1);
+    expect(transformLineHeight({ value: 2.2 })).to.equal(2.2);
+  });
+
   describe('composite tokens', () => {
     it('should transforms letter spacing % to em in typography letterSpacing prop', () => {
       expect(
