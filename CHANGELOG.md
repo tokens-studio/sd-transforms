@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.4
+
+### Patch Changes
+
+- b9aee1e: Fix lineHeight transform to keep numbers as numbers, and not stringify them.
+
 ## 1.2.3
 
 ### Patch Changes
