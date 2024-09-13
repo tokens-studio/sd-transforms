@@ -167,6 +167,7 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
     type: 'value',
     transitive: true,
     filter: token =>
+      typeof (token.$value ?? token.value) === 'string' &&
       (token.$type ?? token.type) === 'color' &&
       token.$extensions &&
       token.$extensions['studio.tokens']?.modify,
