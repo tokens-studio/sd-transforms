@@ -24,8 +24,8 @@ export function transformHEXRGBaForCSS(token: DesignToken): DesignToken['value']
     });
   };
 
-  const transformProp = (val: Record<string, string>, prop: string) => {
-    if (val[prop] !== undefined) {
+  const transformProp = (val: Record<string, unknown>, prop: string) => {
+    if (val[prop] !== undefined && typeof val[prop] === 'string') {
       val[prop] = transformHEXRGBa(val[prop]);
     }
     return val;
