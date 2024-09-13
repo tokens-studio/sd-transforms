@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.5
+
+### Patch Changes
+
+- 61af02f: Check for color transforms that the value is of type string, since other color object types could occur from previously ran transforms.
+
 ## 1.2.4
 
 ### Patch Changes
