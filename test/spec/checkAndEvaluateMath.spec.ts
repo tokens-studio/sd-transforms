@@ -141,34 +141,41 @@ describe('check and evaluate math', () => {
     );
   });
 
-  it('allows a `mathFractionDigits` option to control the rounding of values in math', async () => {
-    const dict = await init({
-      tokens: {
-        foo: {
-          value: '5',
-          type: 'dimension',
+  [
+    { usesRegisterOptions: true },
+    { usesRegisterOptions: false }, // instead, uses platform config
+  ].forEach(({ usesRegisterOptions }) => {
+    it(`allows a \`mathFractionDigits\` option to control the rounding of values in math (usesRegisterOptions: ${usesRegisterOptions}`, async () => {
+      const cfg = {
+        tokens: {
+          foo: {
+            value: '5',
+            type: 'dimension',
+          },
+          bar: {
+            value: '{foo} / 16',
+            type: 'dimension',
+          },
         },
-        bar: {
-          value: '{foo} / 16',
-          type: 'dimension',
+        platforms: {
+          css: {
+            transformGroup: 'tokens-studio',
+            mathFractionDigits: !usesRegisterOptions ? 3 : undefined,
+            files: [
+              {
+                format: 'css/variables',
+                destination: 'foo.css',
+              },
+            ],
+          },
         },
-      },
-      platforms: {
-        css: {
-          transformGroup: 'tokens-studio',
-          mathFractionDigits: 3,
-          files: [
-            {
-              format: 'css/variables',
-              destination: 'foo.css',
-            },
-          ],
-        },
-      },
+      };
+      const initTransformOptions = { mathFractionDigits: usesRegisterOptions ? 3 : undefined };
+      const dict = await init(cfg, initTransformOptions);
+      const enrichedTokens = await dict?.exportPlatform('css'); // platform to parse for is 'css' in this case
+      cleanup(dict);
+      expect((enrichedTokens?.bar as TransformedToken).value).to.eql('0.313px');
     });
-    const enrichedTokens = await dict?.exportPlatform('css'); // platform to parse for is 'css' in this case
-    cleanup(dict);
-    expect((enrichedTokens?.bar as TransformedToken).value).to.eql('0.313px');
   });
 
   it('supports boolean values', () => {
