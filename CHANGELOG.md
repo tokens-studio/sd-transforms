@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.6
+
+### Patch Changes
+
+- b4461f4: Ensure that shadow value is still of type object (either Object or Array) before attempting to resolve math for each property/item.
+
 ## 1.2.5
 
 ### Patch Changes
