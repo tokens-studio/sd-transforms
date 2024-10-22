@@ -262,5 +262,14 @@ describe('check and evaluate math', () => {
         color: '#000',
       });
     });
+
+    it('keeps values of type "object" that are not actual objects as is', () => {
+      expect(
+        checkAndEvaluateMath({
+          value: ['0px 4px 12px #000000', '0px 8px 18px #0000008C'],
+          type: 'shadow',
+        }),
+      ).to.eql(['0px 4px 12px #000000', '0px 8px 18px #0000008C']);
+    });
   });
 });

@@ -328,7 +328,7 @@ describe('register', () => {
   --colorsGradient: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.00) 45%);
   --lineHeightsHeading: 1.1;
   --lineHeightsBody: 1.4;
-  --letterSpacingDefault: 0rem;
+  --letterSpacingDefault: 0;
   --letterSpacingIncreased: 1.5em;
   --letterSpacingDecreased: -0.05em;
   --fontWeightsHeadingRegular: 600;

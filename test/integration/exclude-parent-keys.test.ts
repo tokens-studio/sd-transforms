@@ -40,7 +40,7 @@ describe('exclude parent keys', () => {
       error = e.message;
     });
     expect(error).to.equal(
-      '\nReference Errors:\nSome token references (2) could not be found.\nUse log.verbosity "verbose" or use CLI option --verbose for more details.\n',
+      '\nReference Errors:\nSome token references (2) could not be found.\nUse log.verbosity "verbose" or use CLI option --verbose for more details.\nRefer to: https://styledictionary.com/reference/logging/\n',
     );
   });
 
