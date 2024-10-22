@@ -100,8 +100,8 @@ describe('expand composition tokens', () => {
   --sdTypographyLineHeight: 1.25;
   --sdTypographyFontSize: 26px;
   --sdTypographyLetterSpacing: 1.25em;
-  --sdTypographyParagraphSpacing: 0rem;
-  --sdTypographyParagraphIndent: 0rem;
+  --sdTypographyParagraphSpacing: 0;
+  --sdTypographyParagraphIndent: 0;
   --sdTypographyTextDecoration: none;
   --sdTypographyTextCase: none;
   --sdTypographyFontStyle: italic;
@@ -111,21 +111,21 @@ describe('expand composition tokens', () => {
   --sdBorderWidth: 4px;
   --sdBorderStyle: solid;
   --sdShadowSingleBlur: 10px;
-  --sdShadowSingleSpread: 0rem;
+  --sdShadowSingleSpread: 0;
   --sdShadowSingleColor: rgba(0, 0, 0, 0.4);
   --sdShadowSingleType: innerShadow;
-  --sdShadowSingleOffsetX: 0rem;
+  --sdShadowSingleOffsetX: 0;
   --sdShadowSingleOffsetY: 4px;
   --sdShadowDouble1Blur: 10px;
-  --sdShadowDouble1Spread: 0rem;
+  --sdShadowDouble1Spread: 0;
   --sdShadowDouble1Color: rgba(0, 0, 0, 0.4);
   --sdShadowDouble1Type: innerShadow;
-  --sdShadowDouble1OffsetX: 0rem;
+  --sdShadowDouble1OffsetX: 0;
   --sdShadowDouble1OffsetY: 4px;
   --sdShadowDouble2Blur: 12px;
   --sdShadowDouble2Spread: 5px;
   --sdShadowDouble2Color: rgba(0, 0, 0, 0.4);
-  --sdShadowDouble2OffsetX: 0rem;
+  --sdShadowDouble2OffsetX: 0;
   --sdShadowDouble2OffsetY: 8px;`,
     );
   });
@@ -139,8 +139,8 @@ describe('expand composition tokens', () => {
   --sdRefLineHeight: 1.25;
   --sdRefFontSize: 26px;
   --sdRefLetterSpacing: 1.25em;
-  --sdRefParagraphSpacing: 0rem;
-  --sdRefParagraphIndent: 0rem;
+  --sdRefParagraphSpacing: 0;
+  --sdRefParagraphIndent: 0;
   --sdRefTextDecoration: none;
   --sdRefTextCase: none;
   --sdRefFontStyle: italic;
@@ -149,8 +149,8 @@ describe('expand composition tokens', () => {
   --sdDeepRefLineHeight: 1.25;
   --sdDeepRefFontSize: 26px;
   --sdDeepRefLetterSpacing: 1.25em;
-  --sdDeepRefParagraphSpacing: 0rem;
-  --sdDeepRefParagraphIndent: 0rem;
+  --sdDeepRefParagraphSpacing: 0;
+  --sdDeepRefParagraphIndent: 0;
   --sdDeepRefTextDecoration: none;
   --sdDeepRefTextCase: none;
   --sdDeepRefFontStyle: italic;`,
@@ -162,15 +162,15 @@ describe('expand composition tokens', () => {
     expect(file).to.include(
       `
   --sdDeepRefShadowMulti1Blur: 10px;
-  --sdDeepRefShadowMulti1Spread: 0rem;
+  --sdDeepRefShadowMulti1Spread: 0;
   --sdDeepRefShadowMulti1Color: rgba(0, 0, 0, 0.4);
   --sdDeepRefShadowMulti1Type: innerShadow;
-  --sdDeepRefShadowMulti1OffsetX: 0rem;
+  --sdDeepRefShadowMulti1OffsetX: 0;
   --sdDeepRefShadowMulti1OffsetY: 4px;
   --sdDeepRefShadowMulti2Blur: 12px;
   --sdDeepRefShadowMulti2Spread: 5px;
   --sdDeepRefShadowMulti2Color: rgba(0, 0, 0, 0.4);
-  --sdDeepRefShadowMulti2OffsetX: 0rem;
+  --sdDeepRefShadowMulti2OffsetX: 0;
   --sdDeepRefShadowMulti2OffsetY: 8px;`,
     );
   });

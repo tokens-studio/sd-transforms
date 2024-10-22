@@ -175,7 +175,9 @@ export function checkAndEvaluateMath(
   };
 
   const transformProp = (val: Record<string, number | string>, prop: string) => {
-    val[prop] = resolveMath(val[prop]);
+    if (typeof val === 'object' && val[prop] !== undefined) {
+      val[prop] = resolveMath(val[prop]);
+    }
     return val;
   };
 

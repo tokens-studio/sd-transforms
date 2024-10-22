@@ -62,7 +62,7 @@ describe('sd-transforms smoke tests', () => {
   --sdColorsGradient: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.00) 45%);
   --sdLineHeightsHeading: 1.1;
   --sdLineHeightsBody: 1.4;
-  --sdLetterSpacingDefault: 0rem;
+  --sdLetterSpacingDefault: 0;
   --sdLetterSpacingIncreased: 1.5em;
   --sdLetterSpacingDecreased: -0.05em;
   --sdFontWeightsHeadingRegular: 600;
@@ -117,7 +117,7 @@ describe('sd-transforms smoke tests', () => {
   --sd-colors-gradient: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.00) 45%);
   --sd-line-heights-heading: 1.1;
   --sd-line-heights-body: 1.4;
-  --sd-letter-spacing-default: 0rem;
+  --sd-letter-spacing-default: 0;
   --sd-letter-spacing-increased: 1.5em;
   --sd-letter-spacing-decreased: -0.05em;
   --sd-font-weights-heading-regular: 600;
