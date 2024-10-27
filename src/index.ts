@@ -11,6 +11,7 @@ export { transformDimension } from './transformDimension.js';
 export { transformFontWeight } from './transformFontWeight.js';
 export { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
 export { transformLineHeight } from './transformLineHeight.js';
+export type { TransformOptions } from './TransformOptions.js';
 export { transformOpacity } from './transformOpacity.js';
 
 export { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
