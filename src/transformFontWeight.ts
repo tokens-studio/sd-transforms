@@ -58,7 +58,7 @@ export function transformFontWeight(token: DesignToken): DesignToken['value'] {
     let mapped;
     // lowercase to make the following code case insensitive
     const weight = match.groups.weight.toLowerCase() as keyof typeof fontWeightMap;
-    const style = match.groups.style ? match.groups.style.toLowerCase() : '';
+    const style = match.groups.style?.toLowerCase() ?? '';
 
     // If we only have 1 captured group, check whether it's a style or a weight.
     // "ExtraBold" and "Italic" are both valid, one is a weight and the other is a style.
