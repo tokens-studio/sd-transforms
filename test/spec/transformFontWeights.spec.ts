@@ -38,6 +38,7 @@ describe('transform dimension', () => {
     expect(transformFontWeight({ value: '' })).to.equal('');
     expect(transformFontWeight({ value: 'no_match_pattern' })).to.equal('no_match_pattern');
   });
+
   describe('composite tokens', () => {
     it('should transforms letter spacing % to em in typography letterSpacing prop', () => {
       expect(

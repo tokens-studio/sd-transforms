@@ -33,8 +33,6 @@ export const fontWeightMap = {
   extrablack: 950,
 };
 
-// fontWeight: { value: 'normal' }
-
 export const fontStyles = ['italic', 'oblique', 'normal'];
 export const fontWeightReg = new RegExp(
   `(?<weight>.+?)\\s?(?<style>${fontStyles.join('|')})?$`,
