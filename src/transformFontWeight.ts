@@ -33,6 +33,8 @@ export const fontWeightMap = {
   extrablack: 950,
 };
 
+// fontWeight: { value: 'normal' }
+
 export const fontStyles = ['italic', 'oblique', 'normal'];
 export const fontWeightReg = new RegExp(
   `(?<weight>.+?)\\s?(?<style>${fontStyles.join('|')})?$`,
@@ -47,21 +49,31 @@ export function transformFontWeight(token: DesignToken): DesignToken['value'] {
   const type = token.$type ?? token.type;
   if (val === undefined) return undefined;
 
-  const transformWeight = (weight: number | string) => {
-    const match = `${weight}`.match(fontWeightReg);
-
-    let mapped;
-    if (match?.groups?.weight) {
-      mapped =
-        fontWeightMap[
-          match?.groups?.weight.replace(/\s/g, '').toLowerCase() as keyof typeof fontWeightMap
-        ];
-      if (match.groups.style) {
-        mapped = `${mapped} ${match.groups.style.toLowerCase()}`;
-      }
+  const transformWeight = (fontWeight: number | string) => {
+    const match = `${fontWeight}`.match(fontWeightReg);
+    if (!match?.groups) {
+      return fontWeight;
     }
 
-    return mapped ?? weight;
+    let mapped;
+    // lowercase to make the following code case insensitive
+    const weight = match.groups.weight.toLowerCase() as keyof typeof fontWeightMap;
+    const style = match.groups.style ? match.groups.style.toLowerCase() : '';
+
+    // If we only have 1 captured group, check whether it's a style or a weight.
+    // "ExtraBold" and "Italic" are both valid, one is a weight and the other is a style.
+    if (!style && !fontWeightMap[weight] && fontStyles.includes(weight)) {
+      // if it's a style, just return as is (but lowercased now)
+      return weight;
+    } else {
+      mapped = fontWeightMap[weight.replace(/\s/g, '') as keyof typeof fontWeightMap] ?? weight;
+    }
+
+    if (weight && style) {
+      mapped = `${mapped} ${style}`;
+    }
+
+    return mapped;
   };
 
   if (type === 'typography') {

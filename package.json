@@ -35,9 +35,11 @@
   "dependencies": {
     "@bundled-es-modules/deepmerge": "^4.3.1",
     "@bundled-es-modules/postcss-calc-ast-parser": "^0.1.6",
+    "@tokens-studio/sd-transforms": "^1.2.6",
     "@tokens-studio/types": "^0.5.1",
     "colorjs.io": "^0.4.3",
     "expr-eval-fork": "^2.0.2",
+    "http-server": "^14.1.1",
     "is-mergeable-object": "^1.1.1"
   },
   "peerDependencies": {

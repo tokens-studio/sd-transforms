@@ -25,11 +25,19 @@ describe('transform dimension', () => {
     expect(transformFontWeight({ value: 'ExtraBold Italic' })).to.equal(`800 italic`);
   });
 
+  it('supports fontWeights with only fontStyles inside of them', () => {
+    expect(transformFontWeight({ value: 'Italic' })).to.equal(`italic`);
+  });
+
   it('supports fontWeights with space separators', () => {
     expect(transformFontWeight({ value: 'Extra Bold' })).to.equal(800);
     expect(transformFontWeight({ value: 'Ultra Black Italic' })).to.equal(`950 italic`);
   });
 
+  it('returns the original fontWeight when no match groups are found', () => {
+    expect(transformFontWeight({ value: '' })).to.equal('');
+    expect(transformFontWeight({ value: 'no_match_pattern' })).to.equal('no_match_pattern');
+  });
   describe('composite tokens', () => {
     it('should transforms letter spacing % to em in typography letterSpacing prop', () => {
       expect(
