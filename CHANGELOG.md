@@ -1,5 +1,12 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.7
+
+### Patch Changes
+
+- fb3c7d3: Export TransformOption type to be publicly available (#319)
+- 26cf7f9: -Made the font weight case insensitive; Extra checks for style and weight values, confusions cleared up in the code; Font style and value are not both mandatory, it is fine if only one is specified; If font style is not provided, the style field will take the weight value; The bug from issue #267 is fixed.
+
 ## 1.2.6
 
 ### Patch Changes
