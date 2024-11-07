@@ -49,7 +49,6 @@ export const expandTypesMap = {
     sizing: 'dimension',
     borderRadius: 'dimension',
     borderWidth: 'dimension',
-    letterSpacing: 'dimension',
     paragraphSpacing: 'dimension',
     paragraphIndent: 'dimension',
     text: 'content',

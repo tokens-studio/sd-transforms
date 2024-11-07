@@ -24,7 +24,9 @@
       "value": {
         "fontFamily": "{composition.fontFamily}",
         "fontSize": "96",
-        "fontWeight": "{composition.fontWeight}"
+        "fontWeight": "{composition.fontWeight}",
+        "lineHeight": "125%",
+        "letterSpacing": "125%"
       },
       "type": "composition"
     }
