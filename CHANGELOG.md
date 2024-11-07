@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.8
+
+### Patch Changes
+
+- 5de4025: Addressed issue #316 about letterSpacing. LetterSpacing is no longer a dimension token. Also, the expand composition test token has been modify to test if the letterSpacing still works properly.
+
 ## 1.2.7
 
 ### Patch Changes
