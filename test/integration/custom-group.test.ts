@@ -3,7 +3,7 @@ import StyleDictionary from 'style-dictionary';
 import { getTransforms, register } from '../../src/index.js';
 import { promises } from 'node:fs';
 import path from 'node:path';
-import { cleanup } from './utils.js';
+import { cleanup, excerpt } from './utils.js';
 
 const outputDir = 'test/integration/tokens/';
 const outputFileName = 'vars.css';
@@ -53,6 +53,8 @@ describe('custom transform group', () => {
     await before();
 
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(`--length: 24;`);
+    const content = excerpt(file, { before: ':root {', after: '}' });
+    const expectedOutput = `--length: 24;`;
+    expect(content).to.equal(expectedOutput);
   });
 });

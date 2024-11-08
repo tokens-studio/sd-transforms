@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import Color from 'tinycolor2';
 import { promises } from 'node:fs';
 import path from 'node:path';
-import { cleanup, init } from './utils.js';
+import { cleanup, excerpt, init } from './utils.js';
 
 const outputDir = 'test/integration/tokens/';
 const outputFileName = 'vars.css';
@@ -61,9 +61,10 @@ describe('outputReferences integration', () => {
 
   it('supports UIColor with color modifiers', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to
-      .include(`    public static let colorDanger = UIColor(red: 0.251, green: 0.000, blue: 0.000, alpha: 1)
+    const content = excerpt(file, { before: 'public class {', after: '}' });
+    const expectedOutput = `public static let colorDanger = UIColor(red: 0.251, green: 0.000, blue: 0.000, alpha: 1)
     public static let colorError = UIColor(red: 0.125, green: 0.000, blue: 0.000, alpha: 1)
-    public static let colorRed = UIColor(red: 1.000, green: 0.000, blue: 0.000, alpha: 1)`);
+    public static let colorRed = UIColor(red: 1.000, green: 0.000, blue: 0.000, alpha: 1)`;
+    expect(content).to.equal(expectedOutput);
   });
 });

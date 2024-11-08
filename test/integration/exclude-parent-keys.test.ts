@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
-import { cleanup, init } from './utils.js';
+import { cleanup, excerpt, init } from './utils.js';
 
 const outputDir = 'test/integration/tokens/';
 const outputFileName = 'vars.css';
@@ -52,11 +52,11 @@ describe('exclude parent keys', () => {
     await init(cfg, transformOpts);
     await cleanup();
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdCoreColor: #FFFFFF;
-  --sdSemanticColor: #FFFFFF;
-  --sdButtonColor: #FFFFFF;`,
-    );
+    const content = excerpt(file, { before: ':root {', after: '}' });
+    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
+    const expectedOutput = `--sdCoreColor: #FFFFFF;
+--sdSemanticColor: #FFFFFF;
+--sdButtonColor: #FFFFFF;`;
+    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
   });
 });
