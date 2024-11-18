@@ -2,7 +2,7 @@ import type StyleDictionary from 'style-dictionary';
 import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
-import { cleanup, init } from './utils.js';
+import { cleanup, excerpt, init } from './utils.js';
 import { expandTypesMap } from '../../src/index.js';
 
 const outputDir = 'test/integration/tokens/';
@@ -63,119 +63,121 @@ describe('expand composition tokens', () => {
     );
 
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdCompositionSize: 24px;
-  --sdCompositionOpacity: 0.5;
-  --sdCompositionFontSize: 96px;
-  --sdCompositionFontFamily: Roboto;
-  --sdCompositionFontWeight: 700;
-  --sdCompositionHeaderFontFamily: Roboto;
-  --sdCompositionHeaderFontSize: 96px;
-  --sdCompositionHeaderFontWeight: 700;
-  --sdCompositionHeaderLineHeight: 1.25;
-  --sdCompositionHeaderLetterSpacing: 1.25em;
-  --sdTypography: italic 800 26px/1.25 Arial;
-  --sdFontWeightRefWeight: 800;
-  --sdFontWeightRefStyle: italic;
-  --sdBorder: 4px solid #FFFF00;
-  --sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
-  --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
-  --sdRef: italic 800 26px/1.25 Arial;`,
-    );
+    const content = excerpt(file, {
+      start: ':root {',
+      end: '--sdDeepRef: italic 800 26px/1.25 Arial;',
+    });
+    const expectedOutput = `--sdCompositionSize: 24px;
+--sdCompositionOpacity: 0.5;
+--sdCompositionFontSize: 96px;
+--sdCompositionFontFamily: Roboto;
+--sdCompositionFontWeight: 700;
+--sdCompositionHeaderFontFamily: Roboto;
+--sdCompositionHeaderFontSize: 96px;
+--sdCompositionHeaderFontWeight: 700;
+--sdCompositionHeaderLineHeight: 1.25;
+--sdCompositionHeaderLetterSpacing: 1.25em;
+--sdTypography: italic 800 26px/1.25 Arial;
+--sdFontWeightRefWeight: 800;
+--sdFontWeightRefStyle: italic;
+--sdBorder: 4px solid #FFFF00;
+--sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
+--sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
+--sdRef: italic 800 26px/1.25 Arial;`;
+    expect(content).to.equal(expectedOutput);
   });
 
   it('optionally can transform typography, border and shadow tokens', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdCompositionSize: 24px;
-  --sdCompositionOpacity: 0.5;
-  --sdCompositionFontSize: 96px;
-  --sdCompositionFontFamily: Roboto;
-  --sdCompositionFontWeight: 700;
-  --sdCompositionHeaderFontFamily: Roboto;
-  --sdCompositionHeaderFontSize: 96px;
-  --sdCompositionHeaderFontWeight: 700;
-  --sdCompositionHeaderLineHeight: 1.25;
-  --sdCompositionHeaderLetterSpacing: 1.25em;
-  --sdTypographyFontFamily: Arial;
-  --sdTypographyFontWeight: 800;
-  --sdTypographyLineHeight: 1.25;
-  --sdTypographyFontSize: 26px;
-  --sdTypographyLetterSpacing: 1.25em;
-  --sdTypographyParagraphSpacing: 0;
-  --sdTypographyParagraphIndent: 0;
-  --sdTypographyTextDecoration: none;
-  --sdTypographyTextCase: none;
-  --sdTypographyFontStyle: italic;
-  --sdFontWeightRefWeight: 800;
-  --sdFontWeightRefStyle: italic;
-  --sdBorderColor: #ffff00;
-  --sdBorderWidth: 4px;
-  --sdBorderStyle: solid;
-  --sdShadowSingleBlur: 10px;
-  --sdShadowSingleSpread: 0;
-  --sdShadowSingleColor: rgba(0, 0, 0, 0.4);
-  --sdShadowSingleType: innerShadow;
-  --sdShadowSingleOffsetX: 0;
-  --sdShadowSingleOffsetY: 4px;
-  --sdShadowDouble1Blur: 10px;
-  --sdShadowDouble1Spread: 0;
-  --sdShadowDouble1Color: rgba(0, 0, 0, 0.4);
-  --sdShadowDouble1Type: innerShadow;
-  --sdShadowDouble1OffsetX: 0;
-  --sdShadowDouble1OffsetY: 4px;
-  --sdShadowDouble2Blur: 12px;
-  --sdShadowDouble2Spread: 5px;
-  --sdShadowDouble2Color: rgba(0, 0, 0, 0.4);
-  --sdShadowDouble2OffsetX: 0;
-  --sdShadowDouble2OffsetY: 8px;`,
-    );
+    const content = excerpt(file, { start: ':root {', end: '--sdRefFontFamily: Arial;' });
+    const expectedOutput = `--sdCompositionSize: 24px;
+--sdCompositionOpacity: 0.5;
+--sdCompositionFontSize: 96px;
+--sdCompositionFontFamily: Roboto;
+--sdCompositionFontWeight: 700;
+--sdCompositionHeaderFontFamily: Roboto;
+--sdCompositionHeaderFontSize: 96px;
+--sdCompositionHeaderFontWeight: 700;
+--sdCompositionHeaderLineHeight: 1.25;
+--sdCompositionHeaderLetterSpacing: 1.25em;
+--sdTypographyFontFamily: Arial;
+--sdTypographyFontWeight: 800;
+--sdTypographyLineHeight: 1.25;
+--sdTypographyFontSize: 26px;
+--sdTypographyLetterSpacing: 1.25em;
+--sdTypographyParagraphSpacing: 0;
+--sdTypographyParagraphIndent: 0;
+--sdTypographyTextDecoration: none;
+--sdTypographyTextCase: none;
+--sdTypographyFontStyle: italic;
+--sdFontWeightRefWeight: 800;
+--sdFontWeightRefStyle: italic;
+--sdBorderColor: #ffff00;
+--sdBorderWidth: 4px;
+--sdBorderStyle: solid;
+--sdShadowSingleBlur: 10px;
+--sdShadowSingleSpread: 0;
+--sdShadowSingleColor: rgba(0, 0, 0, 0.4);
+--sdShadowSingleType: innerShadow;
+--sdShadowSingleOffsetX: 0;
+--sdShadowSingleOffsetY: 4px;
+--sdShadowDouble1Blur: 10px;
+--sdShadowDouble1Spread: 0;
+--sdShadowDouble1Color: rgba(0, 0, 0, 0.4);
+--sdShadowDouble1Type: innerShadow;
+--sdShadowDouble1OffsetX: 0;
+--sdShadowDouble1OffsetY: 4px;
+--sdShadowDouble2Blur: 12px;
+--sdShadowDouble2Spread: 5px;
+--sdShadowDouble2Color: rgba(0, 0, 0, 0.4);
+--sdShadowDouble2OffsetX: 0;
+--sdShadowDouble2OffsetY: 8px;`;
+    expect(content).to.equal(expectedOutput);
   });
 
   it('handles references and deep references for expandable values', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdRefFontFamily: Arial;
-  --sdRefFontWeight: 800;
-  --sdRefLineHeight: 1.25;
-  --sdRefFontSize: 26px;
-  --sdRefLetterSpacing: 1.25em;
-  --sdRefParagraphSpacing: 0;
-  --sdRefParagraphIndent: 0;
-  --sdRefTextDecoration: none;
-  --sdRefTextCase: none;
-  --sdRefFontStyle: italic;
-  --sdDeepRefFontFamily: Arial;
-  --sdDeepRefFontWeight: 800;
-  --sdDeepRefLineHeight: 1.25;
-  --sdDeepRefFontSize: 26px;
-  --sdDeepRefLetterSpacing: 1.25em;
-  --sdDeepRefParagraphSpacing: 0;
-  --sdDeepRefParagraphIndent: 0;
-  --sdDeepRefTextDecoration: none;
-  --sdDeepRefTextCase: none;
-  --sdDeepRefFontStyle: italic;`,
-    );
+    const content = excerpt(file, {
+      start: '--sdShadowDouble2OffsetY: 8px;',
+      end: '--sdDeepRefShadowMulti1Blur: 10px;',
+    });
+    const expectedOutput = `--sdRefFontFamily: Arial;
+--sdRefFontWeight: 800;
+--sdRefLineHeight: 1.25;
+--sdRefFontSize: 26px;
+--sdRefLetterSpacing: 1.25em;
+--sdRefParagraphSpacing: 0;
+--sdRefParagraphIndent: 0;
+--sdRefTextDecoration: none;
+--sdRefTextCase: none;
+--sdRefFontStyle: italic;
+--sdDeepRefFontFamily: Arial;
+--sdDeepRefFontWeight: 800;
+--sdDeepRefLineHeight: 1.25;
+--sdDeepRefFontSize: 26px;
+--sdDeepRefLetterSpacing: 1.25em;
+--sdDeepRefParagraphSpacing: 0;
+--sdDeepRefParagraphIndent: 0;
+--sdDeepRefTextDecoration: none;
+--sdDeepRefTextCase: none;
+--sdDeepRefFontStyle: italic;`;
+    expect(content).to.equal(expectedOutput);
   });
 
   it('handles references for multi-shadow value', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdDeepRefShadowMulti1Blur: 10px;
-  --sdDeepRefShadowMulti1Spread: 0;
-  --sdDeepRefShadowMulti1Color: rgba(0, 0, 0, 0.4);
-  --sdDeepRefShadowMulti1Type: innerShadow;
-  --sdDeepRefShadowMulti1OffsetX: 0;
-  --sdDeepRefShadowMulti1OffsetY: 4px;
-  --sdDeepRefShadowMulti2Blur: 12px;
-  --sdDeepRefShadowMulti2Spread: 5px;
-  --sdDeepRefShadowMulti2Color: rgba(0, 0, 0, 0.4);
-  --sdDeepRefShadowMulti2OffsetX: 0;
-  --sdDeepRefShadowMulti2OffsetY: 8px;`,
-    );
+    const content = excerpt(file, { start: '--sdDeepRefFontStyle: italic;', end: '}' });
+    const expectedOutput = `--sdDeepRefShadowMulti1Blur: 10px;
+--sdDeepRefShadowMulti1Spread: 0;
+--sdDeepRefShadowMulti1Color: rgba(0, 0, 0, 0.4);
+--sdDeepRefShadowMulti1Type: innerShadow;
+--sdDeepRefShadowMulti1OffsetX: 0;
+--sdDeepRefShadowMulti1OffsetY: 4px;
+--sdDeepRefShadowMulti2Blur: 12px;
+--sdDeepRefShadowMulti2Spread: 5px;
+--sdDeepRefShadowMulti2Color: rgba(0, 0, 0, 0.4);
+--sdDeepRefShadowMulti2OffsetX: 0;
+--sdDeepRefShadowMulti2OffsetY: 8px;`;
+    expect(content).to.equal(expectedOutput);
   });
 });

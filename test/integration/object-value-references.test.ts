@@ -2,7 +2,7 @@ import type StyleDictionary from 'style-dictionary';
 import { expect } from 'chai';
 import { promises } from 'node:fs';
 import path from 'node:path';
-import { cleanup, init } from './utils.js';
+import { cleanup, excerpt, init } from './utils.js';
 
 const outputDir = 'test/integration/tokens/';
 const outputFileName = 'vars.css';
@@ -40,29 +40,35 @@ describe('typography references', () => {
 
   it('supports typography objects when referenced by another token', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdBefore: italic 400 36px/1 'Aria Sans';
-  --sdFontHeadingXxl: italic 400 36px/1 'Aria Sans';
-  --sdAfter: italic 400 36px/1 'Aria Sans';`,
-    );
+    const content = excerpt(file, {
+      start: `:root {`,
+      end: '--sdShadow: 0 4px 10px 0 rgba(0,0,0,0.4), inset 0 8px 10px 4px rgba(0,0,0,0.6);',
+    });
+    const expectedOutput = `--sdBefore: italic 400 36px/1 'Aria Sans';
+--sdFontHeadingXxl: italic 400 36px/1 'Aria Sans';
+--sdAfter: italic 400 36px/1 'Aria Sans';`;
+    expect(content).to.equal(expectedOutput);
   });
 
   it('supports boxShadow objects when referenced by another token', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdShadow: 0 4px 10px 0 rgba(0,0,0,0.4), inset 0 8px 10px 4px rgba(0,0,0,0.6);
-  --sdShadowRef: 0 4px 10px 0 rgba(0,0,0,0.4), inset 0 8px 10px 4px rgba(0,0,0,0.6);`,
-    );
+    const content = excerpt(file, {
+      start: `--sdAfter: italic 400 36px/1 'Aria Sans';`,
+      end: '--sdFontWeightRefWeight: 400;',
+    });
+    const expectedOutput = `--sdShadow: 0 4px 10px 0 rgba(0,0,0,0.4), inset 0 8px 10px 4px rgba(0,0,0,0.6);
+--sdShadowRef: 0 4px 10px 0 rgba(0,0,0,0.4), inset 0 8px 10px 4px rgba(0,0,0,0.6);`;
+    expect(content).to.equal(expectedOutput);
   });
 
   it('supports border objects when referenced by another token', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    expect(file).to.include(
-      `
-  --sdBorder: 4px solid #FFFF00;
-  --sdBorderRef: 4px solid #FFFF00;`,
-    );
+    const content = excerpt(file, {
+      start: `--sdFontWeightRefStyle: italic;`,
+      end: '}',
+    });
+    const expectedOutput = `--sdBorder: 4px solid #FFFF00;
+--sdBorderRef: 4px solid #FFFF00;`;
+    expect(content).to.equal(expectedOutput);
   });
 });
