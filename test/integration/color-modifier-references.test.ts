@@ -43,16 +43,15 @@ describe('typography references', () => {
 
   it('supports references inside color modifiers', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { before: ':root {', after: '--sdModifier' });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
+    const content = excerpt(file, { start: ':root {', end: '--sdModifier' });
     const expectedOutput = `--sdAlpha: 0.3;
 --sdColor: #ffffff4d;`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 
   it('supports color modifier that is a reference itself, containing another reference', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { before: '--sdModifier: [object Object];', after: '}' });
+    const content = excerpt(file, { start: '--sdModifier: [object Object];', end: '}' });
     const expectedOutput = `--sdColor2: #0000004d;`;
     expect(content).to.equal(expectedOutput);
   });

@@ -45,12 +45,12 @@ describe('outputReferences integration', () => {
     const expectedOutput1 = `--sd-my-base-token: 11;`;
     const expectedOutput2 = `--sd-my-reference-token: var(--sd-my-base-token);`;
     const content1 = excerpt(file, {
-      before: ':root {',
-      after: '--sd-transformed-base-token: 4;',
+      start: ':root {',
+      end: '--sd-transformed-base-token: 4;',
     });
     const content2 = excerpt(file, {
-      before: '--sd-transformed-base-token: 4;',
-      after: '--sd-transformed-reference-token: var(--sd-my-base-token) * 5;',
+      start: '--sd-transformed-base-token: 4;',
+      end: '--sd-transformed-reference-token: var(--sd-my-base-token) * 5;',
     });
     expect(content1).to.equal(expectedOutput1);
     expect(content2).to.equal(expectedOutput2);
@@ -61,12 +61,12 @@ describe('outputReferences integration', () => {
     const expectedOutput1 = `--sd-transformed-base-token: 4;`;
     const expectedOutput2 = `--sd-transformed-reference-token: var(--sd-my-base-token) * 5;`;
     const content1 = excerpt(file, {
-      before: '--sd-my-base-token: 11;',
-      after: '--sd-my-reference-token: var(--sd-my-base-token);',
+      start: '--sd-my-base-token: 11;',
+      end: '--sd-my-reference-token: var(--sd-my-base-token);',
     });
     const content2 = excerpt(file, {
-      before: '--sd-my-reference-token: var(--sd-my-base-token);',
-      after: '}',
+      start: '--sd-my-reference-token: var(--sd-my-base-token);',
+      end: '}',
     });
     expect(content1).to.equal(expectedOutput1);
     expect(content2).to.equal(expectedOutput2);

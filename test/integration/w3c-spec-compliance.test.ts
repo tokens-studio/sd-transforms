@@ -47,8 +47,7 @@ describe('w3c spec compliance smoke test', () => {
   // https://design-tokens.github.io/community-group/format/
   it('supports W3C DTCG draft spec', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { before: '\n */' });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
+    const content = excerpt(file, { start: '\n */' });
     const expectedOutput = `:root {
 --sdDimensionScale: 2;
 --sdDimensionXs: 4px;
@@ -86,6 +85,6 @@ describe('w3c spec compliance smoke test', () => {
 --sdColor: #FF00FF;
 --sdUsesColor: rgba(255, 0, 255, 1);
 }`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 });

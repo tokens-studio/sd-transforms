@@ -43,8 +43,7 @@ describe('cross file references', () => {
 
   it('supports cross file references e.g. expanding typography', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { before: ':root {', after: '}' });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
+    const content = excerpt(file, { start: ':root {', end: '}' });
     const expectedOutput = `--sdTypoFontWeight: 400;
 --sdTypoFontStyle: italic;
 --sdPrimaryFont: Inter;
@@ -78,6 +77,6 @@ describe('cross file references', () => {
 --sdTypo3FontWeight: 800;
 --sdTypo3LineHeight: 1.5;
 --sdTypo3FontSize: 8px;`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 });

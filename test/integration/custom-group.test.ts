@@ -53,7 +53,7 @@ describe('custom transform group', () => {
     await before();
 
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { before: ':root {', after: '}' });
+    const content = excerpt(file, { start: ':root {', end: '}' });
     const expectedOutput = `--length: 24;`;
     expect(content).to.equal(expectedOutput);
   });

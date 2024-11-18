@@ -64,10 +64,9 @@ describe('expand composition tokens', () => {
 
     const file = await promises.readFile(outputFilePath, 'utf-8');
     const content = excerpt(file, {
-      before: ':root {',
-      after: '--sdDeepRef: italic 800 26px/1.25 Arial;',
+      start: ':root {',
+      end: '--sdDeepRef: italic 800 26px/1.25 Arial;',
     });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
     const expectedOutput = `--sdCompositionSize: 24px;
 --sdCompositionOpacity: 0.5;
 --sdCompositionFontSize: 96px;
@@ -85,13 +84,12 @@ describe('expand composition tokens', () => {
 --sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
 --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
 --sdRef: italic 800 26px/1.25 Arial;`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 
   it('optionally can transform typography, border and shadow tokens', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { before: ':root {', after: '--sdRefFontFamily: Arial;' });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
+    const content = excerpt(file, { start: ':root {', end: '--sdRefFontFamily: Arial;' });
     const expectedOutput = `--sdCompositionSize: 24px;
 --sdCompositionOpacity: 0.5;
 --sdCompositionFontSize: 96px;
@@ -134,16 +132,15 @@ describe('expand composition tokens', () => {
 --sdShadowDouble2Color: rgba(0, 0, 0, 0.4);
 --sdShadowDouble2OffsetX: 0;
 --sdShadowDouble2OffsetY: 8px;`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 
   it('handles references and deep references for expandable values', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     const content = excerpt(file, {
-      before: '--sdShadowDouble2OffsetY: 8px;',
-      after: '--sdDeepRefShadowMulti1Blur: 10px;',
+      start: '--sdShadowDouble2OffsetY: 8px;',
+      end: '--sdDeepRefShadowMulti1Blur: 10px;',
     });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
     const expectedOutput = `--sdRefFontFamily: Arial;
 --sdRefFontWeight: 800;
 --sdRefLineHeight: 1.25;
@@ -164,13 +161,12 @@ describe('expand composition tokens', () => {
 --sdDeepRefTextDecoration: none;
 --sdDeepRefTextCase: none;
 --sdDeepRefFontStyle: italic;`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 
   it('handles references for multi-shadow value', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { before: '--sdDeepRefFontStyle: italic;', after: '}' });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
+    const content = excerpt(file, { start: '--sdDeepRefFontStyle: italic;', end: '}' });
     const expectedOutput = `--sdDeepRefShadowMulti1Blur: 10px;
 --sdDeepRefShadowMulti1Spread: 0;
 --sdDeepRefShadowMulti1Color: rgba(0, 0, 0, 0.4);
@@ -182,6 +178,6 @@ describe('expand composition tokens', () => {
 --sdDeepRefShadowMulti2Color: rgba(0, 0, 0, 0.4);
 --sdDeepRefShadowMulti2OffsetX: 0;
 --sdDeepRefShadowMulti2OffsetY: 8px;`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 });

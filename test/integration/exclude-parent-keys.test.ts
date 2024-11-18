@@ -52,11 +52,10 @@ describe('exclude parent keys', () => {
     await init(cfg, transformOpts);
     await cleanup();
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { before: ':root {', after: '}' });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
+    const content = excerpt(file, { start: ':root {', end: '}' });
     const expectedOutput = `--sdCoreColor: #FFFFFF;
 --sdSemanticColor: #FFFFFF;
 --sdButtonColor: #FFFFFF;`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 });

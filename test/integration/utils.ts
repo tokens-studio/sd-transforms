@@ -29,24 +29,18 @@ export async function cleanup(dict?: StyleDictionary & { cleaned?: boolean }) {
 
 // Take an excerpt of a string and trim whitespace at the ends
 // and remove indentations after newline -> before the `--` CSS prop starting characters
-export function excerpt(content: string, options?: { before?: string; after?: string }) {
-  const { before, after } = options ?? {};
+export function excerpt(content: string, options?: { start?: string; end?: string }) {
+  const { start, end } = options ?? {};
   let trimmedContent = content;
-  if (before) {
-    trimmedContent = trimmedContent.split(before)[1];
+  if (start) {
+    trimmedContent = trimmedContent.split(start)[1];
   }
-  if (after) {
-    trimmedContent = trimmedContent.split(after)[0];
+  if (end) {
+    trimmedContent = trimmedContent.split(end)[0];
   }
   trimmedContent = trimmedContent.trim();
 
-  const indentMatches = trimmedContent.matchAll(RegExp('(?<indents>( [\\t])+)--', 'g'));
+  const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, '');
 
-  for (const match of indentMatches) {
-    if (match.groups?.indents) {
-      const { indents } = match.groups;
-      trimmedContent = trimmedContent.replace(indents, '');
-    }
-  }
-  return trimmedContent;
+  return normalizeWhitespace(trimmedContent);
 }

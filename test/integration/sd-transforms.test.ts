@@ -42,9 +42,8 @@ describe('sd-transforms smoke tests', () => {
   it('supports tokens-studio tokens', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     const content = excerpt(file, {
-      before: '\n */',
+      start: '\n */',
     });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
     const expectedOutput = `:root {
 --sdDimensionScale: 2;
 --sdDimensionXs: 4px;
@@ -82,7 +81,7 @@ describe('sd-transforms smoke tests', () => {
 --sdColor: #ff00ff;
 --sdUsesColor: rgba(255, 0, 255, 1);
 }`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 
   it('allows easily changing the casing', async () => {
@@ -101,8 +100,7 @@ describe('sd-transforms smoke tests', () => {
       { 'ts/color/modifiers': { format: 'hex' } },
     );
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { before: '\n */' });
-    const normalizeWhitespace = (str: string) => str.replace(/^\s+/gm, ''); // Remove leading spaces/tabs
+    const content = excerpt(file, { start: '\n */' });
     const expectedOutput = `:root {
 --sd-dimension-scale: 2;
 --sd-dimension-xs: 4px;
@@ -140,7 +138,7 @@ describe('sd-transforms smoke tests', () => {
 --sd-color: #ff00ff;
 --sd-uses-color: rgba(255, 0, 255, 1);
 }`;
-    expect(normalizeWhitespace(content)).to.equal(normalizeWhitespace(expectedOutput));
+    expect(content).to.equal(expectedOutput);
   });
 
   it('allows easily adding attribute/cti transform to tokens-studio group', async () => {
