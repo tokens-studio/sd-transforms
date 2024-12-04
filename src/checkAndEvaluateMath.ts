@@ -151,9 +151,13 @@ function parseAndReduce(expr: string, fractionDigits = defaultFractionDigits): s
   return result;
 }
 
+interface CheckAndEvaluateMathOptions {
+  fractionDigits?: number;
+}
+
 export function checkAndEvaluateMath(
   token: DesignToken,
-  fractionDigits?: number,
+  opts: CheckAndEvaluateMathOptions = {},
 ): DesignToken['value'] {
   const expr = token.$value ?? token.value;
   const type = token.$type ?? token.type;
@@ -167,7 +171,7 @@ export function checkAndEvaluateMath(
       return expr;
     }
     const exprs = splitMultiIntoSingleValues(expr);
-    const reducedExprs = exprs.map(_expr => parseAndReduce(_expr, fractionDigits));
+    const reducedExprs = exprs.map(_expr => parseAndReduce(_expr, opts.fractionDigits));
     if (reducedExprs.length === 1) {
       return reducedExprs[0];
     }
