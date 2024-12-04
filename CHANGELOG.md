@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.9
+
+### Patch Changes
+
+- e0aab62: Fix `ts/size/px` transform to handle multi-value token values such as `'button.padding': { value: '4 8' }`.
+
 ## 1.2.8
 
 ### Patch Changes
