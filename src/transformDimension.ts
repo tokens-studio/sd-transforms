@@ -1,13 +1,31 @@
 import { DesignToken } from 'style-dictionary/types';
 
-function _transformDimension(dim: string | number): string {
-  // Check if the value is numeric with isNaN, this supports string values as well
-  // Check if value is not empty string, since this is also not considered "NaN"
-  // Check if the value, when parsed (since it can also be number), does not equal 0
+function transformDimensionValue(value: string | number): string {
+  return splitMultiValues(value).map(ensurePxSuffix).join(' ');
+}
+
+function ensurePxSuffix(dim: string | number): string {
   if (!isNaN(dim as number) && dim !== '' && parseFloat(dim as string) !== 0) {
     return `${dim}px`;
   }
   return `${dim}`;
+}
+
+function splitMultiValues(dim: string | number): string[] {
+  if (typeof dim === 'string' && dim.includes(' ')) {
+    return dim.split(' ');
+  }
+  return [`${dim}`];
+}
+
+function transformDimensionProp(
+  val: Record<string, number | string>,
+  prop: string,
+): Record<string, number | string> {
+  if (val[prop] !== undefined) {
+    val[prop] = transformDimensionValue(val[prop]);
+  }
+  return val;
 }
 
 /**
@@ -24,46 +42,34 @@ export function transformDimension(token: DesignToken): DesignToken['value'] {
 
   if (val === undefined) return undefined;
 
-  const transformProp = (val: Record<string, number | string>, prop: string) => {
-    if (val[prop] !== undefined) {
-      val[prop] = _transformDimension(val[prop]);
-    }
-    return val;
-  };
-
   let transformed = val;
 
   switch (type) {
     case 'typography': {
-      transformed = transformed as Record<string, number | string>;
-      transformed = transformProp(transformed, 'fontSize');
+      transformed = transformDimensionProp(val as Record<string, number | string>, 'fontSize');
       break;
     }
     case 'shadow': {
-      transformed = transformed as
-        | Record<string, number | string>
-        | Record<string, number | string>[];
       const transformShadow = (shadowVal: Record<string, number | string>) => {
-        ['offsetX', 'offsetY', 'blur', 'spread'].forEach(prop => {
-          shadowVal = transformProp(shadowVal, prop);
-        });
+        ['offsetX', 'offsetY', 'blur', 'spread'].forEach(prop =>
+          transformDimensionProp(shadowVal, prop),
+        );
         return shadowVal;
       };
       if (Array.isArray(transformed)) {
         transformed = transformed.map(transformShadow);
       } else {
-        transformed = transformShadow(transformed);
+        transformed = transformShadow(transformed as Record<string, number | string>);
       }
       break;
     }
     case 'border': {
-      transformed = transformed as Record<string, number | string>;
-      transformed = transformProp(transformed, 'width');
+      transformed = transformDimensionProp(val as Record<string, number | string>, 'width');
       break;
     }
-    default:
-      transformed = transformed as number | string;
-      transformed = _transformDimension(transformed);
+    default: {
+      transformed = transformDimensionValue(val as string | number);
+    }
   }
 
   return transformed;
