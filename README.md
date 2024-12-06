@@ -455,6 +455,75 @@ run();
 
 You can find a variation of this example [here](https://github.com/tokens-studio/lion-example). It outputs a CSS file for every theme combination _for every component_, e.g. `button-business-blue.css`, `date-picker-business-blue.css` and so on. This caters to use cases where component-level tokens as required, e.g. when implementing Web Components.
 
+#### Single-file tokens example
+
+> This is not recommended because it's a pretty complex workaround.
+> The best method is to just migrate to multi-file tokens export.
+
+The same full example as above but assuming single token-file export.
+
+What it does is, take your single `"tokens.json"` file and turn it into multi-file by
+persisting the sets as separate files in a `"tokens"` folder and then creating the SD config accordingly.
+
+```js
+import { register, permutateThemes } from '@tokens-studio/sd-transforms';
+import StyleDictionary from 'style-dictionary';
+import { readFile, writeFile, mkdir } from 'fs/promises';
+import { dirname } from 'node:path/posix';
+
+register(StyleDictionary, {
+  /* options here if needed */
+});
+
+async function run() {
+  const tokens = JSON.parse(await readFile('tokens.json', 'utf-8'));
+  const { $themes, ...sets } = tokens;
+
+  const persistSet = async ([setName, setTokens]) => {
+    const fileName = `tokens/${setName}.json`;
+    const dirName = dirname(fileName);
+    try {
+      await mkdir(dirName, { recursive: true });
+    } catch (e) {
+      // do nothing, dir already exists
+    }
+    await writeFile(fileName, JSON.stringify(setTokens, null, 2), 'utf-8');
+  };
+
+  // persist sets as multi file in tokens folder
+  await Promise.all(Object.entries(sets).map(persistSet));
+
+  const themes = permutateThemes($themes, { separator: '_' });
+  const configs = Object.entries(themes).map(([name, tokensets]) => ({
+    source: Object.keys(sets)
+      .filter(setName => tokensets.includes(setName))
+      .map(setName => `tokens/${setName}.json`),
+    preprocessors: ['tokens-studio'], // <-- since 0.16.0 this must be explicit
+    platforms: {
+      css: {
+        transformGroup: 'tokens-studio',
+        transforms: ['name/kebab'],
+        files: [
+          {
+            destination: `vars-${name}.css`,
+            format: 'css/variables',
+          },
+        ],
+      },
+    },
+  }));
+
+  async function cleanAndBuild(cfg) {
+    const sd = new StyleDictionary(cfg);
+    await sd.cleanAllPlatforms(); // optionally, cleanup files first..
+    await sd.buildAllPlatforms();
+  }
+  await Promise.all(configs.map(cleanAndBuild));
+}
+
+run();
+```
+
 ## Transforms
 
 ### ts/descriptionToComment
