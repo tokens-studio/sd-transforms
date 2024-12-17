@@ -2,6 +2,7 @@ import type { Config } from 'style-dictionary/types';
 import StyleDictionary from 'style-dictionary';
 import type { TransformOptions } from '../../src/TransformOptions.js';
 import { register } from '../../src/register.js';
+import { TransformOptions } from '../../src/TransformOptions.js';
 
 export async function init(cfg: Config, transformOpts: TransformOptions = {}) {
   register(StyleDictionary, transformOpts);
