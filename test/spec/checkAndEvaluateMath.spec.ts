@@ -272,4 +272,8 @@ describe('check and evaluate math', () => {
       ).to.eql(['0px 4px 12px #000000', '0px 8px 18px #0000008C']);
     });
   });
+
+  it('does not transform hex values containing E', () => {
+    expect(checkAndEvaluateMath({ value: 'E6', type: 'other' })).to.equal('E6');
+  });
 });

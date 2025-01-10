@@ -135,7 +135,7 @@ function parseAndReduce(expr: string, fractionDigits = defaultFractionDigits): s
     // Attempt to reduce the math expression
     const reduced = reduceExpression(calcParsed);
     // E.g. if type is Length, like 4 * 7rem would be 28rem
-    if (reduced) {
+    if (reduced && !isNaN(reduced.value)) {
       result = reduced.value;
     }
   }
