@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.10
+
+### Patch Changes
+
+- ab40f11: avoid checkAndEvaluateMath returning NaN
+
 ## 1.2.9
 
 ### Patch Changes
