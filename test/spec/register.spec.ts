@@ -380,7 +380,7 @@ describe('register', () => {
 
 
 
-package foo;
+package foo
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.*
@@ -434,6 +434,7 @@ Arial Black, Suisse Int'l, sans-serif
   val spacingSm = 8px
   val spacingXl = 64px
   val usesColor = rgba( #FF00FF, 1)
-}`);
+}
+`);
   });
 });
