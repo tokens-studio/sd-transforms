@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.12
+
+### Patch Changes
+
+- 9801a8f: Specify version range for SD peer dep to specifically support the 5.0.0 release candidates.
+
 ## 1.2.11
 
 ### Patch Changes
