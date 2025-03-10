@@ -6,7 +6,7 @@
   "author": "Joren Broekema <joren.broekema@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tokens-studio/sd-transforms.git"
+    "url": "git+https://github.com/tokens-studio/sd-transforms.git"
   },
   "type": "module",
   "exports": {
