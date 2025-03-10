@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 1.2.11
+
+### Patch Changes
+
+- 59d9d7f: Migrate to latest Style Dictionary v4 and allow v5 in peerDependencies for now, as v5 doesn't plan to be a breaking change for packages like this one.
+
 ## 1.2.10
 
 ### Patch Changes
