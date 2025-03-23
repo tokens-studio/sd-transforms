@@ -113,6 +113,39 @@ describe('transform color modifiers', () => {
       // without space, return original
       expect(transformColorModifiers(token(''))).to.equal('#000000');
     });
+
+    it('supports mix modifier value calculations', () => {
+      const token = (space: ColorSpaceTypes | '', format?) => ({
+        value: '#FFFFFF',
+        type: 'color',
+        $extensions: {
+          'studio.tokens': {
+            modify: {
+              type: 'mix',
+              value: '0.5 + 6 * 0.04',
+              color: '#4477DD',
+              space,
+              format,
+            },
+          },
+        },
+      });
+
+      expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal(
+        'hsl(220 51.231% 67.933%)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal(
+        'lch(63.417 43.678 278.69)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
+        'color(display-p3 0.49226 0.60164 0.88112)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal(
+        'rgb(45.733% 60.533% 90.133%)',
+      );
+      expect(transformColorModifiers(token(''))).to.equal('#FFFFFF');
+      expect(transformColorModifiers(token(ColorSpaceTypes.SRGB, 'hex'))).to.equal('#759ae6');
+    });
   });
 
   describe('transparentize', () => {
