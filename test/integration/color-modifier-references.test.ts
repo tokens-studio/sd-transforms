@@ -27,7 +27,7 @@ const cfg = {
 
 let dict: StyleDictionary | undefined;
 
-describe('typography references', () => {
+describe('color modifier references', () => {
   beforeEach(async () => {
     if (dict) {
       cleanup(dict);
@@ -44,15 +44,52 @@ describe('typography references', () => {
   it('supports references inside color modifiers', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     const content = excerpt(file, { start: ':root {', end: '--sdModifier' });
-    const expectedOutput = `--sdAlpha: 0.3;
---sdColor: #ffffff4d;`;
+    const expectedOutput = '--sdAlpha: 0.3;\n--sdColor: #ffffff4d;';
     expect(content).to.equal(expectedOutput);
   });
 
   it('supports color modifier that is a reference itself, containing another reference', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { start: '--sdModifier: [object Object];', end: '}' });
+    const content = excerpt(file, {
+      start: '--sdModifier: [object Object];',
+      end: '--sdTreshhold',
+    });
     const expectedOutput = `--sdColor2: #0000004d;`;
+    expect(content).to.equal(expectedOutput);
+  });
+
+  it('supports color with hardcoded mix value and hardcoded mix color', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const content = excerpt(file, { start: new RegExp('--sdMixColor: .*;'), end: '--sdColor4' });
+    const expectedOutput = `--sdColor3: #a1bbee;`;
+    expect(content).to.equal(expectedOutput);
+  });
+
+  it('supports color with hardcoded mix value and hardcoded mix color using an expression', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const content = excerpt(file, { start: new RegExp('--sdColor3: .*;'), end: '--sdColor5' });
+    const expectedOutput = `--sdColor4: #759ae6;`;
+    expect(content).to.equal(expectedOutput);
+  });
+
+  it('supports color with hardcoded mix value and referenced mix color', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const content = excerpt(file, { start: new RegExp('--sdColor4: .*;'), end: '--sdColor6' });
+    const expectedOutput = `--sdColor5: #759ae6;`;
+    expect(content).to.equal(expectedOutput);
+  });
+
+  it('supports color with referenced base color and referenced mix color', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const content = excerpt(file, { start: new RegExp('--sdColor5: .*;'), end: '--sdColor7' });
+    const expectedOutput = `--sdColor6: #3b64b3;`;
+    expect(content).to.equal(expectedOutput);
+  });
+
+  it('supports color with referenced base color, referenced mix color, and expression-based mix value', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const content = excerpt(file, { start: new RegExp('--sdColor6: .*;'), end: '}' });
+    const expectedOutput = `--sdColor7: #3b64b3;`;
     expect(content).to.equal(expectedOutput);
   });
 });
