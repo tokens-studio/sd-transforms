@@ -111,6 +111,21 @@
     }
   },
   "color7": {
+    "value": "{baseColor}",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "{treshhold}",
+          "space": "srgb",
+          "color": "{mixColor}",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color8": {
     "type": "color",
     "value": "{baseColor}",
     "$extensions": {
