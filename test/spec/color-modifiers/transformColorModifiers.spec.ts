@@ -38,7 +38,7 @@ describe('transform color modifiers', () => {
       expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal('hsl(0 50.6% 60.6%)');
       expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal('lch(57.7 47.5 29.7)');
       expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
-        'color(display-p3 0.76 0.44 0.42)',
+        'color(display-p3 0.76 0.435 0.422)',
       );
       expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal(
         'rgb(80.5% 40.7% 40.7%)',
@@ -68,7 +68,7 @@ describe('transform color modifiers', () => {
       expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal('hsl(0 50.6% 40.6%)');
       expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal('lch(37.7 47.5 29.7)');
       expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
-        'color(display-p3 0.56 0.24 0.22)',
+        'color(display-p3 0.56 0.235 0.222)',
       );
       expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal(
         'rgb(60.5% 20.7% 20.7%)',
@@ -96,8 +96,8 @@ describe('transform color modifiers', () => {
       });
 
       // mix black with white, should give a grey
-      expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal('hsl(0 0% 50%)');
-      expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal('lch(50 0 0)');
+      expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal('hsl(none 0% 50%)');
+      expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal('lch(50 0 none)');
       expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
         'color(display-p3 0.5 0.5 0.5)',
       );
@@ -126,7 +126,7 @@ describe('transform color modifiers', () => {
       expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal('hsl(220 51.2% 67.9%)');
       expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal('lch(63.4 43.7 279)');
       expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
-        'color(display-p3 0.49 0.6 0.88)',
+        'color(display-p3 0.492 0.602 0.881)',
       );
       expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal(
         'rgb(45.7% 60.5% 90.1%)',
@@ -159,7 +159,7 @@ describe('transform color modifiers', () => {
         'lch(47.1 59.4 29.7 / 0.2)',
       );
       expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
-        'color(display-p3 0.7 0.29 0.28 / 0.2)',
+        'color(display-p3 0.7 0.294 0.278 / 0.2)',
       );
       expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal(
         'rgb(75.7% 25.9% 25.9% / 0.2)',
@@ -248,7 +248,7 @@ describe('transform color modifiers', () => {
       'hsl(0.85 47.9% 40.3%)',
     );
     expect(transformColorModifiers(token(ColorSpaceTypes.P3), { format: 'hsl' })).to.equal(
-      'hsl(0.05 49% 40.7%)',
+      'hsl(0.052 49% 40.7%)',
     );
     expect(transformColorModifiers(token(ColorSpaceTypes.SRGB), { format: 'hsl' })).to.equal(
       'hsl(0 49% 40.6%)',
@@ -270,16 +270,16 @@ describe('transform color modifiers', () => {
 
     // uses p3 override for output format
     expect(transformColorModifiers(token(ColorSpaceTypes.HSL), { format: 'p3' })).to.equal(
-      'color(display-p3 0.57 0.23 0.22)',
+      'color(display-p3 0.565 0.23 0.216)',
     );
     expect(transformColorModifiers(token(ColorSpaceTypes.LCH), { format: 'p3' })).to.equal(
-      'color(display-p3 0.55 0.24 0.22)',
+      'color(display-p3 0.551 0.241 0.224)',
     );
     expect(transformColorModifiers(token(ColorSpaceTypes.P3), { format: 'p3' })).to.equal(
-      'color(display-p3 0.56 0.24 0.22)',
+      'color(display-p3 0.56 0.235 0.222)',
     );
     expect(transformColorModifiers(token(ColorSpaceTypes.SRGB), { format: 'p3' })).to.equal(
-      'color(display-p3 0.56 0.23 0.22)',
+      'color(display-p3 0.56 0.235 0.222)',
     );
 
     // uses srgb override for output format

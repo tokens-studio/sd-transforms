@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from 'chai';
+import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, excerpt, init } from './utils.js';
@@ -77,6 +77,6 @@ describe('cross file references', () => {
 --sdTypo3FontWeight: 800;
 --sdTypo3LineHeight: 1.5;
 --sdTypo3FontSize: 8px;`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 });

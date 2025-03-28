@@ -39,7 +39,7 @@ export function lighten(color: Color, colorSpace: ColorSpaceTypes, amount: numbe
       return color;
     }
     default: {
-      return color.lighten(amount);
+      return color.lighten(amount) as Color;
     }
   }
 }

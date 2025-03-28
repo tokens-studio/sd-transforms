@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from 'chai';
+import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, excerpt, init } from './utils.js';
@@ -85,6 +85,6 @@ describe('w3c spec compliance smoke test', () => {
 --sdColor: #FF00FF;
 --sdUsesColor: rgba(255, 0, 255, 1);
 }`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 });
