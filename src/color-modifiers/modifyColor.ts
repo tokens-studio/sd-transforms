@@ -5,6 +5,8 @@ import { darken } from './darken.js';
 import { lighten } from './lighten.js';
 import { ColorModifier } from '@tokens-studio/types';
 import { parseAndReduce } from '../checkAndEvaluateMath.js';
+import { defaultFractionDigits } from '../register.js';
+import { defaultColorPrecision } from './transformColorModifiers.js';
 
 // Users using UIColor swift format are blocked from using such transform in
 // combination with this color modify transform when using references.
@@ -37,10 +39,13 @@ export function modifyColor(
   }
 
   baseColor = parseUIColor(baseColor);
-
   const color = new Color(baseColor);
   let returnedColor = color;
-  const modifyValueResolvedCalc = Number(parseAndReduce(modifier.value, 4));
+  const resolvedMathFractionDigits: number = modifier.mathFractionDigits ?? defaultFractionDigits;
+  const modifyValueResolvedCalc = Number(
+    parseAndReduce(modifier.value, resolvedMathFractionDigits),
+  );
+
   try {
     switch (modifier.type) {
       case 'lighten':
@@ -55,6 +60,7 @@ export function modifyColor(
           modifier.space,
           modifyValueResolvedCalc,
           new Color(modifier.color),
+          modifier.precision ?? defaultColorPrecision,
         );
         break;
       case 'alpha': {
@@ -77,7 +83,11 @@ export function modifyColor(
       }
     }
 
-    return returnedColor.toString({ inGamut: true, precision: 3, format: modifier.format });
+    return returnedColor.toString({
+      inGamut: true,
+      precision: modifier.precision,
+      format: modifier.format,
+    });
   } catch (e) {
     return baseColor;
   }

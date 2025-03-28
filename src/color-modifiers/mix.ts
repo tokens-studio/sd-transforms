@@ -6,8 +6,9 @@ export function mix(
   colorSpace: ColorSpaceTypes,
   amount: number,
   mixColor: Color,
+  precision: number,
 ): Color {
   const mixValue = Math.max(0, Math.min(1, Number(amount)));
 
-  return new Color(color.mix(mixColor, mixValue, { space: colorSpace }).toString());
+  return new Color(color.mix(mixColor, mixValue, { space: colorSpace }).toString({ precision }));
 }

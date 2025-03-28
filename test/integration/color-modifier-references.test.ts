@@ -88,15 +88,15 @@ describe('color modifier references', () => {
 
   it('supports color with referenced base color, referenced mix color and reference mix value', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { start: new RegExp('--sdColor5: .*;'), end: '--sdColor8' });
-    const expectedOutput = `--sdColor7: #3b64b3;`;
+    const content = excerpt(file, { start: new RegExp('--sdColor6: .*;'), end: '--sdColor8' });
+    const expectedOutput = `--sdColor7: #32528c;`;
     expect(content).toBe(expectedOutput);
   });
 
   it('supports color with referenced base color, referenced mix color, and expression-based mix value with references', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { start: new RegExp('--sdColor6: .*;'), end: '}' });
+    const content = excerpt(file, { start: new RegExp('--sdColor7: .*;'), end: '}' });
     const expectedOutput = `--sdColor8: #3b64b3;`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 });

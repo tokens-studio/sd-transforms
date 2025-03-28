@@ -2,6 +2,8 @@ export type ColorModifierFormat = 'hex' | 'hsl' | 'lch' | 'p3' | 'srgb';
 
 export interface ColorModifierOptions {
   format: ColorModifierFormat;
+  mathFractionDigits?: number;
+  precision?: number;
 }
 
 export interface TransformOptions {
