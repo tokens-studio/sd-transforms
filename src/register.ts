@@ -14,6 +14,8 @@ import { transformOpacity } from './transformOpacity.js';
 import { parseTokens } from './preprocessors/parse-tokens.js';
 import { transformShadow } from './css/transformShadow.js';
 
+export const defaultFractionDigits = 4;
+
 export const getTransforms = (transformOpts?: TransformOptions) => {
   const agnosticTransforms = [
     'ts/descriptionToComment',
@@ -73,7 +75,8 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
     type: 'value',
     transitive: true,
     filter: token => ['string', 'object'].includes(typeof (token.$value ?? token.value)),
-    transform: (token, platformCfg) => checkAndEvaluateMath(token, platformCfg.mathFractionDigits),
+    transform: (token, platformCfg) =>
+      checkAndEvaluateMath(token, platformCfg.mathFractionDigits ?? defaultFractionDigits),
   });
 
   sd.registerTransform({
@@ -171,7 +174,12 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
       (token.$type ?? token.type) === 'color' &&
       token.$extensions &&
       token.$extensions['studio.tokens']?.modify,
-    transform: token => transformColorModifiers(token, transformOpts?.['ts/color/modifiers']),
+    transform: (token, platformCfg) =>
+      transformColorModifiers(
+        token,
+        platformCfg.mathFractionDigits ?? defaultFractionDigits,
+        transformOpts?.['ts/color/modifiers'],
+      ),
   });
 
   const includeBuiltinGroup = transformOpts?.withSDBuiltins ?? true;

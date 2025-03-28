@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from 'chai';
+import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, excerpt, init } from './utils.js';
@@ -84,7 +84,7 @@ describe('expand composition tokens', () => {
 --sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
 --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
 --sdRef: italic 800 26px/1.25 Arial;`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 
   it('optionally can transform typography, border and shadow tokens', async () => {
@@ -132,7 +132,7 @@ describe('expand composition tokens', () => {
 --sdShadowDouble2Color: rgba(0, 0, 0, 0.4);
 --sdShadowDouble2OffsetX: 0;
 --sdShadowDouble2OffsetY: 8px;`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 
   it('handles references and deep references for expandable values', async () => {
@@ -161,7 +161,7 @@ describe('expand composition tokens', () => {
 --sdDeepRefTextDecoration: none;
 --sdDeepRefTextCase: none;
 --sdDeepRefFontStyle: italic;`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 
   it('handles references for multi-shadow value', async () => {
@@ -178,6 +178,6 @@ describe('expand composition tokens', () => {
 --sdDeepRefShadowMulti2Color: rgba(0, 0, 0, 0.4);
 --sdDeepRefShadowMulti2OffsetX: 0;
 --sdDeepRefShadowMulti2OffsetY: 8px;`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 });

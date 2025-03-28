@@ -29,7 +29,10 @@ export async function cleanup(dict?: StyleDictionary & { cleaned?: boolean }) {
 
 // Take an excerpt of a string and trim whitespace at the ends
 // and remove indentations after newline -> before the `--` CSS prop starting characters
-export function excerpt(content: string, options?: { start?: string; end?: string }) {
+export function excerpt(
+  content: string,
+  options?: { start?: string | RegExp; end?: string | RegExp },
+) {
   const { start, end } = options ?? {};
   let trimmedContent = content;
   if (start) {

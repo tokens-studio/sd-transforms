@@ -1,5 +1,5 @@
 import StyleDictionary from 'style-dictionary';
-import { expect } from 'chai';
+import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import Color from 'tinycolor2';
 import { promises } from 'node:fs';
 import path from 'node:path';
@@ -65,6 +65,6 @@ describe('outputReferences integration', () => {
     const expectedOutput = `public static let colorDanger = UIColor(red: 0.251, green: 0.000, blue: 0.000, alpha: 1)
 public static let colorError = UIColor(red: 0.125, green: 0.000, blue: 0.000, alpha: 1)
 public static let colorRed = UIColor(red: 1.000, green: 0.000, blue: 0.000, alpha: 1)`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 });

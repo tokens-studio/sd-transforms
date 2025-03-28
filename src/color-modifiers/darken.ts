@@ -41,7 +41,7 @@ export function darken(color: Color, colorSpace: ColorSpaceTypes, amount: number
     }
 
     default: {
-      return color.darken(amount);
+      return color.darken(amount) as Color;
     }
   }
 }
