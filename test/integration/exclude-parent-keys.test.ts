@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, excerpt, init } from './utils.js';
@@ -56,6 +56,6 @@ describe('exclude parent keys', () => {
     const expectedOutput = `--sdCoreColor: #FFFFFF;
 --sdSemanticColor: #FFFFFF;
 --sdButtonColor: #FFFFFF;`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 });

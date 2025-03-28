@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, afterEach, expect, it } from 'vitest';
 import StyleDictionary from 'style-dictionary';
 import { getTransforms, register } from '../../src/index.js';
 import { promises } from 'node:fs';
@@ -55,6 +55,6 @@ describe('custom transform group', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     const content = excerpt(file, { start: ':root {', end: '}' });
     const expectedOutput = `--length: 24;`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 });
