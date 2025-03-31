@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import StyleDictionary from 'style-dictionary';
 import { cleanup } from '../integration/utils.js';
 import { getTransforms, register } from '../../src/register.js';
+import { TransformOptions } from '../../src/TransformOptions.js';
 
 const agnosticTransforms = [
   'ts/descriptionToComment',
@@ -284,12 +285,21 @@ describe('register', () => {
   });
 
   it('passes smoke/integration test for css', async () => {
+    const defaultTransformOptions: TransformOptions = {
+      'ts/color/modifiers': {
+        format: 'srgb',
+        mathFractionDigits: 10,
+        precision: 5,
+      },
+    };
     const cfg = {
       tokens,
       preprocessors: ['tokens-studio'],
       platforms: {
         css: {
           transformGroup: 'tokens-studio',
+          mathFractionDigits: 8,
+          precision: 4,
           files: [
             {
               format: 'css/variables',
@@ -298,7 +308,7 @@ describe('register', () => {
         },
       },
     };
-    register(StyleDictionary);
+    register(StyleDictionary, defaultTransformOptions);
 
     const sd = new StyleDictionary(cfg);
 
@@ -322,9 +332,9 @@ describe('register', () => {
   --colorsWhite: #ffffff;
   --colorsBlue: #0000ff;
   --colorsBlueAlpha: rgba(0, 0, 255, 50%);
-  --colorsRed400: rgb(96.5% 45.6% 45.6%);
+  --colorsRed400: rgb(96.471% 45.647% 45.647%);
   --colorsRed500: #f56565;
-  --colorsRed600: rgb(86.5% 35.6% 35.6%);
+  --colorsRed600: rgb(86.471% 35.647% 35.647%);
   --colorsGradient: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.00) 45%);
   --lineHeightsHeading: 1.1;
   --lineHeightsBody: 1.4;

@@ -1,6 +1,7 @@
 import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
 import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
+import { defaultFractionDigits } from './register.js';
 
 const mathChars = ['+', '-', '*', '/'];
 const parser = new Parser();
@@ -151,7 +152,7 @@ export function parseAndReduce(expr: string, mathFractionDigits: number): string
 
 export function checkAndEvaluateMath(
   token: DesignToken,
-  mathFractionDigits: number,
+  mathFractionDigits = defaultFractionDigits,
 ): DesignToken['value'] {
   const expr = token.$value ?? token.value;
   const type = token.$type ?? token.type;

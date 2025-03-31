@@ -41,10 +41,19 @@ export function modifyColor(
   baseColor = parseUIColor(baseColor);
   const color = new Color(baseColor);
   let returnedColor = color;
-  const resolvedMathFractionDigits: number = modifier.mathFractionDigits ?? defaultFractionDigits;
+
+  let resolvedMathFractionDigits: number = defaultFractionDigits;
+  if (modifier?.mathFractionDigits) {
+    resolvedMathFractionDigits = modifier.mathFractionDigits;
+  }
   const modifyValueResolvedCalc = Number(
     parseAndReduce(modifier.value, resolvedMathFractionDigits),
   );
+
+  let resolvedColorPrecision: number = defaultColorPrecision;
+  if (modifier?.precision) {
+    resolvedColorPrecision = modifier.precision;
+  }
 
   try {
     switch (modifier.type) {
@@ -60,7 +69,7 @@ export function modifyColor(
           modifier.space,
           modifyValueResolvedCalc,
           new Color(modifier.color),
-          modifier.precision ?? defaultColorPrecision,
+          resolvedColorPrecision,
         );
         break;
       case 'alpha': {

@@ -8,26 +8,26 @@ const outputDir = 'test/integration/tokens/';
 const outputFileName = 'vars.css';
 const outputFilePath = path.resolve(outputDir, outputFileName);
 
-const cfg = {
-  source: ['test/integration/tokens/color-modifier-references.tokens.json'],
-  platforms: {
-    css: {
-      transformGroup: 'tokens-studio',
-      prefix: 'sd',
-      buildPath: outputDir,
-      files: [
-        {
-          destination: outputFileName,
-          format: 'css/variables',
-        },
-      ],
-    },
-  },
-};
-
-let dict: StyleDictionary | undefined;
-
 describe('color modifier references', () => {
+  const cfg = {
+    source: ['test/integration/tokens/color-modifier-references.tokens.json'],
+    platforms: {
+      css: {
+        transformGroup: 'tokens-studio',
+        prefix: 'sd',
+        buildPath: outputDir,
+        files: [
+          {
+            destination: outputFileName,
+            format: 'css/variables',
+          },
+        ],
+      },
+    },
+  };
+
+  let dict: StyleDictionary | undefined;
+
   beforeEach(async () => {
     if (dict) {
       cleanup(dict);
@@ -95,8 +95,107 @@ describe('color modifier references', () => {
 
   it('supports color with referenced base color, referenced mix color, and expression-based mix value with references', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { start: new RegExp('--sdColor7: .*;'), end: '}' });
+    const content = excerpt(file, { start: new RegExp('--sdColor7: .*;'), end: '--sdColor9' });
     const expectedOutput = `--sdColor8: #3b64b3;`;
     expect(content).toBe(expectedOutput);
+  });
+});
+
+describe('color modifier platform config mathFractionDigits', () => {
+  const cfg = {
+    source: ['test/integration/tokens/color-modifier-references.tokens.json'],
+    platforms: {
+      css: {
+        transformGroup: 'tokens-studio',
+        prefix: 'sd',
+        buildPath: outputDir,
+        mathFractionDigits: 10,
+        files: [
+          {
+            destination: outputFileName,
+            format: 'css/variables',
+          },
+        ],
+      },
+    },
+  };
+
+  let dict: StyleDictionary | undefined;
+
+  beforeEach(async () => {
+    if (dict) {
+      cleanup(dict);
+    }
+    dict = await init(cfg, { withSDBuiltins: false });
+  });
+
+  afterEach(async () => {
+    if (dict) {
+      await cleanup(dict);
+    }
+  });
+
+  it('supports platform config math fraction digits', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const contentMorePrecise = excerpt(file, {
+      start: new RegExp('--sdColor8: .*;'),
+      end: '--sdColor10',
+    });
+    const expectedOutputMorePrecise = `--sdColor9: rgb(44.287% 59.482% 89.87%);`;
+    expect(contentMorePrecise).toBe(expectedOutputMorePrecise);
+    const contentLessPrecise = excerpt(file, {
+      start: new RegExp('--sdColor9: .*;'),
+      end: '--sdColor11',
+    });
+    const expectedOutputLessPrecise = `--sdColor10: rgb(44.289% 59.483% 89.871%);`;
+    expect(contentLessPrecise).toBe(expectedOutputLessPrecise);
+  });
+});
+
+describe('color modifier platform config color precision', () => {
+  const cfg = {
+    source: ['test/integration/tokens/color-modifier-references.tokens.json'],
+    platforms: {
+      css: {
+        transformGroup: 'tokens-studio',
+        prefix: 'sd',
+        buildPath: outputDir,
+        precision: 8,
+        files: [
+          {
+            destination: outputFileName,
+            format: 'css/variables',
+          },
+        ],
+      },
+    },
+  };
+
+  let dict: StyleDictionary | undefined;
+
+  beforeEach(async () => {
+    if (dict) {
+      cleanup(dict);
+    }
+    dict = await init(cfg, { withSDBuiltins: false });
+  });
+
+  afterEach(async () => {
+    if (dict) {
+      await cleanup(dict);
+    }
+  });
+
+  it('supports platform config color precision', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const contentMorePrecise = excerpt(file, {
+      start: new RegExp('--sdColor10: .*;'),
+      end: '--sdColor12',
+    });
+    const expectedOutputMorePrecise = `--sdColor11: rgb(44.288667% 59.482667% 89.870667%);`;
+    expect(contentMorePrecise).toBe(expectedOutputMorePrecise);
+    const contentLessPrecise = excerpt(file, { start: new RegExp('--sdColor11: .*;'), end: '}' });
+    const expectedOutputLessPrecise = `--sdColor12: rgb(44.3% 59.5% 89.9%);`;
+    expect(contentLessPrecise).toBe(expectedOutputLessPrecise);
   });
 });

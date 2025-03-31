@@ -139,5 +139,65 @@
         }
       }
     }
+  },
+  "color9": {
+    "value": "#FFFFFF",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "0.5123123452 + 6 * 0.0412341234",
+          "space": "srgb",
+          "color": "#4477DD",
+          "precision": 5
+        }
+      }
+    }
+  },
+  "color10": {
+    "value": "#FFFFFF",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "0.5123123452 + 6 * 0.0412341234",
+          "space": "srgb",
+          "color": "#4477DD",
+          "precision": 5,
+          "mathFractionDigits": 4
+        }
+      }
+    }
+  },
+  "color11": {
+    "value": "#FFFFFF",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "0.5123123452 + 6 * 0.0412341234",
+          "space": "srgb",
+          "color": "#4477DD"
+        }
+      }
+    }
+  },
+  "color12": {
+    "value": "#FFFFFF",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "0.5123123452 + 6 * 0.0412341234",
+          "space": "srgb",
+          "color": "#4477DD",
+          "precision": 3
+        }
+      }
+    }
   }
 }

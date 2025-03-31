@@ -1,5 +1,5 @@
 import type { PreprocessedTokens } from 'style-dictionary/types';
-import StyleDictionary from 'style-dictionary';
+import StyleDictionary, { PlatformConfig } from 'style-dictionary';
 import { transformDimension } from './transformDimension.js';
 import { transformHEXRGBaForCSS } from './css/transformHEXRGBa.js';
 import { transformFontWeight } from './transformFontWeight.js';
@@ -9,7 +9,7 @@ import { transformTypographyForCompose } from './compose/transformTypography.js'
 import { checkAndEvaluateMath } from './checkAndEvaluateMath.js';
 import { mapDescriptionToComment } from './mapDescriptionToComment.js';
 import { transformColorModifiers } from './color-modifiers/transformColorModifiers.js';
-import { TransformOptions } from './TransformOptions.js';
+import { ColorModifierOptions, TransformOptions } from './TransformOptions.js';
 import { transformOpacity } from './transformOpacity.js';
 import { parseTokens } from './preprocessors/parse-tokens.js';
 import { transformShadow } from './css/transformShadow.js';
@@ -174,12 +174,52 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
       (token.$type ?? token.type) === 'color' &&
       token.$extensions &&
       token.$extensions['studio.tokens']?.modify,
-    transform: (token, platformCfg) =>
-      transformColorModifiers(
-        token,
-        platformCfg.mathFractionDigits ?? defaultFractionDigits,
-        transformOpts?.['ts/color/modifiers'],
-      ),
+    transform: (token, platformCfg) => {
+      const hasTransformOpts = transformOpts?.['ts/color/modifiers'];
+      const hasPlatformPrecision = platformCfg.precision !== undefined;
+      const hasPlatformMathFractionDigits = platformCfg.mathFractionDigits !== undefined;
+
+      if (hasTransformOpts || hasPlatformPrecision || hasPlatformMathFractionDigits) {
+        const resolveColorModifyTransformOpts = (
+          platformCfg: PlatformConfig,
+          transformOpts?: TransformOptions,
+        ): ColorModifierOptions | undefined => {
+          let resolvedOpts: ColorModifierOptions | undefined;
+
+          if (platformCfg.precision) {
+            resolvedOpts = {} as ColorModifierOptions;
+            resolvedOpts.precision = platformCfg.precision;
+          }
+
+          if (platformCfg.mathFractionDigits) {
+            resolvedOpts = resolvedOpts ? resolvedOpts : ({} as ColorModifierOptions);
+            resolvedOpts.mathFractionDigits = platformCfg.mathFractionDigits;
+          }
+
+          if (transformOpts?.['ts/color/modifiers']) {
+            if (transformOpts['ts/color/modifiers']?.precision) {
+              resolvedOpts = resolvedOpts ? resolvedOpts : ({} as ColorModifierOptions);
+              resolvedOpts.precision = transformOpts['ts/color/modifiers']?.precision;
+            }
+
+            if (transformOpts['ts/color/modifiers']?.mathFractionDigits) {
+              resolvedOpts = resolvedOpts ? resolvedOpts : ({} as ColorModifierOptions);
+              resolvedOpts.mathFractionDigits =
+                transformOpts['ts/color/modifiers']?.mathFractionDigits;
+            }
+          }
+
+          return resolvedOpts;
+        };
+
+        const resolvedColorModifyTransformOpts: ColorModifierOptions | undefined =
+          resolveColorModifyTransformOpts(platformCfg, transformOpts);
+
+        return transformColorModifiers(token, resolvedColorModifyTransformOpts);
+      }
+
+      return transformColorModifiers(token);
+    },
   });
 
   const includeBuiltinGroup = transformOpts?.withSDBuiltins ?? true;
