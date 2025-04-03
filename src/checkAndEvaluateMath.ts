@@ -1,7 +1,7 @@
 import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
 import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
-import { defaultFractionDigits } from './register.js';
+import { defaultFractionDigits } from './utils/constants.js';
 
 const mathChars = ['+', '-', '*', '/'];
 const parser = new Parser();

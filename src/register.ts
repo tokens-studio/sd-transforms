@@ -13,8 +13,7 @@ import { ColorModifierOptions, TransformOptions } from './TransformOptions.js';
 import { transformOpacity } from './transformOpacity.js';
 import { parseTokens } from './preprocessors/parse-tokens.js';
 import { transformShadow } from './css/transformShadow.js';
-
-export const defaultFractionDigits = 4;
+import { defaultFractionDigits } from './utils/constants.js';
 
 export const getTransforms = (transformOpts?: TransformOptions) => {
   const agnosticTransforms = [

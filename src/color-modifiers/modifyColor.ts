@@ -5,8 +5,7 @@ import { darken } from './darken.js';
 import { lighten } from './lighten.js';
 import { ColorModifier } from '@tokens-studio/types';
 import { parseAndReduce } from '../checkAndEvaluateMath.js';
-import { defaultFractionDigits } from '../register.js';
-import { defaultColorPrecision } from './transformColorModifiers.js';
+import { defaultColorPrecision, defaultFractionDigits } from '../utils/constants.js';
 
 // Users using UIColor swift format are blocked from using such transform in
 // combination with this color modify transform when using references.
