@@ -185,16 +185,6 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
         ): ColorModifierOptions | undefined => {
           let resolvedOpts: ColorModifierOptions | undefined;
 
-          if (platformCfg.precision) {
-            resolvedOpts = {} as ColorModifierOptions;
-            resolvedOpts.precision = platformCfg.precision;
-          }
-
-          if (platformCfg.mathFractionDigits) {
-            resolvedOpts = resolvedOpts ? resolvedOpts : ({} as ColorModifierOptions);
-            resolvedOpts.mathFractionDigits = platformCfg.mathFractionDigits;
-          }
-
           if (transformOpts?.['ts/color/modifiers']) {
             if (transformOpts['ts/color/modifiers']?.precision) {
               resolvedOpts = resolvedOpts ? resolvedOpts : ({} as ColorModifierOptions);
@@ -206,6 +196,16 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
               resolvedOpts.mathFractionDigits =
                 transformOpts['ts/color/modifiers']?.mathFractionDigits;
             }
+          }
+
+          if (platformCfg.precision) {
+            resolvedOpts = {} as ColorModifierOptions;
+            resolvedOpts.precision = platformCfg.precision;
+          }
+
+          if (platformCfg.mathFractionDigits) {
+            resolvedOpts = resolvedOpts ? resolvedOpts : ({} as ColorModifierOptions);
+            resolvedOpts.mathFractionDigits = platformCfg.mathFractionDigits;
           }
 
           return resolvedOpts;

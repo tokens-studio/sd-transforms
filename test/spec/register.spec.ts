@@ -332,9 +332,9 @@ describe('register', () => {
   --colorsWhite: #ffffff;
   --colorsBlue: #0000ff;
   --colorsBlueAlpha: rgba(0, 0, 255, 50%);
-  --colorsRed400: rgb(96.471% 45.647% 45.647%);
+  --colorsRed400: rgb(96.47% 45.65% 45.65%);
   --colorsRed500: #f56565;
-  --colorsRed600: rgb(86.471% 35.647% 35.647%);
+  --colorsRed600: rgb(86.47% 35.65% 35.65%);
   --colorsGradient: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.00) 45%);
   --lineHeightsHeading: 1.1;
   --lineHeightsBody: 1.4;
