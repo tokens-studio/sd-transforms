@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from 'chai';
+import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, excerpt, init } from './utils.js';
@@ -81,7 +81,7 @@ describe('sd-transforms smoke tests', () => {
 --sdColor: #ff00ff;
 --sdUsesColor: rgba(255, 0, 255, 1);
 }`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 
   it('allows easily changing the casing', async () => {
@@ -138,7 +138,7 @@ describe('sd-transforms smoke tests', () => {
 --sd-color: #ff00ff;
 --sd-uses-color: rgba(255, 0, 255, 1);
 }`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 
   it('allows easily adding attribute/cti transform to tokens-studio group', async () => {

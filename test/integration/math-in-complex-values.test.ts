@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from 'chai';
+import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, excerpt, init } from './utils.js';
@@ -44,7 +44,7 @@ describe('sd-transforms advanced tests', () => {
       end: '--sdBorder: 24px dashed rgba(255, 255, 0, 0.5);',
     });
     const expectedOutput = `--sdTypo: 400 24px/1.125 'Arial Black';`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 
   it('supports border tokens with math width and hexrgba color', async () => {
@@ -54,7 +54,7 @@ describe('sd-transforms advanced tests', () => {
       end: '--sdShadowSingle: inset 0 4px 10px 0 rgba(0, 0, 0, 0.4);',
     });
     const expectedOutput = `--sdBorder: 24px dashed rgba(255, 255, 0, 0.5);`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 
   it('supports box shadow tokens with math dimensions, hexrgba color', async () => {
@@ -65,6 +65,6 @@ describe('sd-transforms advanced tests', () => {
     });
     const expectedOutput = `--sdShadowSingle: inset 0 4px 10px 0 rgba(0, 0, 0, 0.4);
 --sdShadowDouble: inset 0 4px 10px 0 rgba(0, 0, 0, 0.4), inset 0 4px 10px 0 rgba(255, 255, 255, 0.2);`;
-    expect(content).to.equal(expectedOutput);
+    expect(content).toBe(expectedOutput);
   });
 });

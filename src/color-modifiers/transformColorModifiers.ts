@@ -3,6 +3,8 @@ import { usesReferences } from 'style-dictionary/utils';
 import { modifyColor } from './modifyColor.js';
 import { ColorModifier } from '@tokens-studio/types';
 import { ColorModifierOptions } from '../TransformOptions.js';
+import { defaultFractionDigits, defaultColorPrecision } from '../utils/constants.js';
+
 /**
  * Helper: Transforms color tokens with tokens studio color modifiers
  */
@@ -21,6 +23,12 @@ export function transformColorModifiers(
 
   if (options?.format) {
     modifier.format = options.format;
+  }
+  if (!modifier.mathFractionDigits) {
+    modifier.mathFractionDigits = options?.mathFractionDigits ?? defaultFractionDigits;
+  }
+  if (!modifier.precision) {
+    modifier.precision = options?.precision ?? defaultColorPrecision;
   }
   return modifyColor(token.$value ?? token.value, modifier);
 }

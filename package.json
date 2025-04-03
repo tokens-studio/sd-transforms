@@ -27,7 +27,7 @@
     "prepare": "husky install",
     "release": "npm run build && changeset publish",
     "test": "npm run test:unit && npm run test:integration",
-    "test:integration": "ts-mocha -n loader=ts-node/esm -p tsconfig.json test/**/*.test.ts",
+    "test:integration": "vitest run",
     "test:unit": "web-test-runner --coverage",
     "test:unit:coverage": "cd coverage/lcov-report && npx http-server -o -c-1",
     "test:unit:watch": "web-test-runner --watch"
@@ -36,7 +36,7 @@
     "@bundled-es-modules/deepmerge": "^4.3.1",
     "@bundled-es-modules/postcss-calc-ast-parser": "^0.1.6",
     "@tokens-studio/types": "^0.5.1",
-    "colorjs.io": "^0.4.3",
+    "colorjs.io": "^0.5.2",
     "expr-eval-fork": "^2.0.2",
     "is-mergeable-object": "^1.1.1"
   },
@@ -66,9 +66,8 @@
     "prettier-package-json": "^2.8.0",
     "rimraf": "^6.0.1",
     "tinycolor2": "^1.6.0",
-    "ts-mocha": "^10.0.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.5.2"
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.9"
   },
   "keywords": [
     "design tokens",

@@ -4,6 +4,8 @@ import { mix } from './mix.js';
 import { darken } from './darken.js';
 import { lighten } from './lighten.js';
 import { ColorModifier } from '@tokens-studio/types';
+import { parseAndReduce } from '../checkAndEvaluateMath.js';
+import { defaultColorPrecision, defaultFractionDigits } from '../utils/constants.js';
 
 // Users using UIColor swift format are blocked from using such transform in
 // combination with this color modify transform when using references.
@@ -36,27 +38,41 @@ export function modifyColor(
   }
 
   baseColor = parseUIColor(baseColor);
-
   const color = new Color(baseColor);
   let returnedColor = color;
+
+  let resolvedMathFractionDigits: number = defaultFractionDigits;
+  if (modifier?.mathFractionDigits) {
+    resolvedMathFractionDigits = modifier.mathFractionDigits;
+  }
+  const modifyValueResolvedCalc = Number(
+    parseAndReduce(modifier.value, resolvedMathFractionDigits),
+  );
+
+  let resolvedColorPrecision: number = defaultColorPrecision;
+  if (modifier?.precision) {
+    resolvedColorPrecision = modifier.precision;
+  }
+
   try {
     switch (modifier.type) {
       case 'lighten':
-        returnedColor = lighten(color, modifier.space, Number(modifier.value));
+        returnedColor = lighten(color, modifier.space, modifyValueResolvedCalc);
         break;
       case 'darken':
-        returnedColor = darken(color, modifier.space, Number(modifier.value));
+        returnedColor = darken(color, modifier.space, modifyValueResolvedCalc);
         break;
       case 'mix':
         returnedColor = mix(
           color,
           modifier.space,
-          Number(modifier.value),
+          modifyValueResolvedCalc,
           new Color(modifier.color),
+          resolvedColorPrecision,
         );
         break;
       case 'alpha': {
-        returnedColor = transparentize(color, Number(modifier.value));
+        returnedColor = transparentize(color, modifyValueResolvedCalc);
         break;
       }
       default:
@@ -77,7 +93,7 @@ export function modifyColor(
 
     return returnedColor.toString({
       inGamut: true,
-      precision: 3,
+      precision: modifier.precision,
       format: modifier.format,
     });
   } catch (e) {

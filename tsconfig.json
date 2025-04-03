@@ -8,7 +8,7 @@
     "strict": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "types": ["node", "mocha"],
+    "types": ["node"],
     "esModuleInterop": true,
     "noImplicitAny": true,
     "outDir": "dist",
