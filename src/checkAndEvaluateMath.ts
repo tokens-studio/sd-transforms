@@ -1,8 +1,8 @@
 import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
 import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
+import { defaultFractionDigits } from './utils/constants.js';
 
-const defaultFractionDigits = 4;
 const mathChars = ['+', '-', '*', '/'];
 
 const parser = new Parser();
