@@ -1,5 +1,6 @@
 import Color from 'colorjs.io';
 import { ColorSpaceTypes } from '@tokens-studio/types';
+import { defaultColorPrecision } from '../utils/constants.js';
 
 export function mix(
   color: Color,
@@ -9,5 +10,9 @@ export function mix(
 ): Color {
   const mixValue = Math.max(0, Math.min(1, Number(amount)));
 
-  return new Color(color.mix(mixColor, mixValue, { space: colorSpace }).toString());
+  return new Color(
+    color
+      .mix(mixColor, mixValue, { space: colorSpace })
+      .toString({ precision: defaultColorPrecision }),
+  );
 }

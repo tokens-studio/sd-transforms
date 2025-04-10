@@ -4,6 +4,7 @@ import { mix } from './mix.js';
 import { darken } from './darken.js';
 import { lighten } from './lighten.js';
 import { ColorModifier } from '@tokens-studio/types';
+import { defaultColorPrecision } from '../utils/constants.js';
 
 // Users using UIColor swift format are blocked from using such transform in
 // combination with this color modify transform when using references.
@@ -77,7 +78,7 @@ export function modifyColor(
 
     return returnedColor.toString({
       inGamut: true,
-      precision: 3,
+      precision: defaultColorPrecision,
       format: modifier.format,
     });
   } catch (e) {
