@@ -75,7 +75,10 @@ function splitMultiIntoSingleValues(expr: string): string[] {
   return [expr];
 }
 
-function parseAndReduce(expr: string, fractionDigits = defaultFractionDigits): string | number {
+export function parseAndReduce(
+  expr: string,
+  fractionDigits = defaultFractionDigits,
+): string | number {
   let result: string | number = expr;
 
   // Check if expression is already a number
