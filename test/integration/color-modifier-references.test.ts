@@ -88,8 +88,29 @@ describe('color modifier references', () => {
 
   it('supports color with referenced base color, referenced mix color, and expression-based mix value', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
-    const content = excerpt(file, { start: new RegExp('--sdColor6: .*;'), end: '}' });
+    const content = excerpt(file, { start: new RegExp('--sdColor6: .*;'), end: '--sdColor8' });
     const expectedOutput = `--sdColor7: #3b64b3;`;
+    expect(content).toBe(expectedOutput);
+  });
+
+  it('supports color with referenced base color, expression-based alpha value', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const content = excerpt(file, { start: new RegExp('--sdColor7: .*;'), end: '--sdColor9' });
+    const expectedOutput = `--sdColor8: #202d3bbd;`;
+    expect(content).toBe(expectedOutput);
+  });
+
+  it('supports color with referenced base color, expression-based lighten value', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const content = excerpt(file, { start: new RegExp('--sdColor8: .*;'), end: '--sdColor10' });
+    const expectedOutput = `--sdColor9: #c5c8cc;`;
+    expect(content).toBe(expectedOutput);
+  });
+
+  it('supports color modifier with expression-based darken value', async () => {
+    const file = await promises.readFile(outputFilePath, 'utf-8');
+    const content = excerpt(file, { start: new RegExp('--sdColor9: .*;'), end: '}' });
+    const expectedOutput = `--sdColor10: #424242;`;
     expect(content).toBe(expectedOutput);
   });
 });

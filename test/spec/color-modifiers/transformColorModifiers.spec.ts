@@ -50,6 +50,38 @@ describe('transform color modifiers', () => {
       // without space, return original
       expect(transformColorModifiers(token(''))).to.equal('#C14242');
     });
+
+    it('supports lighten color modifiers in all 4 spaces with value calculation', () => {
+      const token = (space: ColorSpaceTypes | '') => ({
+        value: '#C14242',
+        type: 'color',
+        $extensions: {
+          'studio.tokens': {
+            modify: {
+              type: 'lighten',
+              value: '0.5 - 0.3',
+              space,
+            },
+          },
+        },
+      });
+
+      // lighten faint red to more light red
+      expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal(
+        'hsl(0 50.598% 60.627%)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal(
+        'lch(57.685 47.48 29.704)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
+        'color(display-p3 0.76016 0.43532 0.42213)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal(
+        'rgb(80.549% 40.706% 40.706%)',
+      );
+      // without space, return original
+      expect(transformColorModifiers(token(''))).to.equal('#C14242');
+    });
   });
 
   describe('darken', () => {
@@ -62,6 +94,38 @@ describe('transform color modifiers', () => {
             modify: {
               type: 'darken',
               value: '0.2',
+              space,
+            },
+          },
+        },
+      });
+
+      // darken faint red to more darkened red
+      expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal(
+        'hsl(0 50.598% 40.627%)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal(
+        'lch(37.685 47.48 29.704)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
+        'color(display-p3 0.56016 0.23532 0.22213)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal(
+        'rgb(60.549% 20.706% 20.706%)',
+      );
+      // without space, return original
+      expect(transformColorModifiers(token(''))).to.equal('#C14242');
+    });
+
+    it('supports darken color modifiers in all 4 spaces with value calculation', () => {
+      const token = (space: ColorSpaceTypes | '') => ({
+        value: '#C14242',
+        type: 'color',
+        $extensions: {
+          'studio.tokens': {
+            modify: {
+              type: 'darken',
+              value: '0.5 - 0.3',
               space,
             },
           },
@@ -114,7 +178,7 @@ describe('transform color modifiers', () => {
       expect(transformColorModifiers(token(''))).to.equal('#000000');
     });
 
-    it('supports mix modifier value calculations', () => {
+    it('supports mix color modifiers in all 4 spaces with value calculation', () => {
       const token = (space: ColorSpaceTypes | '', format?) => ({
         value: '#FFFFFF',
         type: 'color',
@@ -158,6 +222,35 @@ describe('transform color modifiers', () => {
             modify: {
               type: 'alpha',
               value: '0.2',
+              space,
+            },
+          },
+        },
+      });
+
+      expect(transformColorModifiers(token(ColorSpaceTypes.HSL))).to.equal(
+        'hsl(0 50.598% 50.784% / 0.2)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.LCH))).to.equal(
+        'lch(47.107 59.35 29.704 / 0.2)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.P3))).to.equal(
+        'color(display-p3 0.7002 0.29415 0.27766 / 0.2)',
+      );
+      expect(transformColorModifiers(token(ColorSpaceTypes.SRGB))).to.equal(
+        'rgb(75.686% 25.882% 25.882% / 0.2)',
+      );
+    });
+
+    it('supports transparentize color modifiers in all 4 spaces with value calculation', () => {
+      const token = (space: ColorSpaceTypes | '') => ({
+        value: '#C14242',
+        type: 'color',
+        $extensions: {
+          'studio.tokens': {
+            modify: {
+              type: 'alpha',
+              value: '0.5 - 0.3',
               space,
             },
           },

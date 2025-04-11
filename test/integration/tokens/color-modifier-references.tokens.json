@@ -124,5 +124,47 @@
         }
       }
     }
+  },
+  "color8": {
+    "value": "{baseColor}",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "alpha",
+          "value": "({treshhold} + 6 * {increment})",
+          "space": "srgb",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color9": {
+    "value": "{baseColor}",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "lighten",
+          "value": "({treshhold} + 6 * {increment})",
+          "space": "srgb",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color10": {
+    "value": "#FFFFFF",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "darken",
+          "value": "({treshhold} + 6 * {increment})",
+          "space": "srgb",
+          "format": "hex"
+        }
+      }
+    }
   }
 }
