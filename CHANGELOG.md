@@ -1,5 +1,13 @@
 # @tokens-studio/sd-transforms
 
+## 1.3.0
+
+### Minor Changes
+
+- a8f4c73: - Supporting color modifier value calculations
+  - Changing the default color precision to the ColorJS default of 5
+  - Updating the integration tests to use vitest instead of mocha chai
+
 ## 1.2.12
 
 ### Patch Changes
