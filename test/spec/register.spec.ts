@@ -322,9 +322,9 @@ describe('register', () => {
   --colorsWhite: #ffffff;
   --colorsBlue: #0000ff;
   --colorsBlueAlpha: rgba(0, 0, 255, 50%);
-  --colorsRed400: rgb(96.5% 45.6% 45.6%);
+  --colorsRed400: rgb(96.471% 45.647% 45.647%);
   --colorsRed500: #f56565;
-  --colorsRed600: rgb(86.5% 35.6% 35.6%);
+  --colorsRed600: rgb(86.471% 35.647% 35.647%);
   --colorsGradient: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.00) 45%);
   --lineHeightsHeading: 1.1;
   --lineHeightsBody: 1.4;
@@ -396,9 +396,9 @@ object bar {
   val colorsBlue = #0000FF
   val colorsBlueAlpha = rgba(#0000FF, 50%)
   val colorsGradient = linear-gradient(180deg, #000000 0%, rgba(#000000, 0.00) 45%)
-  val colorsRed400 = rgb(96.5% 45.6% 45.6%)
+  val colorsRed400 = rgb(96.471% 45.647% 45.647%)
   val colorsRed500 = #f56565
-  val colorsRed600 = rgb(86.5% 35.6% 35.6%)
+  val colorsRed600 = rgb(86.471% 35.647% 35.647%)
   val colorsWhite = #ffffff
   val dimensionLg = 32px
   val dimensionMd = 16px

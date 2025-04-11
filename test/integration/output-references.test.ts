@@ -1,5 +1,5 @@
 import type StyleDictionary from 'style-dictionary';
-import { expect } from 'chai';
+import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { promises } from 'node:fs';
 import path from 'node:path';
 import { cleanup, excerpt, init } from './utils.js';
@@ -52,8 +52,8 @@ describe('outputReferences integration', () => {
       start: '--sd-transformed-base-token: 4;',
       end: '--sd-transformed-reference-token: var(--sd-my-base-token) * 5;',
     });
-    expect(content1).to.equal(expectedOutput1);
-    expect(content2).to.equal(expectedOutput2);
+    expect(content1).toBe(expectedOutput1);
+    expect(content2).toBe(expectedOutput2);
   });
 
   it('supports outputReferences with resolveMath when evaluating an expression', async () => {
@@ -68,7 +68,7 @@ describe('outputReferences integration', () => {
       start: '--sd-my-reference-token: var(--sd-my-base-token);',
       end: '}',
     });
-    expect(content1).to.equal(expectedOutput1);
-    expect(content2).to.equal(expectedOutput2);
+    expect(content1).toBe(expectedOutput1);
+    expect(content2).toBe(expectedOutput2);
   });
 });

@@ -33,5 +33,138 @@
         "modify": "{modifier}"
       }
     }
+  },
+  "treshhold": {
+    "value": 0.5,
+    "type": "number"
+  },
+  "increment": {
+    "value": 0.04,
+    "type": "number"
+  },
+  "baseColor": {
+    "value": "#202D3B",
+    "type": "color"
+  },
+  "mixColor": {
+    "value": "#4477DD",
+    "type": "color"
+  },
+  "color3": {
+    "value": "#FFFFFF",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "0.5",
+          "space": "srgb",
+          "color": "#4477DD",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color4": {
+    "value": "#FFFFFF",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "0.5 + 6 * 0.04",
+          "space": "srgb",
+          "color": "#4477DD",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color5": {
+    "value": "#FFFFFF",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "0.5 + 6 * 0.04",
+          "space": "srgb",
+          "color": "{mixColor}",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color6": {
+    "value": "{baseColor}",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "0.5 + 6 * 0.04",
+          "space": "srgb",
+          "color": "{mixColor}",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color7": {
+    "type": "color",
+    "value": "{baseColor}",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "mix",
+          "value": "({treshhold} + 6 * {increment})",
+          "space": "srgb",
+          "color": "{mixColor}",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color8": {
+    "value": "{baseColor}",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "alpha",
+          "value": "({treshhold} + 6 * {increment})",
+          "space": "srgb",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color9": {
+    "value": "{baseColor}",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "lighten",
+          "value": "({treshhold} + 6 * {increment})",
+          "space": "srgb",
+          "format": "hex"
+        }
+      }
+    }
+  },
+  "color10": {
+    "value": "#FFFFFF",
+    "type": "color",
+    "$extensions": {
+      "studio.tokens": {
+        "modify": {
+          "type": "darken",
+          "value": "({treshhold} + 6 * {increment})",
+          "space": "srgb",
+          "format": "hex"
+        }
+      }
+    }
   }
 }
