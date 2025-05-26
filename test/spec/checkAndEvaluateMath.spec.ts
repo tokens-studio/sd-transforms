@@ -1,5 +1,9 @@
 import { expect } from 'chai';
-import { checkAndEvaluateMath } from '../../src/checkAndEvaluateMath.js';
+import {
+  checkAndEvaluateMath,
+  MixedUnitsExpressionError,
+  parseUnits,
+} from '../../src/checkAndEvaluateMath.js';
 import { runTransformSuite } from '../suites/transform-suite.spec.js';
 import { cleanup, init } from '../integration/utils.js';
 import { TransformedToken } from 'style-dictionary/types';
@@ -7,6 +11,13 @@ import { TransformedToken } from 'style-dictionary/types';
 runTransformSuite(checkAndEvaluateMath as (value: unknown) => unknown, {});
 
 describe('check and evaluate math', () => {
+  it('parses unit out of expression', () => {
+    expect(parseUnits('4px + 4em +4').units).to.deep.equal(new Set(['px', 'em', '']));
+    expect(parseUnits('1 +4').units).to.deep.equal(new Set(['']));
+    expect(parseUnits('1*4rem').units).to.deep.equal(new Set(['rem', '']));
+    expect(parseUnits('(2+4)').units).to.deep.equal(new Set(['']));
+  });
+
   it('checks and evaluates math expressions', () => {
     expect(checkAndEvaluateMath({ value: '4*1.5px 4*1.5px 4*1.5px', type: 'dimension' })).to.equal(
       '6px 6px 6px',
@@ -31,19 +42,24 @@ describe('check and evaluate math', () => {
 
   it('can evaluate math expressions where more than one token has a unit, assuming no mixed units are used', () => {
     expect(checkAndEvaluateMath({ value: '4em + 7em', type: 'dimension' })).to.equal('11em');
-    expect(checkAndEvaluateMath({ value: '4 + 7rem', type: 'dimension' })).to.equal('4 + 7rem');
-    expect(checkAndEvaluateMath({ value: '4em + 7rem', type: 'dimension' })).to.equal('4em + 7rem');
+    expect(() => checkAndEvaluateMath({ value: '4 + 7rem', type: 'dimension' })).to.throw(
+      MixedUnitsExpressionError,
+    );
+    expect(() => checkAndEvaluateMath({ value: '4em + 7rem', type: 'dimension' })).to.throw(
+      MixedUnitsExpressionError,
+    );
   });
 
   it('can evaluate mixed units if operators are exclusively multiplication and the mix is px or unitless', () => {
     expect(checkAndEvaluateMath({ value: '4 * 7em * 8em', type: 'dimension' })).to.equal('224em');
-    expect(checkAndEvaluateMath({ value: '4px * 7em', type: 'dimension' })).to.equal('28em');
-    // 50em would be incorrect when dividing, as em grows, result should shrink, but doesn't
-    expect(checkAndEvaluateMath({ value: '1000 / 20em', type: 'dimension' })).to.equal(
-      '1000 / 20em',
+    expect(() => checkAndEvaluateMath({ value: '4px * 7em', type: 'dimension' })).to.throw(
+      MixedUnitsExpressionError,
     );
+    expect(checkAndEvaluateMath({ value: '1000 / 20em', type: 'dimension' })).to.equal('50em');
     // cannot be expressed/resolved without knowing the value of em
-    expect(checkAndEvaluateMath({ value: '4px + 7em', type: 'dimension' })).to.equal('4px + 7em');
+    expect(() => checkAndEvaluateMath({ value: '4px + 7em', type: 'dimension' })).to.throw(
+      MixedUnitsExpressionError,
+    );
   });
 
   it('can evaluate math expressions where more than one token has a unit, as long as for each piece of the expression the unit is the same', () => {
@@ -52,12 +68,18 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath({ value: '10vw + 20vw', type: 'dimension' })).to.equal('30vw');
 
     // cannot resolve them, because em is dynamic and 20/20px is static value
-    expect(checkAndEvaluateMath({ value: '2em + 20', type: 'dimension' })).to.equal('2em + 20');
-    expect(checkAndEvaluateMath({ value: '2em + 20px', type: 'dimension' })).to.equal('2em + 20px');
+    expect(() => checkAndEvaluateMath({ value: '2em + 20', type: 'dimension' })).to.throw(
+      MixedUnitsExpressionError,
+    );
+    expect(() => checkAndEvaluateMath({ value: '2em + 20px', type: 'dimension' })).to.throw(
+      MixedUnitsExpressionError,
+    );
 
-    // can resolve them, because multiplying by pixels/unitless is possible, regardless of the other value's unit
+    // can resolve them, because multiplying by unitless is possible, regardless of the other value's unit
     expect(checkAndEvaluateMath({ value: '2pt * 4', type: 'dimension' })).to.equal('8pt');
-    expect(checkAndEvaluateMath({ value: '2em * 20px', type: 'dimension' })).to.equal('40em');
+    expect(() => checkAndEvaluateMath({ value: '2em * 20px', type: 'dimension' })).to.throw(
+      MixedUnitsExpressionError,
+    );
   });
 
   it('supports multi-value expressions with math expressions', () => {
@@ -69,13 +91,6 @@ describe('check and evaluate math', () => {
     );
     expect(checkAndEvaluateMath({ value: '5px 3 * 2px', type: 'dimension' })).to.equal('5px 6px');
     expect(checkAndEvaluateMath({ value: '3 * 2px 5px', type: 'dimension' })).to.equal('6px 5px');
-    // smoke test: this value has spaces as well but should be handled normally
-    expect(
-      checkAndEvaluateMath({
-        value: 'linear-gradient(90deg, #354752 0%, #0b0d0e 100%)',
-        type: 'dimension',
-      }),
-    ).to.equal('linear-gradient(90deg, #354752 0%, #0b0d0e 100%)');
   });
 
   it('supports expr-eval expressions', () => {

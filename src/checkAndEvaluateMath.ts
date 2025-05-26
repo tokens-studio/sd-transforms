@@ -3,6 +3,14 @@ import { Parser } from 'expr-eval-fork';
 import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
 import { defaultFractionDigits } from './utils/constants.js';
 
+export class MixedUnitsExpressionError extends Error {
+  constructor({ units }) {
+    super('Mixed units found in expression');
+    this.name = 'MixedUnitsExpressionError';
+    this.units = units;
+  }
+}
+
 const mathChars = ['+', '-', '*', '/'];
 
 const parser = new Parser();
@@ -75,6 +83,51 @@ function splitMultiIntoSingleValues(expr: string): string[] {
   return [expr];
 }
 
+export function findMathOperators(expr: string) {
+  const operators = new Set();
+  const mathChars = /[+\-*/]/g;
+  const matches = expr.match(mathChars);
+  if (matches) {
+    matches.forEach(op => operators.add(op));
+  }
+  return operators;
+}
+
+/**
+ * Parses units from a math expression and returns an expression with units stripped for further processing.
+ * Numbers without units will be represented in the units set with an empty string "".
+ */
+export function parseUnits(expr: string): { units: Set<string>; unitlessExpr: string } {
+  const unitRegex = /(\d+\.?\d*)(?<unit>([a-zA-Z]|%)+)?/g;
+  const units: Set<string> = new Set();
+
+  // Find all units in expression
+  let matchArr;
+  const matches = [];
+  while ((matchArr = unitRegex.exec(expr)) !== null) {
+    if (matchArr.groups) {
+      const unit = matchArr.groups.unit || '';
+      if (unit !== null) {
+        units.add(unit);
+        matches.push({
+          start: matchArr.index + matchArr[1].length,
+          end: matchArr.index + matchArr[0].length,
+          unit,
+        });
+      }
+    }
+  }
+
+  // Remove units from expression
+  let unitlessExpr = expr;
+  for (let i = matches.length - 1; i >= 0; i--) {
+    const { start, end } = matches[i];
+    unitlessExpr = unitlessExpr.substring(0, start) + unitlessExpr.substring(end);
+  }
+
+  return { units, unitlessExpr };
+}
+
 export function parseAndReduce(
   expr: string,
   fractionDigits = defaultFractionDigits,
@@ -88,22 +141,27 @@ export function parseAndReduce(
 
   // We check for px unit, then remove it, since these are essentially numbers in tokens context
   // We remember that we had px in there so we can put it back in the end result
-  const hasPx = expr.match('px');
   const noPixExpr = expr.replace(/px/g, '');
-  const unitRegex = /(\d+\.?\d*)(?<unit>([a-zA-Z]|%)+)/g;
 
-  let matchArr;
-  const foundUnits: Set<string> = new Set();
-  while ((matchArr = unitRegex.exec(noPixExpr)) !== null) {
-    if (matchArr?.groups) {
-      foundUnits.add(matchArr.groups.unit);
-    }
+  const { units, unitlessExpr } = parseUnits(expr);
+  const unitsNoUnitless = units.difference(new Set(['']));
+
+  if (unitsNoUnitless.size > 1) {
+    throw new MixedUnitsExpressionError({ units });
   }
-  // multiple units (besides px) found, cannot parse the expression
-  if (foundUnits.size > 1) {
-    return result;
+
+  // Dont allow adding or subtracting to unitless
+  // TODO: Find a better interface here something like an allowance intersection chart of units and operators.
+  const mathOperators = findMathOperators(expr);
+  const isMixingRelativeUnitsWithUnitless =
+    (unitsNoUnitless.has('rem') || unitsNoUnitless.has('em')) &&
+    (mathOperators.has('+') || mathOperators.has('-')) &&
+    units.size > 1;
+  if (isMixingRelativeUnitsWithUnitless) {
+    throw new MixedUnitsExpressionError({ units });
   }
-  const resultUnit = Array.from(foundUnits)[0] ?? (hasPx ? 'px' : '');
+
+  const resultUnit = [...unitsNoUnitless][0];
 
   if (!isNaN(Number(noPixExpr))) {
     result = Number(noPixExpr);
@@ -113,7 +171,7 @@ export function parseAndReduce(
     // Try to evaluate as expr-eval expression
     let evaluated;
     try {
-      evaluated = parser.evaluate(`${noPixExpr}`);
+      evaluated = parser.evaluate(`${unitlessExpr}`);
       if (typeof evaluated === 'number') {
         result = evaluated;
       }
@@ -123,7 +181,7 @@ export function parseAndReduce(
   }
 
   if (typeof result !== 'number') {
-    let exprToParse = noPixExpr;
+    let exprToParse = unitlessExpr;
     // math operators, excluding *
     // (** or ^ exponent would theoretically be fine, but postcss-calc-ast-parser does not support it
     const operatorsRegex = /[/+%-]/g;
