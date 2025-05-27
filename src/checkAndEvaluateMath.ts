@@ -1,6 +1,5 @@
 import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
-import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
 import { defaultFractionDigits } from './utils/constants.js';
 
 export class MixedUnitsExpressionError extends Error {
@@ -139,10 +138,6 @@ export function parseAndReduce(
     return result;
   }
 
-  // We check for px unit, then remove it, since these are essentially numbers in tokens context
-  // We remember that we had px in there so we can put it back in the end result
-  const noPixExpr = expr.replace(/px/g, '');
-
   const { units, unitlessExpr } = parseUnits(expr);
   const unitsNoUnitless = units.difference(new Set(['']));
 
@@ -163,10 +158,6 @@ export function parseAndReduce(
 
   const resultUnit = [...unitsNoUnitless][0];
 
-  if (!isNaN(Number(noPixExpr))) {
-    result = Number(noPixExpr);
-  }
-
   if (typeof result !== 'number') {
     // Try to evaluate as expr-eval expression
     let evaluated;
@@ -177,27 +168,6 @@ export function parseAndReduce(
       }
     } catch (ex) {
       // no-op
-    }
-  }
-
-  if (typeof result !== 'number') {
-    let exprToParse = unitlessExpr;
-    // math operators, excluding *
-    // (** or ^ exponent would theoretically be fine, but postcss-calc-ast-parser does not support it
-    const operatorsRegex = /[/+%-]/g;
-    // if we only have * operator, we can consider expression as unitless and compute it that way
-    // we already know we dont have mixed units from (foundUnits.size > 1) guard above
-    if (!exprToParse.match(operatorsRegex)) {
-      exprToParse = exprToParse.replace(new RegExp(resultUnit, 'g'), '');
-    }
-    // Try to evaluate as postcss-calc-ast-parser expression
-    const calcParsed = parse(exprToParse, { allowInlineCommnets: false });
-
-    // Attempt to reduce the math expression
-    const reduced = reduceExpression(calcParsed);
-    // E.g. if type is Length, like 4 * 7rem would be 28rem
-    if (reduced && !isNaN(reduced.value)) {
-      result = reduced.value;
     }
   }
 
