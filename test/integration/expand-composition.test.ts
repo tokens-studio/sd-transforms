@@ -95,6 +95,8 @@ describe('expand composition tokens', () => {
 --sdCompositionFontSize: 96px;
 --sdCompositionFontFamily: Roboto;
 --sdCompositionFontWeight: 700;
+--sdFontWeightRefWeight: 800;
+--sdFontWeightRefStyle: italic;
 --sdCompositionHeaderFontFamily: Roboto;
 --sdCompositionHeaderFontSize: 96px;
 --sdCompositionHeaderFontWeight: 700;
@@ -110,8 +112,6 @@ describe('expand composition tokens', () => {
 --sdTypographyTextDecoration: none;
 --sdTypographyTextCase: none;
 --sdTypographyFontStyle: italic;
---sdFontWeightRefWeight: 800;
---sdFontWeightRefStyle: italic;
 --sdBorderColor: #ffff00;
 --sdBorderWidth: 4px;
 --sdBorderStyle: solid;
