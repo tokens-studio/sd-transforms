@@ -2,10 +2,12 @@ import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
 import { defaultFractionDigits } from './utils/constants.js';
 
-export class MixedUnitsExpressionError extends Error {
-  units: Set<string>;
+export type Units = Set<string>;
 
-  constructor({ units }: { units: Set<string> }) {
+export class MixedUnitsExpressionError extends Error {
+  units: Units;
+
+  constructor({ units }: { units: Units }) {
     super('Mixed units found in expression');
     this.name = 'MixedUnitsExpressionError';
     this.units = units;
@@ -98,9 +100,9 @@ export function findMathOperators(expr: string) {
  * Parses units from a math expression and returns an expression with units stripped for further processing.
  * Numbers without units will be represented in the units set with an empty string "".
  */
-export function parseUnits(expr: string): { units: Set<string>; unitlessExpr: string } {
+export function parseUnits(expr: string): { units: Units; unitlessExpr: string } {
   const unitRegex = /(\d+\.?\d*)(?<unit>([a-zA-Z]|%)+)?/g;
-  const units: Set<string> = new Set();
+  const units: Units = new Set();
 
   // Find all units in expression
   let matchArr;
