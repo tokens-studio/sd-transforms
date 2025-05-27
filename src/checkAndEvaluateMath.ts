@@ -158,6 +158,8 @@ export function parseAndReduce(
 
   const resultUnit = [...unitsNoUnitless][0];
 
+  // TODO: We can't throw here as we still need to support non-string value types that get parsed in multiple steps
+  // e.g.: `value: {width: '6px / 4', style: 'solid', color: '#000',},`
   if (typeof result !== 'number') {
     // Try to evaluate as expr-eval expression
     let evaluated;
