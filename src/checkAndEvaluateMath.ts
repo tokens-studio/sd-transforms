@@ -3,7 +3,9 @@ import { Parser } from 'expr-eval-fork';
 import { defaultFractionDigits } from './utils/constants.js';
 
 export class MixedUnitsExpressionError extends Error {
-  constructor({ units }) {
+  units: Set<string>;
+
+  constructor({ units }: { units: Set<string> }) {
     super('Mixed units found in expression');
     this.name = 'MixedUnitsExpressionError';
     this.units = units;
