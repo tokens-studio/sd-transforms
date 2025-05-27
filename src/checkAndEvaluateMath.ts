@@ -14,7 +14,8 @@ export class MixedUnitsExpressionError extends Error {
   }
 }
 
-const mathChars = ['+', '-', '*', '/'];
+const mathChars = new Set(['+', '-', '*', '/']);
+const mathCharsRegexp = /[+\-*/]/g;
 
 const parser = new Parser();
 
@@ -46,12 +47,12 @@ function splitMultiIntoSingleValues(expr: string): string[] {
 
     // conditions under which math expr is valid
     const conditions = [
-      mathChars.includes(tok), // current token is a math char
-      mathChars.includes(right) && mathChars.includes(left), // left/right are both math chars
-      left === '' && mathChars.includes(right), // tail of expr, right is math char
-      right === '' && mathChars.includes(left), // head of expr, left is math char
+      mathChars.has(tok), // current token is a math char
+      mathChars.has(right) && mathChars.has(left), // left/right are both math chars
+      left === '' && mathChars.has(right), // tail of expr, right is math char
+      right === '' && mathChars.has(left), // head of expr, left is math char
       tokens.length <= 1, // expr is valid if it's a simple 1 token expression
-      Boolean(tok.match(/\)$/) && mathChars.includes(right)), // end of group ), right is math char
+      Boolean(tok.match(/\)$/) && mathChars.has(right)), // end of group ), right is math char
       checkIfInsideGroup(tok, expr), // exprs that aren't math expressions are okay within ( ) groups
     ];
 
@@ -62,7 +63,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
         // make sure we skip the next iteration, because otherwise the conditions
         // will be all false again for the next char which is essentially a "duplicate" hit
         // meaning we would unnecessarily push another index to split our multi-value by
-        if (!mathChars.find(char => tok.includes(char))) {
+        if (!mathChars.values().find(char => tok.includes(char))) {
           skipNextIteration = true;
         }
       } else {
@@ -88,8 +89,7 @@ function splitMultiIntoSingleValues(expr: string): string[] {
 
 export function findMathOperators(expr: string) {
   const operators = new Set();
-  const mathChars = /[+\-*/]/g;
-  const matches = expr.match(mathChars);
+  const matches = expr.match(mathCharsRegexp);
   if (matches) {
     matches.forEach(op => operators.add(op));
   }
