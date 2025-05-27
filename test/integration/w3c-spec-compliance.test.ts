@@ -58,7 +58,7 @@ describe('w3c spec compliance smoke test', () => {
 --sdOpacity: 0.25;
 --sdSpacingSm: 8px;
 --sdSpacingXl: 64px;
---sdSpacingMultiValue: 8px 64px; /* You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-$value-spacing-tokens */
+--sdSpacingMultiValue: 8px 64px; /** You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-$value-spacing-tokens */
 --sdColorsBlack: #000000;
 --sdColorsWhite: #ffffff;
 --sdColorsBlue: #0000FF;
