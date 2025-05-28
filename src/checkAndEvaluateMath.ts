@@ -2,6 +2,7 @@ import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
 import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
 import { defaultFractionDigits } from './utils/constants.js';
+import { reduceToFixed } from './utils/reduceToFixed.js';
 
 const mathChars = ['+', '-', '*', '/'];
 
@@ -148,9 +149,8 @@ export function parseAndReduce(
     return result;
   }
 
-  // the outer Number() gets rid of insignificant trailing zeros of decimal numbers
-  const reducedToFixed = Number(Number.parseFloat(`${result}`).toFixed(fractionDigits));
-  result = resultUnit ? `${reducedToFixed}${resultUnit}` : reducedToFixed;
+  const fixedNum = reduceToFixed(result, fractionDigits);
+  result = resultUnit ? `${fixedNum}${resultUnit}` : fixedNum;
   return result;
 }
 
