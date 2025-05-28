@@ -157,7 +157,10 @@ export function parseAndReduce(
 export function checkAndEvaluateMath(
   token: DesignToken,
   fractionDigits?: number,
+  isStrict = false,
 ): DesignToken['value'] {
+  if (isStrict) return checkAndEvaluateMath(token, fractionDigits);
+
   const expr = token.$value ?? token.value;
   const type = token.$type ?? token.type;
 
