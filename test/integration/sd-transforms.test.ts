@@ -54,7 +54,7 @@ describe('sd-transforms smoke tests', () => {
 --sdOpacity: 0.25;
 --sdSpacingSm: 8px;
 --sdSpacingXl: 64px;
---sdSpacingMultiValue: 8px 64px; /* You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
+--sdSpacingMultiValue: 8px 64px; /** You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
 --sdColorsBlack: #000000;
 --sdColorsWhite: #ffffff;
 --sdColorsBlue: #0000ff;
@@ -111,7 +111,7 @@ describe('sd-transforms smoke tests', () => {
 --sd-opacity: 0.25;
 --sd-spacing-sm: 8px;
 --sd-spacing-xl: 64px;
---sd-spacing-multi-value: 8px 64px; /* You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
+--sd-spacing-multi-value: 8px 64px; /** You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
 --sd-colors-black: #000000;
 --sd-colors-white: #ffffff;
 --sd-colors-blue: #0000ff;
