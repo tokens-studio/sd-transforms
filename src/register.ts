@@ -178,15 +178,19 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
   // append `?? []` on the line below once we add more platforms which SD may not have a builtin transformGroup for
   const builtinTransforms = sd.hooks.transformGroups[transformOpts?.platform ?? 'css'];
 
+  const transforms = [
+    ...getTransforms(transformOpts),
+    // append the built-in style-dictionary transformGroup's transforms
+    ...(includeBuiltinGroup ? builtinTransforms : []),
+    'name/camel',
+  ];
+
   sd.registerTransformGroup({
     name: transformOpts?.name ?? 'tokens-studio',
     // add a default name transform, since this is almost always needed
     // it's easy to override by users, adding their own "transforms"
-    transforms: [
-      ...getTransforms(transformOpts),
-      // append the built-in style-dictionary transformGroup's transforms
-      ...(includeBuiltinGroup ? builtinTransforms : []),
-      'name/camel',
-    ],
+    transforms,
   });
+
+  return transforms;
 }
