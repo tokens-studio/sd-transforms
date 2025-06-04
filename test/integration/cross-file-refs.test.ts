@@ -44,17 +44,19 @@ describe('cross file references', () => {
   it('supports cross file references e.g. expanding typography', async () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     const content = excerpt(file, { start: ':root {', end: '}' });
-    const expectedOutput = `--sdTypoFontWeight: 400;
---sdTypoFontStyle: italic;
---sdPrimaryFont: Inter;
+    const expectedOutput = `--sdPrimaryFont: Inter;
 --sdFontWeight: 800;
 --sdLineHeight: 1.5;
+--sdDimensionScale: 2;
+--sdDimensionXs: 4px;
+--sdWeightWeight: 400;
+--sdWeightStyle: italic;
+--sdTypoFontWeight: 400;
+--sdTypoFontStyle: italic;
 --sdTypo2FontFamily: Inter;
 --sdTypo2FontWeight: 800;
 --sdTypo2LineHeight: 1.5;
 --sdTypo2FontSize: 8px;
---sdDimensionScale: 2;
---sdDimensionXs: 4px;
 --sdTestCompositeFancyCardColor: #fff;
 --sdTestCompositeFancyCardBorderRadius: 18px;
 --sdTestCompositeFancyCardBorderColor: #999;
@@ -69,8 +71,6 @@ describe('cross file references', () => {
 --sdTestTypographyTextFontSize: 25px;
 --sdTestTypographyTextLineHeight: 32px;
 --sdTestTypographyTextFontWeight: 700;
---sdWeightWeight: 400;
---sdWeightStyle: italic;
 --sdTypoAliasFontWeight: 400;
 --sdTypoAliasFontStyle: italic;
 --sdTypo3FontFamily: Inter;

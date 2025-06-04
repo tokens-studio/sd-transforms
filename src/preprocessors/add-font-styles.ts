@@ -4,19 +4,30 @@ import {
   SingleToken,
   SingleFontWeightsToken,
 } from '@tokens-studio/types';
-import { usesReferences, resolveReferences } from 'style-dictionary/utils';
+import { usesReferences, resolveReferences, convertTokenData } from 'style-dictionary/utils';
+import type { TransformedToken } from 'style-dictionary/types';
 import { fontWeightReg, fontStyles } from '../transformFontWeight.js';
 import { TransformOptions } from '../TransformOptions.js';
 
 function resolveFontWeight(fontWeight: string, copy: DeepKeyTokenMap<false>, usesDtcg: boolean) {
+  const tokenMap = convertTokenData(copy, { output: 'map' });
   let resolved = fontWeight;
   if (usesReferences(fontWeight)) {
     try {
-      resolved = `${resolveReferences(fontWeight, copy, { usesDtcg })}`;
+      resolved = `${resolveReferences(fontWeight, tokenMap as Map<string, TransformedToken>, { usesDtcg })}`;
     } catch (e) {
-      // dont throw fatal, see: https://github.com/tokens-studio/sd-transforms/issues/217
-      // we throw once we only support SD v4, for v3 we need to be more permissive
-      console.error(e);
+      if (e instanceof Error) {
+        // create an extended error
+        const err = new Error(
+          `tokens-studio preprocessor -> addFontStyles: Failing to resolve references within fontWeight -> ${fontWeight}.\n\n${e.message}`,
+        );
+        err.stack = e.stack;
+        // dont throw fatal, see: https://github.com/tokens-studio/sd-transforms/issues/217
+        // we throw once we only support SD v4, for v3 we need to be more permissive
+        // Update: maybe sd-transforms should also be (re-)using the new logger approach that's coming to SD v5 in the future
+        // that way it's up to users to decide whether they want these to be thrown, error'd or something else.
+        console.error(err);
+      }
     }
   }
   return resolved;

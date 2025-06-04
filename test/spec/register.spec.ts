@@ -317,7 +317,7 @@ describe('register', () => {
   --opacity: 0.25;
   --spacingSm: 8px;
   --spacingXl: 64px;
-  --spacingMultiValue: 8px 64px; /* You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
+  --spacingMultiValue: 8px 64px; /** You can have multiple values in a single spacing token. Read more on these: https://docs.tokens.studio/available-tokens/spacing-tokens#multi-value-spacing-tokens */
   --colorsBlack: #000000;
   --colorsWhite: #ffffff;
   --colorsBlue: #0000ff;

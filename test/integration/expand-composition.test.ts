@@ -65,26 +65,28 @@ describe('expand composition tokens', () => {
     const file = await promises.readFile(outputFilePath, 'utf-8');
     const content = excerpt(file, {
       start: ':root {',
-      end: '--sdDeepRef: italic 800 26px/1.25 Arial;',
+      end: '\n}',
     });
     const expectedOutput = `--sdCompositionSize: 24px;
 --sdCompositionOpacity: 0.5;
 --sdCompositionFontSize: 96px;
 --sdCompositionFontFamily: Roboto;
 --sdCompositionFontWeight: 700;
---sdCompositionHeaderFontFamily: Roboto;
---sdCompositionHeaderFontSize: 96px;
---sdCompositionHeaderFontWeight: 700;
---sdCompositionHeaderLineHeight: 1.25;
---sdCompositionHeaderLetterSpacing: 1.25em;
 --sdTypography: italic 800 26px/1.25 Arial;
 --sdFontWeightRefWeight: 800;
 --sdFontWeightRefStyle: italic;
 --sdBorder: 4px solid #FFFF00;
 --sdShadowSingle: inset 0 4px 10px 0 rgba(0,0,0,0.4);
 --sdShadowDouble: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
---sdRef: italic 800 26px/1.25 Arial;`;
-    expect(content).toBe(expectedOutput);
+--sdRef: italic 800 26px/1.25 Arial;
+--sdDeepRef: italic 800 26px/1.25 Arial;
+--sdDeepRefShadowMulti: inset 0 4px 10px 0 rgba(0,0,0,0.4), 0 8px 12px 5px rgba(0,0,0,0.4);
+--sdCompositionHeaderFontFamily: Roboto;
+--sdCompositionHeaderFontSize: 96px;
+--sdCompositionHeaderFontWeight: 700;
+--sdCompositionHeaderLineHeight: 1.25;
+--sdCompositionHeaderLetterSpacing: 1.25em;`;
+    expect(content).to.equal(expectedOutput);
   });
 
   it('optionally can transform typography, border and shadow tokens', async () => {
@@ -95,6 +97,8 @@ describe('expand composition tokens', () => {
 --sdCompositionFontSize: 96px;
 --sdCompositionFontFamily: Roboto;
 --sdCompositionFontWeight: 700;
+--sdFontWeightRefWeight: 800;
+--sdFontWeightRefStyle: italic;
 --sdCompositionHeaderFontFamily: Roboto;
 --sdCompositionHeaderFontSize: 96px;
 --sdCompositionHeaderFontWeight: 700;
@@ -110,8 +114,6 @@ describe('expand composition tokens', () => {
 --sdTypographyTextDecoration: none;
 --sdTypographyTextCase: none;
 --sdTypographyFontStyle: italic;
---sdFontWeightRefWeight: 800;
---sdFontWeightRefStyle: italic;
 --sdBorderColor: #ffff00;
 --sdBorderWidth: 4px;
 --sdBorderStyle: solid;
