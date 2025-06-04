@@ -1,6 +1,6 @@
 {
   "name": "@tokens-studio/sd-transforms",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Custom transforms for Style-Dictionary, to work with Design Tokens that are exported from Tokens Studio",
   "license": "MIT",
   "author": "Joren Broekema <joren.broekema@gmail.com>",
