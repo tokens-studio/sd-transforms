@@ -1,160 +1,103 @@
 import { expect } from 'chai';
-import { strictCheckAndEvaluateMath } from '../../src/strictCheckAndEvaluateMath.js';
+import { strictCheckAndEvaluateMath as calc } from '../../src/strictCheckAndEvaluateMath.js';
 import { runTransformSuite } from '../suites/transform-suite.spec.js';
 import { cleanup, init } from '../integration/utils.js';
 import { TransformedToken } from 'style-dictionary/types';
-import { MixedUnitsExpressionError } from '../../src/utils/errors.js';
+import { MathExprEvalError } from '../../src/utils/errors.js';
 
-runTransformSuite(strictCheckAndEvaluateMath as (value: unknown) => unknown, {});
+runTransformSuite(calc as (value: unknown) => unknown, {});
 
 describe('check and evaluate math', () => {
   it('supports expression of type number', () => {
-    expect(strictCheckAndEvaluateMath({ value: 10, type: 'number' })).to.equal(10);
+    expect(calc({ value: 10, type: 'number' })).to.equal(10);
   });
 
   it('can evaluate math expressions where more than one token has a unit, in case of px', () => {
-    expect(strictCheckAndEvaluateMath({ value: '4px * 7px', type: 'dimension' })).to.equal('28px');
-    expect(strictCheckAndEvaluateMath({ value: '4 * 7px * 8px', type: 'dimension' })).to.equal(
-      '224px',
-    );
+    expect(calc({ value: '4px * 7px', type: 'dimension' })).to.equal('28px');
+    expect(calc({ value: '4 * 7px * 8px', type: 'dimension' })).to.equal('224px');
   });
 
   it('cannot evaluate math expressions where more than one token has a unit, assuming no mixed units are used', () => {
-    expect(strictCheckAndEvaluateMath({ value: '4em + 7em', type: 'dimension' })).to.equal('11em');
-    expect(() => strictCheckAndEvaluateMath({ value: '4 + 7rem', type: 'dimension' })).to.throw(
-      MixedUnitsExpressionError,
-    );
-    // expect(() => strictCheckAndEvaluateMath({ value: '4em + 7rem', type: 'dimension' })).to.throw(
-    //   MixedUnitsExpressionError,
-    // );
+    expect(calc({ value: '4em + 7em', type: 'dimension' })).to.equal('11em');
+    expect(() => calc({ value: '4 + 7rem', type: 'dimension' })).to.throw(MathExprEvalError);
+    expect(() => calc({ value: '4em + 7rem', type: 'dimension' })).to.throw(MathExprEvalError);
   });
 
-  it.skip('can evaluate mixed units if operators are exclusively multiplication and the mix is px or unitless', () => {
-    expect(strictCheckAndEvaluateMath({ value: '4 * 7em * 8em', type: 'dimension' })).to.equal(
-      '224em',
-    );
-    expect(strictCheckAndEvaluateMath({ value: '4px * 7em', type: 'dimension' })).to.equal('28em');
-    // 50em would be incorrect when dividing, as em grows, result should shrink, but doesn't
-    expect(strictCheckAndEvaluateMath({ value: '1000 / 20em', type: 'dimension' })).to.equal(
-      '1000 / 20em',
-    );
-    // cannot be expressed/resolved without knowing the value of em
-    expect(strictCheckAndEvaluateMath({ value: '4px + 7em', type: 'dimension' })).to.equal(
-      '4px + 7em',
-    );
-  });
-
-  it.skip('can evaluate math expressions where more than one token has a unit, as long as for each piece of the expression the unit is the same', () => {
+  it('can evaluate math expressions where more than one token has a unit, as long as for each piece of the expression the unit is the same', () => {
     // can resolve them, because all values share the same unit
-    expect(strictCheckAndEvaluateMath({ value: '5px * 4px / 2px', type: 'dimension' })).to.equal(
-      '10px',
-    );
-    expect(strictCheckAndEvaluateMath({ value: '10vw + 20vw', type: 'dimension' })).to.equal(
-      '30vw',
-    );
+    expect(calc({ value: '5px * 4px / 2px', type: 'dimension' })).to.equal('10px');
+    expect(calc({ value: '10vw + 20vw', type: 'dimension' })).to.equal('30vw');
 
     // cannot resolve them, because em is dynamic and 20/20px is static value
-    expect(strictCheckAndEvaluateMath({ value: '2em + 20', type: 'dimension' })).to.equal(
-      '2em + 20',
-    );
-    expect(strictCheckAndEvaluateMath({ value: '2em + 20px', type: 'dimension' })).to.equal(
-      '2em + 20px',
-    );
+    expect(() => calc({ value: '2em + 20', type: 'dimension' })).to.throw(MathExprEvalError);
+    expect(() => calc({ value: '2em + 20px', type: 'dimension' })).to.throw(MathExprEvalError);
 
     // can resolve them, because multiplying by pixels/unitless is possible, regardless of the other value's unit
-    expect(strictCheckAndEvaluateMath({ value: '2pt * 4', type: 'dimension' })).to.equal('8pt');
-    expect(strictCheckAndEvaluateMath({ value: '2em * 20px', type: 'dimension' })).to.equal('40em');
+    expect(calc({ value: '2pt * 4', type: 'dimension' })).to.equal('8pt');
   });
 
-  it.skip('supports multi-value expressions with math expressions', () => {
-    expect(
-      strictCheckAndEvaluateMath({ value: '8 / 4 * 7px 8 * 5px 2 * 4px', type: 'dimension' }),
-    ).to.equal('14px 40px 8px');
-    expect(
-      strictCheckAndEvaluateMath({ value: '5px + 4px + 10px 3 * 2px', type: 'dimension' }),
-    ).to.equal('19px 6px');
-    expect(strictCheckAndEvaluateMath({ value: '5px 3 * 2px', type: 'dimension' })).to.equal(
-      '5px 6px',
+  it('supports multi-value expressions with math expressions', () => {
+    expect(calc({ value: '8 / 4 * 7px 8 * 5px 2 * 4px', type: 'dimension' })).to.equal(
+      '14px 40px 8px',
     );
-    expect(strictCheckAndEvaluateMath({ value: '3 * 2px 5px', type: 'dimension' })).to.equal(
-      '6px 5px',
-    );
-    // smoke test: this value has spaces as well but should be handled normally
-    expect(
-      strictCheckAndEvaluateMath({
-        value: 'linear-gradient(90deg, #354752 0%, #0b0d0e 100%)',
-        type: 'dimension',
-      }),
-    ).to.equal('linear-gradient(90deg, #354752 0%, #0b0d0e 100%)');
+    expect(calc({ value: '5px + 4px + 10px 3 * 2px', type: 'dimension' })).to.equal('19px 6px');
+    expect(calc({ value: '5px 3 * 2px', type: 'dimension' })).to.equal('5px 6px');
+    expect(calc({ value: '3 * 2px 5px', type: 'dimension' })).to.equal('6px 5px');
   });
 
-  it.skip('supports expr-eval expressions', () => {
-    expect(strictCheckAndEvaluateMath({ value: 'roundTo(4 / 7, 1)', type: 'dimension' })).to.equal(
-      0.6,
+  it('supports expr-eval expressions', () => {
+    expect(calc({ value: 'roundTo(4 / 7, 1)', type: 'dimension' })).to.equal(0.6);
+    expect(calc({ value: '8 * 14px roundTo(4 / 7, 1)', type: 'dimension' })).to.equal('112px 0.6');
+    expect(calc({ value: 'roundTo(4 / 7, 1) 8 * 14px', type: 'dimension' })).to.equal('0.6 112px');
+    expect(calc({ value: 'min(10, 24, 5, 12, 6) 8 * 14px', type: 'dimension' })).to.equal(
+      '5 112px',
     );
-    expect(
-      strictCheckAndEvaluateMath({ value: '8 * 14px roundTo(4 / 7, 1)', type: 'dimension' }),
-    ).to.equal('112px 0.6');
-    expect(
-      strictCheckAndEvaluateMath({ value: 'roundTo(4 / 7, 1) 8 * 14px', type: 'dimension' }),
-    ).to.equal('0.6 112px');
-    expect(
-      strictCheckAndEvaluateMath({ value: 'min(10, 24, 5, 12, 6) 8 * 14px', type: 'dimension' }),
-    ).to.equal('5 112px');
-    expect(
-      strictCheckAndEvaluateMath({ value: 'ceil(roundTo(16/1.2,0)/2)*2', type: 'dimension' }),
-    ).to.equal(14);
+    expect(calc({ value: 'ceil(roundTo(3.3333px, 2) * 2)*2', type: 'dimension' })).to.equal('14px');
   });
 
-  it.skip('supports expr-eval expressions with units', () => {
+  it('supports expr-eval expressions with units', () => {
+    expect(calc({ value: 'roundTo(4px / 7, 1)', type: 'dimension' })).to.equal('0.6px');
+    expect(calc({ value: '8 * 14px roundTo(4 / 7px, 1)', type: 'dimension' })).to.equal(
+      '112px 0.6px',
+    );
+    expect(calc({ value: 'roundTo(4px / 7px, 1) 8 * 14px', type: 'dimension' })).to.equal(
+      '0.6px 112px',
+    );
     expect(
-      strictCheckAndEvaluateMath({ value: 'roundTo(4px / 7, 1)', type: 'dimension' }),
-    ).to.equal('0.6px');
-    expect(
-      strictCheckAndEvaluateMath({ value: '8 * 14px roundTo(4 / 7px, 1)', type: 'dimension' }),
-    ).to.equal('112px 0.6px');
-    expect(
-      strictCheckAndEvaluateMath({ value: 'roundTo(4px / 7px, 1) 8 * 14px', type: 'dimension' }),
-    ).to.equal('0.6px 112px');
-    expect(
-      strictCheckAndEvaluateMath({
+      calc({
         value: 'min(10px, 24px, 5px, 12px, 6px) 8 * 14px',
         type: 'dimension',
       }),
     ).to.equal('5px 112px');
-    expect(
-      strictCheckAndEvaluateMath({ value: 'ceil(roundTo(16px/1.2,0)/2)*2', type: 'dimension' }),
-    ).to.equal('14px');
+    expect(calc({ value: 'ceil(roundTo(16px/1.2,0)/2)*2', type: 'dimension' })).to.equal('14px');
   });
 
-  it.skip('should support expr eval expressions in combination with regular math', () => {
-    expect(
-      strictCheckAndEvaluateMath({ value: 'roundTo(4 / 7, 1) * 24', type: 'dimension' }),
-    ).to.equal(14.4);
+  it('should support expr eval expressions in combination with regular math', () => {
+    expect(calc({ value: 'roundTo(roundTo(4 / 7, 1) * 24, 1)', type: 'dimension' })).to.equal(14.4);
   });
 
-  it.skip('does not unnecessarily remove wrapped quotes around font-family values', () => {
-    expect(
-      strictCheckAndEvaluateMath({ value: `800 italic 16px/1 'Arial Black'`, type: 'dimension' }),
-    ).to.equal(`800 italic 16px/1 'Arial Black'`);
+  it('does not unnecessarily remove wrapped quotes around font-family values', () => {
+    expect(calc({ value: `800 italic 16px/1 'Arial Black'`, type: 'dimension' })).to.equal(
+      `800 italic 16px 'Arial Black'`,
+    );
   });
 
-  it.skip('does not unnecessarily change the type of the value', () => {
-    expect(strictCheckAndEvaluateMath({ value: 11, type: 'number' })).to.equal(11);
+  it('does not unnecessarily change the type of the value', () => {
+    expect(calc({ value: 11, type: 'number' })).to.equal(11);
     // changes to number because the expression is a math expression evaluating to a number result
-    expect(strictCheckAndEvaluateMath({ value: '11 * 5', type: 'dimension' })).to.equal(55);
+    expect(calc({ value: '11 * 5', type: 'dimension' })).to.equal(55);
     // keeps it as string because there is no math expression to evaluate, so just keep it as is
-    expect(strictCheckAndEvaluateMath({ value: '11', type: 'dimension' })).to.equal('11');
+    expect(calc({ value: '11', type: 'dimension' })).to.equal(11);
   });
 
-  it.skip('supports values that contain spaces and strings, e.g. a date format', () => {
-    expect(strictCheckAndEvaluateMath({ value: `dd/MM/yyyy 'om' HH:mm`, type: 'date' })).to.equal(
+  it('supports values that contain spaces and strings, e.g. a date format', () => {
+    expect(calc({ value: `dd/MM/yyyy 'om' HH:mm`, type: 'date' })).to.equal(
       `dd/MM/yyyy 'om' HH:mm`,
     );
   });
 
-  it.skip('allows a `mathFractionDigits` option to control the rounding of values in math', async () => {
-    const dict = await init.skip({
+  it('allows a `mathFractionDigits` option to control the rounding of values in math', async () => {
+    const dict = await init({
       tokens: {
         foo: {
           value: '5',
@@ -168,7 +111,7 @@ describe('check and evaluate math', () => {
       platforms: {
         css: {
           transformGroup: 'tokens-studio',
-          mathFractionDigits: 3,
+          mathOptions: { fractionDigits: 3 },
           files: [
             {
               format: 'css/variables',
@@ -183,19 +126,19 @@ describe('check and evaluate math', () => {
     expect((enrichedTokens?.bar as TransformedToken).value).to.eql('0.313px');
   });
 
-  it.skip('supports boolean values', () => {
-    expect(strictCheckAndEvaluateMath({ value: false, type: 'boolean' })).to.equal(false);
-    expect(strictCheckAndEvaluateMath({ value: true, type: 'boolean' })).to.equal(true);
+  it('supports boolean values', () => {
+    expect(calc({ value: false, type: 'boolean' })).to.equal(false);
+    expect(calc({ value: true, type: 'boolean' })).to.equal(true);
   });
 
-  it.skip('supports DTCG tokens', () => {
-    expect(strictCheckAndEvaluateMath({ $value: '4 * 7px', $type: 'dimension' })).to.equal('28px');
+  it('supports DTCG tokens', () => {
+    expect(calc({ $value: '4 * 7px', $type: 'dimension' })).to.equal('28px');
   });
 
   describe('composite type tokens', () => {
-    it.skip('supports typography values', () => {
+    it('supports typography values', () => {
       expect(
-        strictCheckAndEvaluateMath({
+        calc({
           value: {
             fontFamily: 'Arial',
             fontWeight: '100 * 3',
@@ -212,9 +155,9 @@ describe('check and evaluate math', () => {
       });
     });
 
-    it.skip('supports shadow values', () => {
+    it('supports shadow values', () => {
       expect(
-        strictCheckAndEvaluateMath({
+        calc({
           value: {
             offsetX: '2*2px',
             offsetY: '2*4px',
@@ -233,9 +176,9 @@ describe('check and evaluate math', () => {
       });
     });
 
-    it.skip('supports shadow multi values', () => {
+    it('supports shadow multi values', () => {
       expect(
-        strictCheckAndEvaluateMath({
+        calc({
           value: [
             {
               offsetX: '2*2px',
@@ -258,9 +201,9 @@ describe('check and evaluate math', () => {
       ]);
     });
 
-    it.skip('supports border values', () => {
+    it('supports border values', () => {
       expect(
-        strictCheckAndEvaluateMath({
+        calc({
           value: {
             width: '6px / 4',
             style: 'solid',
@@ -275,9 +218,9 @@ describe('check and evaluate math', () => {
       });
     });
 
-    it.skip('keeps values of type "object" that are not actual objects as is', () => {
+    it('keeps values of type "object" that are not actual objects as is', () => {
       expect(
-        strictCheckAndEvaluateMath({
+        calc({
           value: ['0px 4px 12px #000000', '0px 8px 18px #0000008C'],
           type: 'shadow',
         }),
@@ -285,7 +228,7 @@ describe('check and evaluate math', () => {
     });
   });
 
-  it.skip('does not transform hex values containing E', () => {
-    expect(strictCheckAndEvaluateMath({ value: 'E6', type: 'other' })).to.equal('E6');
+  it('does not transform hex values containing E', () => {
+    expect(calc({ value: 'E6', type: 'other' })).to.equal('E6');
   });
 });

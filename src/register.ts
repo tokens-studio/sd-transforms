@@ -73,7 +73,14 @@ export async function register(sd: typeof StyleDictionary, transformOpts?: Trans
     type: 'value',
     transitive: true,
     filter: token => ['string', 'object'].includes(typeof (token.$value ?? token.value)),
-    transform: (token, platformCfg) => checkAndEvaluateMath(token, platformCfg.mathFractionDigits),
+    transform: (token, platformCfg) =>
+      checkAndEvaluateMath(
+        token,
+        // backwards compability prop
+        platformCfg.mathFractionDigits,
+        // strict math mode options
+        platformCfg.mathOptions,
+      ),
   });
 
   sd.registerTransform({

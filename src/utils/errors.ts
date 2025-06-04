@@ -1,15 +1,3 @@
-import type { Units } from './parseUnits.ts';
-
-export class MixedUnitsExpressionError extends Error {
-  units: Units;
-
-  constructor({ units }: { units: Units }) {
-    super('Mixed units found in expression');
-    this.name = 'MixedUnitsExpressionError';
-    this.units = units;
-  }
-}
-
 export class MathExprEvalError extends Error {
   value: string;
   exception?: Error;

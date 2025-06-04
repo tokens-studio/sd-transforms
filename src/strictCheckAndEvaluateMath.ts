@@ -1,52 +1,61 @@
+import { run, config as calcConfig } from '@tokens-studio/unit-calculator';
+import type { IUnitValue } from '@tokens-studio/unit-calculator';
 import { Parser } from 'expr-eval-fork';
 import { DesignToken } from 'style-dictionary/types';
 import { defaultFractionDigits } from './utils/constants.js';
-import { MathExprEvalError, MixedUnitsExpressionError } from './utils/errors.js';
-import { parseUnits } from './utils/parseUnits.js';
+import { MathExprEvalError } from './utils/errors.js';
 import { reduceToFixed } from './utils/reduceToFixed.js';
+import { transformByTokenType } from './utils/transformByTokenType.js';
 
-const parser = new Parser();
+const { roundTo } = new Parser().functions;
+const config = {
+  mathFunctions: {
+    ...calcConfig.defaultMathFunctions,
+    roundTo: (a: IUnitValue, b: IUnitValue) => {
+      const value = roundTo(a.value, b.value);
+      return { value, unit: a.unit };
+    },
+  },
+};
 
-export function evaluateMathExpr(expr: string, fractionDigits: number): string | number {
-  const isAlreadyNumber = !isNaN(Number(expr));
-  if (isAlreadyNumber) {
-    return expr;
-  }
+export interface MathOptions {
+  fractionDigits: number;
+}
 
-  const { units, unitlessExpr } = parseUnits(expr);
-
-  // Remove unitless "unit" from the units set to count the number of units
-  const noUnitlessUnits = units.difference(new Set(['']));
-  if (noUnitlessUnits.size > 1) {
-    throw new MixedUnitsExpressionError({ units });
-  }
-  // Since there's no unit mixing allowed we can take the first item out of the units set as the output unit
-  const resultUnit: string | null = [...noUnitlessUnits][0];
-
-  let evalResult: number;
+export function evaluateMathExpr(expr: string, { fractionDigits }: MathOptions): string | number {
   try {
-    evalResult = parser.evaluate(unitlessExpr);
+    const parsed = run(expr, config);
+    const values = parsed.exec().map(function (result) {
+      const { value, unit } = result;
+      const fixedValue = typeof value === 'number' ? reduceToFixed(value, fractionDigits) : value;
+      return unit ? `${fixedValue}${unit}` : fixedValue;
+    });
+    return values.length > 1 ? values.join(' ') : values[0];
   } catch (exception) {
     throw new MathExprEvalError({
-      value: unitlessExpr,
+      value: expr,
       exception: exception instanceof Error ? exception : undefined,
     });
   }
-
-  const fixedNum = reduceToFixed(evalResult, fractionDigits);
-  const result = resultUnit ? `${fixedNum}${resultUnit}` : fixedNum;
-  return result;
 }
 
 export function strictCheckAndEvaluateMath(
   token: DesignToken,
-  fractionDigits = defaultFractionDigits,
+  options: Partial<MathOptions> = {},
 ): DesignToken['value'] {
-  const expr = token.$value ?? token.value;
+  const opts = { fractionDigits: options.fractionDigits ?? defaultFractionDigits };
 
-  if (!['string'].includes(typeof expr)) {
+  const expr = token.$value ?? token.value;
+  const type = token.$type ?? token.type;
+
+  if (!['string', 'object'].includes(typeof expr)) {
     return expr;
   }
 
-  return evaluateMathExpr(expr, fractionDigits);
+  const resolveMath = (expr: DesignToken['value']) => {
+    if (typeof expr !== 'string') return expr;
+    return evaluateMathExpr(expr, opts);
+  };
+
+  return transformByTokenType(expr, type, resolveMath);
 }
