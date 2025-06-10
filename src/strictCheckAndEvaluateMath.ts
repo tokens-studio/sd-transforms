@@ -10,6 +10,7 @@ import { transformByTokenType } from './utils/transformByTokenType.js';
 const { roundTo } = new Parser().functions;
 
 export const defaultCalcConfig = {
+  ...calcConfig.defaultConfig,
   mathFunctions: {
     ...calcConfig.defaultMathFunctions,
     roundTo: (a: IUnitValue, b: IUnitValue) => {
@@ -48,10 +49,9 @@ export function strictCheckAndEvaluateMath(
   token: DesignToken,
   options: Partial<MathOptions> = {},
 ): DesignToken['value'] {
-  const opts = {
+  const opts: MathOptions = {
     fractionDigits: options.fractionDigits ?? defaultFractionDigits,
-    calcConfig: defaultCalcConfig,
-    ...options,
+    calcConfig: options.calcConfig ?? defaultCalcConfig,
   };
 
   const expr = token.$value ?? token.value;
