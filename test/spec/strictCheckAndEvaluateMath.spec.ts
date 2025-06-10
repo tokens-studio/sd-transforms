@@ -1,9 +1,14 @@
 import { expect } from 'chai';
-import { strictCheckAndEvaluateMath as calc } from '../../src/strictCheckAndEvaluateMath.js';
+import { config as calcConfig } from '@tokens-studio/unit-calculator';
+import {
+  strictCheckAndEvaluateMath as calc,
+  defaultCalcConfig,
+} from '../../src/strictCheckAndEvaluateMath.js';
 import { runTransformSuite } from '../suites/transform-suite.spec.js';
 import { cleanup, init } from '../integration/utils.js';
 import { TransformedToken } from 'style-dictionary/types';
 import { MathExprEvalError } from '../../src/utils/errors.js';
+import { createConfig } from '@tokens-studio/unit-calculator/dist/config.js';
 
 runTransformSuite(calc as (value: unknown) => unknown, {});
 
@@ -13,7 +18,51 @@ describe('check and evaluate math', () => {
   });
 
   it('can evaluate math expressions where more than one token has a unit, in case of px', () => {
-    expect(calc({ value: '4px * 7px', type: 'dimension' })).to.equal('28px');
+    const remBaseValue = 16;
+    const config = calcConfig.addUnitConversions(createConfig(defaultCalcConfig), [
+      [
+        ['px', '+', 'rem'],
+        (left, right) => ({
+          value: left.value + right.value * remBaseValue,
+          unit: 'px',
+        }),
+      ],
+      [
+        ['rem', '+', 'px'],
+        (left, right) => ({
+          value: left.value * remBaseValue + right.value,
+          unit: 'px',
+        }),
+      ],
+      [
+        ['px', '-', 'rem'],
+        (left, right) => ({
+          value: left.value - right.value * remBaseValue,
+          unit: 'px',
+        }),
+      ],
+      [
+        ['rem', '-', 'px'],
+        (left, right) => ({
+          value: left.value * remBaseValue - right.value,
+          unit: 'px',
+        }),
+      ],
+    ]);
+    expect(calc({ value: '1px + 1rem', type: 'dimension' }, { calcConfig: config })).to.equal(
+      '17px',
+    );
+    expect(
+      calc({ value: `1rem - ${remBaseValue}px`, type: 'dimension' }, { calcConfig: config }),
+    ).to.equal('0px');
+    // Throws on invalid rules
+    expect(() => calc({ value: `1rem * 1px`, type: 'dimension' }, { calcConfig: config })).to.throw(
+      MathExprEvalError,
+    );
+  });
+
+  it('can evaluate math expressions with custom rules to mixing', () => {
+    expect(calc({ value: '4px * 7px', type: 'dimension' }, {})).to.equal('28px');
     expect(calc({ value: '4 * 7px * 8px', type: 'dimension' })).to.equal('224px');
   });
 

@@ -8,7 +8,8 @@ import { reduceToFixed } from './utils/reduceToFixed.js';
 import { transformByTokenType } from './utils/transformByTokenType.js';
 
 const { roundTo } = new Parser().functions;
-const config = {
+
+export const defaultCalcConfig = {
   mathFunctions: {
     ...calcConfig.defaultMathFunctions,
     roundTo: (a: IUnitValue, b: IUnitValue) => {
@@ -20,11 +21,15 @@ const config = {
 
 export interface MathOptions {
   fractionDigits: number;
+  calcConfig?: calcConfig.CalcConfig;
 }
 
-export function evaluateMathExpr(expr: string, { fractionDigits }: MathOptions): string | number {
+export function evaluateMathExpr(
+  expr: string,
+  { fractionDigits, calcConfig }: MathOptions,
+): string | number {
   try {
-    const parsed = run(expr, config);
+    const parsed = run(expr, calcConfig);
     const values = parsed.exec().map(function (result) {
       const { value, unit } = result;
       const fixedValue = typeof value === 'number' ? reduceToFixed(value, fractionDigits) : value;
@@ -43,7 +48,11 @@ export function strictCheckAndEvaluateMath(
   token: DesignToken,
   options: Partial<MathOptions> = {},
 ): DesignToken['value'] {
-  const opts = { fractionDigits: options.fractionDigits ?? defaultFractionDigits };
+  const opts = {
+    fractionDigits: options.fractionDigits ?? defaultFractionDigits,
+    calcConfig: defaultCalcConfig,
+    ...options,
+  };
 
   const expr = token.$value ?? token.value;
   const type = token.$type ?? token.type;
