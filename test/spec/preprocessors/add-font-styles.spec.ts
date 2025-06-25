@@ -316,4 +316,39 @@ describe('add font style', () => {
       },
     });
   });
+
+  it(`should not throw error when handling fontWeight references for DTCG formatted tokens`, () => {
+    // @ts-expect-error aligned types already here
+    const tokens = {
+      foo: {
+        $type: 'fontWeight',
+        $value: '700',
+      },
+      thing: {
+        $type: 'typography',
+        $value: {
+          fontWeight: '{foo}',
+        },
+      },
+    } as DeepKeyTokenMap<false>;
+
+    const stub = stubMethod(console, 'error');
+    const processed = addFontStyles(tokens);
+    restore();
+
+    expect(stub.calls.size).to.equal(0);
+
+    expect(processed).to.eql({
+      foo: {
+        $type: 'fontWeight',
+        $value: '700',
+      },
+      thing: {
+        $type: 'typography',
+        $value: {
+          fontWeight: '{foo}',
+        },
+      },
+    });
+  });
 });
