@@ -286,7 +286,7 @@ describe('add font style', () => {
       thing: {
         $type: 'typography',
         $value: {
-          fontWeight: '{foo}',
+          fontWeight: '{foo.bar}',
         },
       },
     } as DeepKeyTokenMap<false>;
@@ -297,7 +297,7 @@ describe('add font style', () => {
 
     expect(stub.calls.size).to.equal(1);
     expect(stub.firstCall?.args[0].message).to.equal(
-      `tokens-studio preprocessor -> addFontStyles: Failing to resolve references within fontWeight -> {foo}.\n\ntries to reference {foo}, which is not defined.`,
+      `tokens-studio preprocessor -> addFontStyles: Failing to resolve references within fontWeight -> {foo.bar}.\n\ntries to reference {foo.bar}, which is not defined.`,
     );
     expect(processed).to.eql({
       foo: {
@@ -311,7 +311,7 @@ describe('add font style', () => {
       thing: {
         $type: 'typography',
         $value: {
-          fontWeight: '{foo}',
+          fontWeight: '{foo.bar}',
         },
       },
     });

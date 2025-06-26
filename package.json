@@ -30,7 +30,8 @@
     "test:integration": "vitest run",
     "test:unit": "web-test-runner --coverage",
     "test:unit:coverage": "cd coverage/lcov-report && npx http-server -o -c-1",
-    "test:unit:watch": "web-test-runner --watch"
+    "test:unit:watch": "web-test-runner --watch",
+    "version": "changeset version && npm install --package-lock-only"
   },
   "dependencies": {
     "@bundled-es-modules/deepmerge": "^4.3.1",
