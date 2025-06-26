@@ -10,7 +10,7 @@ import { fontWeightReg, fontStyles } from '../transformFontWeight.js';
 import { TransformOptions } from '../TransformOptions.js';
 
 function resolveFontWeight(fontWeight: string, copy: DeepKeyTokenMap<false>, usesDtcg: boolean) {
-  const tokenMap = convertTokenData(copy, { output: 'map' });
+  const tokenMap = convertTokenData(copy, { output: 'map', usesDtcg });
   let resolved = fontWeight;
   if (usesReferences(fontWeight)) {
     try {

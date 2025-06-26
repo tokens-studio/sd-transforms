@@ -286,7 +286,7 @@ describe('add font style', () => {
       thing: {
         $type: 'typography',
         $value: {
-          fontWeight: '{foo}',
+          fontWeight: '{foo.bar}',
         },
       },
     } as DeepKeyTokenMap<false>;
@@ -297,7 +297,7 @@ describe('add font style', () => {
 
     expect(stub.calls.size).to.equal(1);
     expect(stub.firstCall?.args[0].message).to.equal(
-      `tokens-studio preprocessor -> addFontStyles: Failing to resolve references within fontWeight -> {foo}.\n\ntries to reference {foo}, which is not defined.`,
+      `tokens-studio preprocessor -> addFontStyles: Failing to resolve references within fontWeight -> {foo.bar}.\n\ntries to reference {foo.bar}, which is not defined.`,
     );
     expect(processed).to.eql({
       foo: {
@@ -307,6 +307,41 @@ describe('add font style', () => {
           $type: 'fontWeight',
           $value: '800',
         },
+      },
+      thing: {
+        $type: 'typography',
+        $value: {
+          fontWeight: '{foo.bar}',
+        },
+      },
+    });
+  });
+
+  it(`should not throw error when handling fontWeight references for DTCG formatted tokens`, () => {
+    // @ts-expect-error aligned types already here
+    const tokens = {
+      foo: {
+        $type: 'fontWeight',
+        $value: '700',
+      },
+      thing: {
+        $type: 'typography',
+        $value: {
+          fontWeight: '{foo}',
+        },
+      },
+    } as DeepKeyTokenMap<false>;
+
+    const stub = stubMethod(console, 'error');
+    const processed = addFontStyles(tokens);
+    restore();
+
+    expect(stub.calls.size).to.equal(0);
+
+    expect(processed).to.eql({
+      foo: {
+        $type: 'fontWeight',
+        $value: '700',
       },
       thing: {
         $type: 'typography',
