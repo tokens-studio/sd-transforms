@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 2.0.1
+
+### Patch Changes
+
+- e41b548: Fix bug where usesDtcg flag was not passed to convertTokenData utility.
+
 ## 2.0.0
 
 ### Major Changes
