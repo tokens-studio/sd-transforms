@@ -103,4 +103,30 @@ describe('transform HEXRGBa', () => {
       ).to.eql({ width: '2px', style: 'solid', color: 'rgba(0, 0, 0, 0.5)' });
     });
   });
+
+  it('transforms shorthand hex formats correctly', () => {
+    // 3-digit hex (#RGB)
+    expect(transformHEXRGBaForCSS({ value: '#F00' })).to.equal('#F00');
+
+    // 4-digit hex (#RGBA)
+    expect(transformHEXRGBaForCSS({ value: '#F00F' })).to.equal('rgba(255, 0, 0, 1)');
+    expect(transformHEXRGBaForCSS({ value: '#F000' })).to.equal('rgba(255, 0, 0, 0)');
+
+    // Mixed formats in a single value
+    expect(
+      transformHEXRGBaForCSS({
+        value: 'linear-gradient(180deg, rgba(#000, 0.5), rgba(#F00F, 0.5))',
+      }),
+    ).to.equal('linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(255, 0, 0, 0.5))');
+  });
+
+  it('handles invalid hex values gracefully', () => {
+    expect(transformHEXRGBaForCSS({ value: 'rgba(#GGG, 0.5)' })).to.equal('rgba(#GGG, 0.5)');
+    expect(transformHEXRGBaForCSS({ value: 'rgba(#12, 0.5)' })).to.equal('rgba(#12, 0.5)');
+  });
+
+  it('transforms HEX8 format correctly', () => {
+    expect(transformHEXRGBaForCSS({ value: '#000000FF' })).to.equal('rgba(0, 0, 0, 1)');
+    expect(transformHEXRGBaForCSS({ value: '#00000000' })).to.equal('rgba(0, 0, 0, 0)');
+  });
 });
