@@ -20,7 +20,7 @@
 - [Transforms](#transforms)
 - [Troubleshooting](#not-sure-how-to-fix-your-issue)
 
-This package contains custom transforms for [Style-Dictionary](https://amzn.github.io/style-dictionary/#/),
+This package contains custom transforms for [Style-Dictionary](https://styledictionary.com/),
 to work with Design Tokens that are exported from [Tokens Studio](https://tokens.studio/):
 
 Generic:
@@ -56,7 +56,7 @@ npm install @tokens-studio/sd-transforms
 
 ## Compatibility
 
-This package is to be used in combination with [Style Dictionary](https://github.com/amzn/style-dictionary).
+This package is to be used in combination with [Style Dictionary](https://github.com/style-dictionary/style-dictionary).
 
 There are some caveats however, with regards to which versions of Style Dictionary are compatible with which versions of this package:
 
@@ -137,7 +137,7 @@ This allows `fontStyles` to be extracted when they are embedded in `fontWeights`
 > Expand used to be an sd-transforms exclusive feature but has moved to Style Dictionary itself under a slightly different API.
 > This made sense due to object-value tokens being part of the DTCG spec and no longer a Tokens Studio specific feature.
 
-When using the [expand feature of Style Dictionary](https://v4.styledictionary.com/reference/config/#expand) to expand object-value (composite) tokens,
+When using the [expand feature of Style Dictionary](https://styledictionary.com/reference/config/#expand) to expand object-value (composite) tokens,
 you should pass our additional `expandTypesMap` for Tokens Studio tokens, because these are slightly different from the DTCG tokens:
 
 - shadow tokens are called `boxShadow` and their `offsetX` and `offsetY` props are called `x` and `y` respectively.
@@ -215,7 +215,7 @@ StyleDictionary.registerTransform({
 ### Custom Transform Group
 
 > [!NOTE]
-> From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/amzn/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
+> From Style-Dictionary `4.0.0-prerelease.18`, [`transformGroup` and `transforms` can now be combined in a platform inside your config](https://github.com/style-dictionary/style-dictionary/blob/v4/CHANGELOG.md#400-prerelease18).
 
 You can create a custom `transformGroup` that includes the individual transforms from this package.
 If you wish to use the `transformGroup`, but adjust or remove a few transforms, your best option is to create a custom transform group:
