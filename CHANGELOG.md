@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 2.0.2
+
+### Patch Changes
+
+- 9f6af8b: bump expr-eval-fork version
+
 ## 2.0.1
 
 ### Patch Changes
