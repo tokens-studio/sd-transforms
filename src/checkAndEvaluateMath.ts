@@ -2,6 +2,9 @@ import { DesignToken } from 'style-dictionary/types';
 import { Parser } from 'expr-eval-fork';
 import { parse, reduceExpression } from '@bundled-es-modules/postcss-calc-ast-parser';
 import { defaultFractionDigits } from './utils/constants.js';
+import { reduceToFixed } from './utils/reduceToFixed.js';
+import { strictCheckAndEvaluateMath, MathOptions } from './strictCheckAndEvaluateMath.js';
+import { transformByTokenType } from './utils/transformByTokenType.js';
 
 const mathChars = ['+', '-', '*', '/'];
 
@@ -148,16 +151,18 @@ export function parseAndReduce(
     return result;
   }
 
-  // the outer Number() gets rid of insignificant trailing zeros of decimal numbers
-  const reducedToFixed = Number(Number.parseFloat(`${result}`).toFixed(fractionDigits));
-  result = resultUnit ? `${reducedToFixed}${resultUnit}` : reducedToFixed;
+  const fixedNum = reduceToFixed(result, fractionDigits);
+  result = resultUnit ? `${fixedNum}${resultUnit}` : fixedNum;
   return result;
 }
 
 export function checkAndEvaluateMath(
   token: DesignToken,
   fractionDigits?: number,
+  strictOptions?: Partial<MathOptions>,
 ): DesignToken['value'] {
+  if (strictOptions) return strictCheckAndEvaluateMath(token, { fractionDigits, ...strictOptions });
+
   const expr = token.$value ?? token.value;
   const type = token.$type ?? token.type;
 
@@ -177,48 +182,7 @@ export function checkAndEvaluateMath(
     return reducedExprs.join(' ');
   };
 
-  const transformProp = (val: Record<string, number | string>, prop: string) => {
-    if (typeof val === 'object' && val[prop] !== undefined) {
-      val[prop] = resolveMath(val[prop]);
-    }
-    return val;
-  };
-
-  let transformed = expr;
-  switch (type) {
-    case 'typography':
-    case 'border': {
-      transformed = transformed as Record<string, number | string>;
-      // double check that expr is still an object and not already shorthand transformed to a string
-      if (typeof expr === 'object') {
-        Object.keys(transformed).forEach(prop => {
-          transformed = transformProp(transformed, prop);
-        });
-      }
-      break;
-    }
-    case 'shadow': {
-      transformed = transformed as
-        | Record<string, number | string>
-        | Record<string, number | string>[];
-      const transformShadow = (shadowVal: Record<string, number | string>) => {
-        // double check that expr is still an object and not already shorthand transformed to a string
-        if (typeof expr === 'object') {
-          Object.keys(shadowVal).forEach(prop => {
-            shadowVal = transformProp(shadowVal, prop);
-          });
-        }
-        return shadowVal;
-      };
-      if (Array.isArray(transformed)) {
-        transformed = transformed.map(transformShadow);
-      }
-      transformed = transformShadow(transformed);
-      break;
-    }
-    default:
-      transformed = resolveMath(transformed);
-  }
+  const transformed = transformByTokenType(expr, type, resolveMath);
 
   return transformed;
 }
