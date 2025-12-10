@@ -38,7 +38,7 @@
     "@bundled-es-modules/postcss-calc-ast-parser": "^0.1.6",
     "@tokens-studio/types": "^0.5.1",
     "colorjs.io": "^0.5.2",
-    "expr-eval-fork": "^3.0.0",
+    "expr-eval-fork": "^3.0.1",
     "is-mergeable-object": "^1.1.1"
   },
   "peerDependencies": {
