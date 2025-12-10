@@ -1,5 +1,11 @@
 # @tokens-studio/sd-transforms
 
+## 2.0.3
+
+### Patch Changes
+
+- 6bd0aff: Fix vulnerable dependency expr-eval-fork
+
 ## 2.0.2
 
 ### Patch Changes
