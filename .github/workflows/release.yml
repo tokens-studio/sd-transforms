@@ -7,25 +7,22 @@ on:
 
 jobs:
   release:
+    # Prevents changesets action from creating a PR on forks
     if: github.repository == 'tokens-studio/sd-transforms'
     name: Release
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write          # Needed for npm trusted publishing
-      pull-requests: write      # Changesets creates version PRs
-
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@master
         with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@master
         with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org
+          node-version: 20.x
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
         run: npm ci
@@ -34,10 +31,9 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: npm run version
+          # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: npm run release
-          createGithubReleases: true           # Enabled because it's a single package
-          titleTemplate: "sd-transforms {{currentTag}}"  # Nice title
+          version: npm run version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # No NPM_TOKEN needed anymore
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
