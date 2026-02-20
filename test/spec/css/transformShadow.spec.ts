@@ -23,6 +23,7 @@ describe('transformShadow', () => {
       spread: '0',
       color: 'rgba(0,0,0,0.4)',
       type: 'inset',
+      inset: true,
     });
 
     expect(
@@ -42,6 +43,7 @@ describe('transformShadow', () => {
       spread: '0',
       color: 'rgba(0,0,0,0.4)',
       type: 'inset',
+      inset: true,
     });
   });
 
@@ -75,6 +77,7 @@ describe('transformShadow', () => {
         spread: '0',
         color: 'rgba(0,0,0,0.4)',
         type: 'inset',
+        inset: true,
       },
       {
         x: '2',
@@ -83,6 +86,7 @@ describe('transformShadow', () => {
         spread: '0',
         color: 'rgba(0,0,0,0.4)',
         type: 'inset',
+        inset: true,
       },
     ]);
   });
