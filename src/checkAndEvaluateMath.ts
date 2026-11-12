@@ -109,7 +109,9 @@ export function parseAndReduce(
     result = Number(noPixExpr);
   }
 
-  if (typeof result !== 'number') {
+  // expr-eval reads % as the modulo operator, so "100% - 8" would become 100 % (-8)
+  // when % is used as a unit, leave the expression to postcss-calc-ast-parser below
+  if (typeof result !== 'number' && resultUnit !== '%') {
     // Try to evaluate as expr-eval expression
     let evaluated;
     try {
