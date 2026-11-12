@@ -35,6 +35,15 @@ describe('check and evaluate math', () => {
     expect(checkAndEvaluateMath({ value: '4em + 7rem', type: 'dimension' })).to.equal('4em + 7rem');
   });
 
+  it('does not read % as modulo when it is used as a unit', () => {
+    expect(checkAndEvaluateMath({ value: '100% - 8px', type: 'dimension' })).to.equal('100% - 8px');
+    expect(checkAndEvaluateMath({ value: '50% + 4px', type: 'dimension' })).to.equal('50% + 4px');
+    expect(checkAndEvaluateMath({ value: '100% - 8', type: 'dimension' })).to.equal('100% - 8');
+    expect(checkAndEvaluateMath({ value: '10% + 5%', type: 'dimension' })).to.equal('15%');
+    expect(checkAndEvaluateMath({ value: '50% * 2', type: 'dimension' })).to.equal('100%');
+    expect(checkAndEvaluateMath({ value: '100% / 4', type: 'dimension' })).to.equal('25%');
+  });
+
   it('can evaluate mixed units if operators are exclusively multiplication and the mix is px or unitless', () => {
     expect(checkAndEvaluateMath({ value: '4 * 7em * 8em', type: 'dimension' })).to.equal('224em');
     expect(checkAndEvaluateMath({ value: '4px * 7em', type: 'dimension' })).to.equal('28em');
